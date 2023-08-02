@@ -9,10 +9,11 @@
     "preview": "vite preview",
     "lint": "eslint src",
     "fix": "eslint src --fix",
-	  "lint:style": "stylelint src/**/*.{css,scss,vue} --cache --fix",
+    "lint:style": "stylelint src/**/*.{css,scss,vue} --cache --fix",
     "format": "prettier --write \"./**/*.{html,vue,ts,js,json,md}\""
   },
   "dependencies": {
+    "element-plus": "^2.3.8",
     "vue": "^3.3.4"
   },
   "devDependencies": {
