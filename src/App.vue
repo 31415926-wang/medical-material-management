@@ -6,7 +6,7 @@ import HelloWorld from './components/HelloWorld.vue'
   <div>
    App组件
   </div>
-  <HelloWorld msg="父传子字符串" /> 
+  <HelloWorld /> 
 </template>
 
 <style scoped>
