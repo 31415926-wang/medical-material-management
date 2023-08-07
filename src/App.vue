@@ -1,14 +1,13 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
 
 <template> 
-  <div>
-   App组件
-  </div>
-  <HelloWorld /> 
+  <router-view></router-view>
+  <!-- <HelloWorld />  -->
 </template>
 
+<script setup lang="ts">
+// import HelloWorld from './components/HelloWorld.vue'
+
+</script>
 <style scoped>
  
 </style>
