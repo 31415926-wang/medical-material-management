@@ -1,12 +1,12 @@
 <template>
-    <div class="logo ">
+    <div class="logo">
         <img :src="setting.logo">
         <span> {{ setting.title }} </span>
     </div>
 </template>
 
 <script setup lang='ts'>
-import setting from '@/setting.ts';
+import setting from '@/setting';
 
 
 </script>
@@ -14,9 +14,9 @@ import setting from '@/setting.ts';
 <style scoped lang='scss'>
 .logo {
     height: $base_menu_logo_height;
-    border: 1px solid blue;
-    display:flex;
+    display:flex; 
     align-items: center;  
+    padding: 0 8px;
 
     img {
         width: 2.5rem
@@ -25,6 +25,7 @@ import setting from '@/setting.ts';
     span {
         color: white;
         margin-left:12px;
+        font-size:1.1rem
     }
 }
 </style>

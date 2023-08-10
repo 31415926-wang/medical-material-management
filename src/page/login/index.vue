@@ -35,9 +35,9 @@ import { UserFilled, Lock } from "@element-plus/icons-vue";
 import { ref, reactive } from "vue";
 import {  ElNotification } from 'element-plus'
 import { getTimeState } from "@/utils/hourRegion";
-import  useUSerStore from "@/store/modules/user";
+import  useUserStore from "@/store/modules/user";
 import { useRouter,useRoute } from "vue-router";
-let userStore=useUSerStore();
+let userStore=useUserStore();
 let $router=useRouter();
 let $route=useRoute();
 

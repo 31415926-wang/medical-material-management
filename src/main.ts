@@ -4,7 +4,7 @@ import '@/style/globalStyle.scss'
 import App from './App.vue'
 import router from '@/router/index'
 import pinia from '@/store/index'
-
+import plugins from './utils/plugins'
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
 //@ts-ignore
@@ -19,6 +19,7 @@ app.use(ElementPlus, {
 })
 app.use(router);
 app.use(pinia);
+app.use(plugins);
 
 
 //挂载到节点

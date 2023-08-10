@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia'
 import { reqLogin } from '@/api/user'
 import { set_tokens, get_tokens } from '@/utils/tokens'
+import {constantRoute} from '@/router/routes'
 
-const useUSerStore = defineStore('User', {
+const useUserStore = defineStore('User', {
     state: () => {
         return {
             username: '',
             avatar: '',
-            tokens: get_tokens()
+            tokens: get_tokens(),
+            menuRoutes:constantRoute  //默认是静态路由
         }
     },
     actions: {
@@ -30,6 +32,6 @@ const useUSerStore = defineStore('User', {
 })
 
 
-export default useUSerStore;
+export default useUserStore;
 
 

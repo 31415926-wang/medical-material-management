@@ -2,38 +2,41 @@
     <div class="layout_contain_box">
         <div class="layout_left_side">
             <logo></logo>
-            <el-menu default-active="2">
-                <el-sub-menu index="1">
-                    <template #title>
-                        <el-icon>
-                            <location />
-                        </el-icon>
-                        <span>Navigator One</span>
-                    </template>
-                    <el-sub-item index="1-4">
-                        <template #title>item four
-                            <span>Navigator One</span>
-                        </template>
-                    </el-sub-item>
-                </el-sub-menu>
-                <el-menu-item index="2">
-                    <el-icon><icon-menu /></el-icon>
-                    <span>Navigator Two</span>
-                </el-menu-item>
+            <el-menu default-active="2" background-color="#001529" text-color="white" active-text-color="yellowgreen"
+             >
+                <Menu :menuList="newMenuList" basePath=""></Menu>
             </el-menu>
-
         </div>
 
         <div class="layout_right_side">
             <div class="layout_tabbar"></div>
             <div class="layout_context_main"></div>
         </div>
-
     </div>
 </template>
 
 <script setup lang='ts'>
 import logo from "./logo/index.vue";
+import Menu from "./menu/index.vue";
+import useUserStore from "@/store/modules/user";
+let userStore=useUserStore();
+
+
+//过滤隐藏的菜单，考虑hidden可能存在多个位置
+import cloneDeep from 'lodash/cloneDeep'
+const filterMenu = (arr: any) => {
+    return arr.filter((item: any) => {
+        if (item.children) {
+            item.children = filterMenu(item.children);  //直接影响原数组
+        }
+        return !item?.meta?.hidden
+    })
+}
+
+let newMenuList = filterMenu(cloneDeep(userStore.menuRoutes));
+console.log("过滤hidden之后的路由数组", newMenuList);
+
+
 </script>
 
 <style scoped lang='scss'>
@@ -44,9 +47,13 @@ import logo from "./logo/index.vue";
     .layout_left_side {
         height: 100%;
         width: $base_menu_width;
-        border: 1px solid red;
+        // border: 1px solid red;
         background-color: $base-menu-background;
-        padding: 5px 10px;
+        padding: 5px 0px;
+
+        .el-menu {
+            border-right: none;
+        }
 
     }
 
