@@ -21,6 +21,8 @@ app.use(router);
 app.use(pinia);
 app.use(plugins);
 
+//引入路由拦截器/路由鉴权
+import './permission'
 
 //挂载到节点
 app.mount('#app')

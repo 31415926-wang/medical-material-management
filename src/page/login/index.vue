@@ -33,8 +33,7 @@
 <script setup lang='ts'>
 import { UserFilled, Lock } from "@element-plus/icons-vue";
 import { ref, reactive } from "vue";
-import {  ElNotification } from 'element-plus'
-import { getTimeState } from "@/utils/hourRegion";
+
 import  useUserStore from "@/store/modules/user";
 import { useRouter,useRoute } from "vue-router";
 let userStore=useUserStore();
@@ -80,15 +79,16 @@ const handleLogin = async () => {
   //无论接口是否返回的失败，都在拦截器提示即可;
   try {
     await userStore.userLogin(formInfo);
-    ElNotification({
-      title: `HI,${getTimeState()}好`,
-      message: '欢迎回来',
-      type: 'success',
-      duration: 6000
-    })
+  
     loadingBtn.value = false;
-    //还未考虑跳转原路径问题
-    $router.push({path:'/'})
+
+    //判断是否需要跳转原路径问题
+    if ($route.query.wantToPath) {
+      $router.push({path: ''+$route.query.wantToPath})
+    }else{
+      $router.push({path:'/'})
+    }
+
   } catch (error) {
     loadingBtn.value = false;
   }

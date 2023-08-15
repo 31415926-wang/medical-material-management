@@ -26,7 +26,7 @@ function createUserList() {
             token: 'System Token',
         },
     ]
-}
+} 
 //对外暴露一个数组:数组里面包含两个接口
 //登录假的接口
 //获取用户信息的假的接口

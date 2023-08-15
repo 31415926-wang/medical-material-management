@@ -3,24 +3,24 @@
                 el-menu-item代表一个，el-sub-menu代表是可以展开的项
             -->
     <!-- <el-menu-item index="1">
-        <span>一级功能1</span>
+        <template #title>一级功能1</template>
     </el-menu-item>
     <el-sub-menu index="2">
-        <template #title>一级功能2</template>
+        <template #title><span>一级功能2</span></template>
         <el-menu-item index="1-4-1">二级功能2</el-menu-item>
     </el-sub-menu>
     <el-sub-menu index="3">
-        <template #title>一级功能3</template>
+        <template #title><span>一级功能3</span></template>
         <el-sub-menu index="3-1">
-            <template #title>二级功能3</template>
+            <template #title><span>二级功能3</span></template>
             <el-menu-item index="1-4-1">三级功能3</el-menu-item>
         </el-sub-menu>
     </el-sub-menu> -->
 
-    <template v-for="(item, index ) in menuList" :key="index">
+    <template v-for="(item, index ) in menuList" :key="index" >
         <!-- 没有展开节点的 -->
         <template v-if="!item.children">
-            <el-menu-item :index="item.path" @click="goRouter(basePath + '/' + repalceStr(item.path))">
+            <el-menu-item :index="basePath + '/' + repalceStr(item.path)" @click="goRouter(basePath + '/' + repalceStr(item.path))">
                 <el-icon>
                     <component :is="item.meta.icon" />
                 </el-icon>
@@ -36,13 +36,15 @@
                         <el-icon>
                             <component :is="item.meta.icon" />
                         </el-icon>
-                        {{ item.meta.title }}</template>
+                       <!-- <span v-show="!layoutSetting.fold"> {{ item.meta.title }}</span> -->
+                       <span> {{ item.meta.title }}</span>
+                    </template>
                     <!-- 此位置其实在重复上面的判断：有可能是一个项。也可能是需展开(children里面的其实和整个路由数组是一样的) -->
                     <Menu :menuList="item.children" :basePath="basePath + '/' + repalceStr(item.path)"></Menu>
                 </el-sub-menu>
             </template>
             <template v-else>
-                <el-menu-item :index="item.children[0].path" @click="goRouter(item.path)">
+                <el-menu-item :index="'/'+item.children[0].path" @click="goRouter(item.path)">
                     <el-icon>
                         <component :is="item.children[0].meta.icon" />
                     </el-icon>
@@ -58,6 +60,8 @@
 
 <script setup lang='ts'>
 import { useRouter } from "vue-router";
+// import useLayoutSettingStore from '@/store/modules/layoutSetting'
+// let layoutSetting=useLayoutSettingStore();
 defineProps(['menuList', 'basePath'])
 let $router = useRouter();
 
@@ -67,7 +71,7 @@ const repalceStr = (str: string) => {
 }
 
 const goRouter = (path: string) => {
-    console.log("跳转", path);
+    // console.log("跳转", path);
     $router.push(path)
 }
 

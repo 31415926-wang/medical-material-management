@@ -1,7 +1,7 @@
 <template>
     <div class="logo">
         <img :src="setting.logo">
-        <span> {{ setting.title }} </span>
+        <span class="logoTitle"> {{ setting.title }} </span>
     </div>
 </template>
 
@@ -16,10 +16,10 @@ import setting from '@/setting';
     height: $base_menu_logo_height;
     display:flex; 
     align-items: center;  
-    padding: 0 8px;
+    padding: 0 13px;
 
     img {
-        width: 2.5rem
+        width: 2.4rem
     }
 
     span {

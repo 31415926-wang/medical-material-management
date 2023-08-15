@@ -1,5 +1,7 @@
 import axios from "axios";
 import { ElMessage } from 'element-plus'
+import useUserStore from "@/store/modules/user";
+
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -8,6 +10,13 @@ const service = axios.create({
 
 //使用请求拦截器(英文倒过来)
 service.interceptors.request.use((config) => {
+
+
+    const userStore = useUserStore();
+    if (userStore.token) {
+        config.headers.token = userStore.token;
+    }
+
     return config;
 })
 
@@ -21,8 +30,18 @@ service.interceptors.response.use((response) => {
         console.log("请求响应2", response);
         ElMessage({
             type: 'error',
-            message:  response?.data?.data?.message || 'error'
+            message: response?.data?.data?.message || 'error'
         })
+
+        // 401（未授权）或者403（禁止访问），具体的状态码可能会根据后端的实现而有所不同
+        if (response.data.code == 401 || response.data.code == 403) {
+           //若是token过期或者没有携带，清空token、用户信息，然后重新加载页面（间接实现了记住路由路径）
+        const userStore = useUserStore();
+        userStore.resetUserData();
+        location.reload();   //页面重载
+        }
+       
+        
         return Promise.reject(new Error('error'))
     }
 
@@ -33,12 +52,6 @@ service.interceptors.response.use((response) => {
     //在此失败都是接口没有返回内容的情况，通过错误对象的响应状态码，尽可能的告诉用户原因
     let msg = '';
     switch (error.response.status) {
-        case 401:
-            msg = 'TOKEN过期'
-            break;
-        case 403:
-            msg = '没有访问权限'
-            break;
         case 404:
             msg = '请求路径出错'
             break;
