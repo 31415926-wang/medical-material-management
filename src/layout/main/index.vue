@@ -22,9 +22,10 @@ watch(() => layoutSettingStore.refresh, () => {
 
 <style scoped lang='scss'>
 .main_box{
-    height: calc(100% - $base_footer_height);
-    padding: 30px;
+    height: calc(100% - $base_footer_height - $base_nav_height);
+    padding: 30px; 
     padding-bottom: 10px;
+    // border: 1px solid red;
     // background-color: rgb(230, 230, 230);
     }
 </style>

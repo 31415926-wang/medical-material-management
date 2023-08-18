@@ -19,10 +19,11 @@ router.beforeEach((to, from, next) => { //to,from是路由对象,next()才是通
             next();
         }
         else {
-            next({ path:'/' })
+            next({ path: '/' })
         }
         //有token了，判断有没有用户信息，没有则发请求获取（F5刷新则清空，在此一般不使用持久化存储用户信息）
-        if (userStore.userInfo.username.length == 0) {
+        //同时解决在404页面刷新还弹出欢迎回来的弹窗
+        if (userStore.userInfo.username.length == 0 && to.path != '/404') {
             userStore.getUserInfo();
         }
     }
@@ -40,8 +41,8 @@ router.beforeEach((to, from, next) => { //to,from是路由对象,next()才是通
 
 router.afterEach((to, from) => {
     //修改网站名称
-    document.title = `${setting.title}`+(to.meta?.title ? `-${to.meta.title}`: `` )
-  
+    document.title = `${setting.title}` + (to.meta?.title ? `-${to.meta.title}` : ``)
+
     nprogress.done();
 
 })

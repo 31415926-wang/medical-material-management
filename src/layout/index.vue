@@ -4,7 +4,7 @@
             <logo></logo>
             <el-scrollbar class="el_scrollbar">
                 <el-menu :collapse="layoutSettingStore.fold" :default-active="$route.fullPath" background-color="#001529"
-                    text-color="rgba(255, 255, 255, 0.75)" active-text-color="#fff">
+                    text-color="rgba(255, 255, 255, 0.75)" active-text-color="#fff" >
                     <Menu :menuList="newMenuList" basePath=""></Menu>
                 </el-menu>
             </el-scrollbar>
@@ -16,6 +16,7 @@
                 <tabbar></tabbar>
             </div>
             <div class="layout_context_main">
+                <Nav></Nav>
                 <Main></Main>
                 <footerLogo></footerLogo>
             </div>
@@ -27,6 +28,7 @@
 import logo from "./logo/index.vue";
 import Menu from "./menu/index.vue";
 import Main from './main/index.vue'
+import Nav from './nav/index.vue'
 import footerLogo from './footerLogo/index.vue'
 import useUserStore from "@/store/modules/user";
 import useLayoutSettingStore from '@/store/modules/layoutSetting'
@@ -37,7 +39,6 @@ import { useRoute } from "vue-router";
 let $route = useRoute();
 let userStore = useUserStore();
 let layoutSettingStore = useLayoutSettingStore();
-// console.log("断点", $route);
 
 
 const foldFn = throttle(() => {
@@ -72,7 +73,31 @@ const filterMenu = (arr: any) => {
 }
 
 let newMenuList = filterMenu(cloneDeep(userStore.menuRoutes));
-// console.log("过滤hidden之后的路由数组", newMenuList);
+
+
+
+//点击菜单存入仓库
+// const handleSelect = (clickedIndex: any, levelsIndexArr: any) => {
+//     console.log("点击激活", clickedIndex, levelsIndexArr);
+//     console.log("单个路由", findItemPath(levelsIndexArr));
+// }
+
+//自定义方法，根据层级路径，筛选出单个路由路径
+// const findItemPath = (levelsIndexArr: any) => {
+//     if (levelsIndexArr.length > 1) {
+//         let str = '';
+//         for (let i = 0; i <= levelsIndexArr.length - 2; i++) {
+//             str = str + levelsIndexArr[i] + '/';
+//         }
+//         return levelsIndexArr[levelsIndexArr.length - 1].replace(str, '');
+
+//     } else {
+//         return levelsIndexArr[0] //一级路径
+//     }
+// }
+// //自定义方法，根据路径找出路由对象
+// const findItemRoute = (itemPath:string) => {
+// }
 
 
 </script>
@@ -127,7 +152,7 @@ let newMenuList = filterMenu(cloneDeep(userStore.menuRoutes));
 
     .layout_right_side {
         height: 100%;
-        width: 100%;
+        width: calc(100% - $base_menu_width);
 
         .layout_tabbar {
             height: $base_tabbar_height;

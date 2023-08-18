@@ -30,12 +30,12 @@
         <!-- 有子节点，需展开 -->
         <template v-else>
             <!-- 拦截掉'/' -->
-            <template v-if="item.path != '/'">
+            <template v-if="item.path != '/'"> 
                 <el-sub-menu :index="item.path">
                     <template #title> 
                         <el-icon>
                             <component :is="item.meta.icon" />
-                        </el-icon>
+                        </el-icon> 
                        <!-- <span v-show="!layoutSetting.fold"> {{ item.meta.title }}</span> -->
                        <span> {{ item.meta.title }}</span>
                     </template>
@@ -56,7 +56,7 @@
 
 
     </template>
-</template>
+</template> 
 
 <script setup lang='ts'>
 import { useRouter } from "vue-router";

@@ -17,6 +17,14 @@ export const constantRoute = [
             hidden: true  //不是所有路由都需要渲染成菜单
         }
     },
+    //其它路径重定向到404
+    {
+        path: '/:catchAll(.*)',
+        redirect: '/404',
+        meta:{
+            hidden:true
+        }
+    },
     {
         path: '/',
         component: Layout,
@@ -30,16 +38,17 @@ export const constantRoute = [
                 component: () => import('@/page/home/index.vue'),
                 meta: {
                     title: '首页',
-                    icon: 'HomeFilled'
+                    icon: 'HomeFilled',
+                    affix:true   //开启粘滞tab切片
                 }
             }
         ]
     },
 
 
-    
-   
-    
+
+
+
     // //测试菜单路由
     // //三级测试
     {
@@ -53,12 +62,12 @@ export const constantRoute = [
     {
         path: '/test2',
         component: Layout,
-        redirect:'/test2/test22',
+        redirect: '/test2/test22',
         meta: {
             title: 'test2',
             icon: 'Connection'
         },
-        children:[{
+        children: [{
             path: 'test22',
             component: () => import('@/page/test/index.vue'),
             meta: {
@@ -74,7 +83,7 @@ export const constantRoute = [
             title: 'test3',
             icon: 'Setting'
         },
-        redirect:'/test3/test3-1/test3-1-1',
+        redirect: '/test3/test3-1/test3-1-1',
         children: [
             {
                 path: 'test3-1',
@@ -83,7 +92,7 @@ export const constantRoute = [
                     title: 'test3-1',
                     icon: 'ChatDotRound'
                 },
-                redirect:'/test3/test3-1/test3-1-1',
+                redirect: '/test3/test3-1/test3-1-1',
                 children: [
                     {
                         path: 'test3-1-1',
@@ -101,6 +110,14 @@ export const constantRoute = [
                             icon: 'Discount'
                         }
                     },
+                    {
+                        path: 'test3-1-3',
+                        component: () => import('@/page/home/index.vue'),
+                        meta: {
+                            title: 'test3-1-3',
+                            icon: 'Discount'
+                        }
+                    }
                 ]
             }
         ]
