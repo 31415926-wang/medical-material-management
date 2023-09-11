@@ -22,10 +22,11 @@ import setting from '@/setting';
         width: 2.4rem
     }
 
-    span {
+    .logoTitle {
         color: white;
         margin-left:12px;
         font-size:1.1rem
     }
+  
 }
 </style>

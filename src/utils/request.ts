@@ -2,7 +2,7 @@ import axios from "axios";
 import { ElMessage } from 'element-plus'
 import useUserStore from "@/store/modules/user";
 
-
+ 
 const service = axios.create({
     baseURL: import.meta.env.VITE_APP_BASE_API,
     timeout: 120000
@@ -48,7 +48,7 @@ service.interceptors.response.use((response) => {
 }, (error) => {
     //通过打印，能发现确实后台没有返回时，也会有响应的状态码
     console.log("请求响应3", error);
-
+    //当在请求接口的时候有处理失败的回调，弹出框会以那边的为主（因为弹出框时间一致，覆盖显示）
     //在此失败都是接口没有返回内容的情况，通过错误对象的响应状态码，尽可能的告诉用户原因
     let msg = '';
     switch (error.response.status) {
@@ -66,7 +66,7 @@ service.interceptors.response.use((response) => {
 
     ElMessage({
         type: 'error',
-        message: msg
+        message: msg,
     })
 
     return Promise.reject(error)

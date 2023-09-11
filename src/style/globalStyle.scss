@@ -1,11 +1,9 @@
 //清除默认样式
 @import '@/style/restcss.scss';
-
 html,body,#app{
     height: 100%;
 }
-
-html{
+*{
     box-sizing: border-box;
 }
 
@@ -25,7 +23,6 @@ html{
 }
 
 
-
 //el-message提示字体
 .el-message{
     font-size: 2.6rem !important;
@@ -34,3 +31,5 @@ html{
 .el-message__content{
     font-size: 1.3rem !important;
 }
+
+

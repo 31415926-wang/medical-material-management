@@ -1,13 +1,17 @@
 <template>
-  <el-button icon="Refresh" circle @click="handleRefresh" />
+  <el-button class="elBt" icon="Refresh" circle @click="handleRefresh" />
   <el-button icon="FullScreen" circle @click="handleFullScreen" />
-  <el-button icon="Setting" circle />
+
+  <span class="theme-set flex-center-x-y">
+    <themeSet></themeSet>
+  </span>
+
   <img :src="userStore.userInfo.avatar" class="userImg" alt="">
 
 
   <el-dropdown class="dropdown">
     <span class="el-dropdown-link">
-      <span>{{ userStore.userInfo.username }}</span>
+      <span>{{ userStore.userInfo.name }}</span>
       <el-icon class="el-icon--right">
         <arrow-down />
       </el-icon>
@@ -24,6 +28,7 @@
 <script setup lang='ts'>
 import useUserStore from "@/store/modules/user";
 import useLayoutSettingStore from "@/store/modules/layoutSetting";
+import themeSet from '@/layout/tabbar/Setting/themeSet.vue'
 import { useRouter } from "vue-router";
 let layoutSettingStore = useLayoutSettingStore();
 let userStore = useUserStore();
@@ -59,6 +64,12 @@ const loginOut = async () => {
 .el-button {
   @include mx-right;
 }
+
+.theme-set ::v-deep .el-button {
+  @include mx-right;
+  // border: 1px solid red ;
+}
+
 
 .userImg {
   width: 32px;

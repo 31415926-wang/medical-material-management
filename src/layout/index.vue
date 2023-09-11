@@ -8,10 +8,10 @@
                     <Menu :menuList="newMenuList" basePath=""></Menu>
                 </el-menu>
             </el-scrollbar>
-
+ 
         </div>
 
-        <div class="layout_right_side">
+        <div class="layout_right_side" :class="{ fold: layoutSettingStore.fold }">
             <div class="layout_tabbar">
                 <tabbar></tabbar>
             </div>
@@ -42,7 +42,7 @@ let layoutSettingStore = useLayoutSettingStore();
 
 
 const foldFn = throttle(() => {
-    console.log("尺寸变化");
+    // console.log("尺寸变化");
     let clientWidth = document.body.clientWidth;
     if (!layoutSettingStore.fold && clientWidth < 1200) { //屏幕尺寸小于1200的时候，若是还展开着，则折叠
         layoutSettingStore.changeFold();
@@ -111,7 +111,7 @@ let newMenuList = filterMenu(cloneDeep(userStore.menuRoutes));
         overflow-x: hidden;
         height: 100%;
         width: $base_menu_width;
-        background-color: $base-menu-background;
+        background-color: var(--custom-menu-bg-color);
         padding: 5px 0px;
         transition: all 0.6s;
 
@@ -120,26 +120,34 @@ let newMenuList = filterMenu(cloneDeep(userStore.menuRoutes));
             border-right: none;
 
             ::v-deep .el-menu-item {
+                background-color: var(--custom-menu-bg-color);
+
                 &:hover {
                     color: white;
                 }
 
                 &.is-active {
-                    //后续改成主题颜色
-                    background-color: rgb(58, 158, 204);
+                    //改成主题颜色
+                    background-color: var(--el-color-primary);
                 }
+            }
+
+            //有子菜单的标题背景
+            ::v-deep .el-sub-menu .el-sub-menu__title{
+                    background-color: var(--custom-menu-bg-color) !important;
             }
 
         }
 
         // 若是菜单折叠，样式宽度对应减小
         &.fold {
+            transition: all 0.6s;
             width: $base_menu_min_width;
 
             ::v-deep .logoTitle {
                 display: none;
                 transition: all 1s;
-
+                
             }
         }
 
@@ -153,6 +161,10 @@ let newMenuList = filterMenu(cloneDeep(userStore.menuRoutes));
     .layout_right_side {
         height: 100%;
         width: calc(100% - $base_menu_width);
+
+        &.fold{
+            width:  calc(100% - $base_menu_min_width);
+        }
 
         .layout_tabbar {
             height: $base_tabbar_height;

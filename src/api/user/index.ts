@@ -1,10 +1,10 @@
 import request from '@/utils/request'
-import type {loginFrom,loginResponse} from '@/types/user.api'
+import type {loginFrom,loginResponse,userInfoResponse} from '@/types/api/user.api'
 enum Urls {
-    Login_url='/user/login', //模拟的
-    // Login_url='/admin/acl/index/login',
-    // UserInfo_url='/admin/acl/index/info', 
-    UserInfo_url='/user/info', 
+    // Login_url='/user/login', //模拟的
+    Login_url='/admin/acl/index/login',
+    UserInfo_url='/admin/acl/index/info', 
+    // UserInfo_url='/user/info', 
     LoginOut_url='/admin/acl/index/logout',
 }  
  
@@ -17,7 +17,7 @@ export const reqLogin = (data:loginFrom) => {
 } 
 
 export const reqUserInfo = () => {
-    return request<any,any>({
+    return request<any,userInfoResponse>({
         url: Urls.UserInfo_url,
         method: 'get',
     })

@@ -33,7 +33,7 @@
 <script setup lang='ts'>
 import { UserFilled, Lock } from "@element-plus/icons-vue";
 import { ref, reactive } from "vue";
-
+import { loginFrom } from "@/types/user.api";
 import  useUserStore from "@/store/modules/user";
 import { useRouter,useRoute } from "vue-router";
 let userStore=useUserStore();
@@ -65,9 +65,9 @@ const rules = reactive<FormRules<RuleForm>>({
 
 let formRef = ref();
 let loadingBtn = ref(false);
-let formInfo = reactive({
-  username: '',
-  password: ''
+let formInfo = reactive<loginFrom>({
+  username: 'admin',
+  password: 'atguigu123' 
 })
 
 const handleLogin = async () => {
@@ -102,7 +102,7 @@ const handleLogin = async () => {
 .login_box {
   height: 100%;
   width: 100%;
-  background-image: url('@/assets/background.jpg');
+  background-image: url('@/assets/images/background.jpg');
   background-size: cover;
 
   .el_row {
@@ -137,4 +137,4 @@ const handleLogin = async () => {
 
 
 }
-</style>  
+</style>  @/types/api/user.api

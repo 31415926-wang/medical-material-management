@@ -5,42 +5,44 @@ import { constantRoute } from '@/router/routes'
 import { ElMessage } from 'element-plus'
 import {  ElNotification } from 'element-plus'
 import { getTimeState } from "@/utils/hourRegion";
-import { useRouter } from "vue-router";
-let $router=useRouter();
+import { loginFrom,loginResponse,userInfo,userInfoResponse } from "@/types/api/user.api";
 
 const useUserStore = defineStore('User', {
     state: () => {
         return { 
-            userInfo: {
-                username:'',
-                avatar:''
-            },
-            token: get_tokens(),
+            userInfo: <userInfo>{}, 
+            // token: get_tokens(),
+            token: '',
             menuRoutes: constantRoute  //默认是静态路由
         }
     },
+    persist:{
+        enabled:true,   
+    },
+
     actions: {
-        async userLogin(from: any) { //通过返回promise对象让页面区分成功与失败
+        async userLogin(from: loginFrom) { //通过返回promise对象让页面区分成功与失败
             try {
-                let result = await reqLogin(from);
+                let result: loginResponse= await reqLogin(from);
                 //存储token
                 console.log("登录接口调用成功", result);
                 //这一步不要省略，this可以直接访问该仓库的参数
-                this.token = result.data.token;
-                set_tokens(result.data.token);
-                return result
-            } catch (error) {
+                this.token = result.data;
+                // set_tokens(result.data);
+                return result ;
+            } catch (error) { 
                 return Promise.reject(error)
             }
 
         },
         async getUserInfo() {
+            
             try {
-                let result = await reqUserInfo();
-                this.userInfo = result.data.checkUser;
+                let result:userInfoResponse = await reqUserInfo();
+                this.userInfo = result.data;
                 //若欢迎的提示需带用户名，需在此，即获取用户信息后
                 ElNotification({
-                    title: `嗨！${this.userInfo.username},${getTimeState()}好`,
+                    title: `嗨！${this.userInfo.name},${getTimeState()}好`,
                     message: '欢迎回来',
                     type: 'success',
                     duration: 3000
@@ -69,11 +71,8 @@ const useUserStore = defineStore('User', {
             console.log("清空用户信息");
                //清除token,用户信息，重定向登录页
             this.token = ''
-            remove_tokens();
-            this.userInfo={
-                username:'',
-                avatar:''
-            }
+            // remove_tokens();
+            this.userInfo=<userInfo>{}
         }
     },
     getters: {}

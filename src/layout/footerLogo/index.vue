@@ -12,7 +12,7 @@
   .footer_box{
     // border:1px solid red;
     height:$base_footer_height;
-    color:rgba(0, 0, 0, 0.45);
-    border-top: 1px rgb(189, 189, 189) dashed;
+    color:var(--custom-font-color);
+    border-top: 1px var(--custom-border-color) dashed;
   }
-</style>
+</style> 

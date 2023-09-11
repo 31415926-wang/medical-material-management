@@ -1,5 +1,6 @@
 
 import Layout from '@/layout/index.vue'
+
 export const constantRoute = [
     {
         path: '/login',
@@ -45,20 +46,28 @@ export const constantRoute = [
         ]
     },
 
+    {
+        path:'/screen',
+        component:()=> import('@/page/screen/index.vue'),
+        meta: {
+            title: '数据大屏',
+            icon: 'DataAnalysis',
+        }
+    },  
 
 
 
 
     // //测试菜单路由
     // //三级测试
-    {
-        path: '/test1',
-        component: () => import('@/page/test/index.vue'),
-        meta: {
-            title: 'test1',
-            icon: 'Connection'
-        }
-    },
+    // {
+    //     path: '/test1',
+    //     component: () => import('@/page/test/index.vue'),
+    //     meta: {
+    //         title: 'test1',
+    //         icon: 'Connection'
+    //     }
+    // },
     {
         path: '/test2',
         component: Layout,
@@ -76,52 +85,52 @@ export const constantRoute = [
             }
         }]
     },
-    {
-        path: '/test3',
-        component: Layout,
-        meta: {
-            title: 'test3',
-            icon: 'Setting'
-        },
-        redirect: '/test3/test3-1/test3-1-1',
-        children: [
-            {
-                path: 'test3-1',
-                component: () => import('@/page/home/index.vue'),
-                meta: {
-                    title: 'test3-1',
-                    icon: 'ChatDotRound'
-                },
-                redirect: '/test3/test3-1/test3-1-1',
-                children: [
-                    {
-                        path: 'test3-1-1',
-                        component: () => import('@/page/test/index.vue'),
-                        meta: {
-                            title: 'test3-1-1',
-                            icon: 'Position'
-                        }
-                    },
-                    {
-                        path: 'test3-1-2',
-                        component: () => import('@/page/home/index.vue'),
-                        meta: {
-                            title: 'test3-1-2',
-                            icon: 'Discount'
-                        }
-                    },
-                    {
-                        path: 'test3-1-3',
-                        component: () => import('@/page/home/index.vue'),
-                        meta: {
-                            title: 'test3-1-3',
-                            icon: 'Discount'
-                        }
-                    }
-                ]
-            }
-        ]
-    },
+    // {
+    //     path: '/test3',
+    //     component: Layout,
+    //     meta: {
+    //         title: 'test3',
+    //         icon: 'Setting'
+    //     },
+    //     redirect: '/test3/test3-1/test3-1-1',
+    //     children: [
+    //         {
+    //             path: 'test3-1',
+    //             component: () => import('@/page/home/index.vue'),
+    //             meta: {
+    //                 title: 'test3-1',
+    //                 icon: 'ChatDotRound'
+    //             },
+    //             redirect: '/test3/test3-1/test3-1-1',
+    //             children: [
+    //                 {
+    //                     path: 'test3-1-1',
+    //                     component: () => import('@/page/test/index.vue'),
+    //                     meta: {
+    //                         title: 'test3-1-1',
+    //                         icon: 'Position'
+    //                     }
+    //                 },
+    //                 {
+    //                     path: 'test3-1-2',
+    //                     component: () => import('@/page/home/index.vue'),
+    //                     meta: {
+    //                         title: 'test3-1-2',
+    //                         icon: 'Discount'
+    //                     }
+    //                 },
+    //                 {
+    //                     path: 'test3-1-3',
+    //                     component: () => import('@/page/home/index.vue'),
+    //                     meta: {
+    //                         title: 'test3-1-3',
+    //                         icon: 'Discount'
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // },
 
 
 

@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 //引入vite的mock工具提供的方法
 import { viteMockServe } from 'vite-plugin-mock'
 
@@ -17,7 +18,13 @@ let env = loadEnv(mode, process.cwd());
       vue(),
       viteMockServe({
         localEnabled: command === 'serve'
-      })
+      }),
+      createSvgIconsPlugin({
+        // Specify the icon folder to be cached
+        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+        // Specify symbolId format
+        symbolId: 'icon-[dir]-[name]',
+      }),
     ],
     resolve: {
       alias: {

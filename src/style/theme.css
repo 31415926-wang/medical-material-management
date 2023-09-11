@@ -1,0 +1,15 @@
+/* 存放不同模式下需要自适应的样式变量 */
+:root{
+   --custom-border-color:#f6f6f6 ; 
+   --custom-font-color:rgba(0, 0, 0, 0.45) ; 
+   --custom-menu-bg-color:#022241 ; 
+}
+
+/* 暗黑模式下，覆盖上面的自定义原生变量 */
+html.dark{
+    --custom-border-color:#52505000 ; 
+    --custom-font-color:#f6f6f6 ; 
+   --custom-menu-bg-color:#001529 ; 
+}
+
+
