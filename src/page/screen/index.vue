@@ -11,8 +11,10 @@
           <left/>
         </div>
         <div class="middle">
-          <div class="middle-top"></div>
-          <div class="middle-bottom"></div>
+          <div class="middle-top"><countryMap /></div>
+          <div class="middle-bottom">
+            <middleBottom />
+          </div>
         </div>
         <div class="right">
           <right/>
@@ -27,6 +29,8 @@
 import Top from './top/index.vue';
 import left from './left/index.vue';
 import right from './right/index.vue';
+import middleBottom from './middleBottom/index.vue';
+import countryMap from './countryMap.vue';
 
 import { onMounted, onUnmounted } from 'vue';
 
@@ -104,12 +108,12 @@ onUnmounted(() => {
 
 
         .middle-top {
-          height: 70%;
+          height: 75%;
         }
 
         .middle-bottom {
-          height: 30%;
-          // background-color: brown;
+          height: 25%;
+          padding: 0 33px;
         }
 
       }
@@ -117,7 +121,6 @@ onUnmounted(() => {
       .right {
         // border: 1px solid rgb(230, 170, 8);
         width: 28%;
-
       }
     }
 

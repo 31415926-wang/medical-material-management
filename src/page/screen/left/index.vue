@@ -27,34 +27,42 @@
             <img src="@/assets/images/screen/dataScreen-title.png" alt="">
         </div>
 
-        <div class="chart2-row2">
-
+        <div class="chart2-row2 flex-center-x-y">
+            <div class="sex-box sex-box1 man-box flex-center-x-y"><img src="@/assets/images/screen/man.png" alt=""></div>
+            <div class="sex-box sex-box2 flex-center-x-y"><img src="@/assets/images/screen/woman.png" alt=""></div>
         </div>
-
+ 
         <div class="chart2-row3 text-font">
             <div class="rate">
             <span>男生{{handleSale(manScale)}}</span>
             <span>女生{{handleSale(1-manScale)}}</span>
             </div>
-            <div class="title">
-                男女比例
-            </div>
-
         </div>
 
         <div class="chart2-row4">
-
+                <sexRate :manRate="58"></sexRate>
         </div>
 
     </div>
 
     <div class="chart3">
+        <div class="chart3-row1">
+            <div class="text-font">年龄比例</div>
+            <img src="@/assets/images/screen/dataScreen-title.png" alt="">
+        </div>
+
+        <div class="chart3-row2">
+            <agePie></agePie>
+        </div>
 
     </div>
 </template>
 
 <script setup lang='ts'>
-import waterBall from '@/page/screen/left/waterBall.vue'
+import waterBall from '@/page/screen/left/waterBall.vue';
+import sexRate from "./sexRate.vue";
+import agePie from "./agePie.vue";
+
 
 import { ref, onMounted, onUnmounted, watch } from "vue";
 let touristMonut = ref(520);
@@ -110,6 +118,11 @@ watch(peopleMonut, () => {
     //不让背景覆盖内边距
     background-clip: content-box;
     padding-top: 20px;
+}
+
+@mixin sex-bg{
+    width: 111px;
+    height: 115px;
 }
 
 .text-font {
@@ -185,24 +198,36 @@ watch(peopleMonut, () => {
         // border: 1px solid rgb(231, 75, 13);
         display: flex;
 
+        .sex-box{
+            @include sex-bg;
+        }
+        .sex-box1{
+            background: url('@/assets/images/screen/man-bg.png');
+        }
+        .sex-box2{
+            background: url('@/assets/images/screen/woman-bg.png');
+        }
+
+        .man-box{
+            margin-right: 30px;
+        }
     }
 
     .chart2-row3 {
         // border: 1px solid rgb(231, 75, 13);
         padding: 5px 2px ;
+
         .rate{
             font-size: 18px;
             display: flex;
         justify-content: space-between;
             
         }
-        .title{
-            color: #29fcff;
-            text-align: center;
-        }
+      
     }
 
     .chart2-row4{
+        padding-top: 10px;
         flex-grow: 1;
         // border: 1px solid rgb(231, 75, 13);
     }
@@ -214,6 +239,20 @@ watch(peopleMonut, () => {
     height: 30%;
     background: url('@/assets/images/screen/dataScreen-main-cb.png') no-repeat;
     @include chart-bg;
+    display: flex;
+    flex-direction: column;
+
+    .chart3-row1{
+        padding: 12px;
+        padding-top: 7px;
+        padding-bottom: 0;
+
+    }
+
+    .chart3-row2{
+        flex-grow: 1;
+        padding: 8px 0;
+    }
 
 }
 </style>
