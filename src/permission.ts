@@ -15,7 +15,7 @@ const whitePaths = ['/login','/screen'];
 router.beforeEach((to, from, next) => { //to,from是路由对象,next()才是通过，其它都是属于重定向
     let userStore = useUserStore();
     //先判断有没有token
-    console.log("判断token", userStore.token);
+    // console.log("判断token", userStore.token);
     if (userStore.token) {//如果有token，哪都可以去，除了登录页
         if (to.path != '/login') {
             next(); 

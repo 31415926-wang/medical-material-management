@@ -11,7 +11,9 @@
           <left/>
         </div>
         <div class="middle">
-          <div class="middle-top"><countryMap /></div>
+          <div class="middle-top">
+            <countryMap />
+          </div>
           <div class="middle-bottom">
             <middleBottom />
           </div>

@@ -26,7 +26,7 @@ onMounted(() => {
             data: [0.65, 0.2, 0.3, 0.15],
             radius: '90%',//半径，直接决定大小
             outline:{
-                show:true,
+                show:true, 
                 borderDistance:8,
                 itemStyle:{
                     color: 'skyblue',

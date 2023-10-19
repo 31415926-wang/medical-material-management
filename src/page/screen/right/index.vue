@@ -4,6 +4,9 @@
             <div class="text-font">{{arrTitle[0] }}</div>
             <img src="@/assets/images/screen/dataScreen-title.png" alt="">
         </div>
+        <div class="chartbox">
+        <rankChart />
+        </div>
 
   </div>
   <div class="chart2">
@@ -11,6 +14,10 @@
             <div class="text-font">{{arrTitle[1] }}</div>
             <img src="@/assets/images/screen/dataScreen-title.png" alt="">
         </div>
+      <div class="chartbox">
+        <scatterChart />
+      </div>
+
 
   </div>
   <div class="chart3">
@@ -18,13 +25,20 @@
             <div class="text-font">{{arrTitle[2] }}</div>
             <img src="@/assets/images/screen/dataScreen-title.png" alt="">
         </div>
+        <div class="chartbox">
+        <radarChart />
+        </div>
 
   </div>
 </template>
   
 <script setup lang='ts'>
+import scatterChart from './scatterChart.vue';
+import radarChart from './radarChart.vue';
+import rankChart from './rankChart.vue';
 import { reactive } from "vue";
 let arrTitle=reactive(['热门景区排行','年游客量对比','游客消费统计']);
+// let arrTitle=reactive(['','','']);
 
 
 </script>
@@ -47,27 +61,37 @@ let arrTitle=reactive(['热门景区排行','年游客量对比','游客消费�
 .chart1 {
   height: 40%;
   background: url('@/assets/images/screen/dataScreen-main-lb.png') no-repeat;
-  @include chart-bg;
   .text-font{
     padding-top: 12px !important;
   }
+
 }
 
 .chart2 {
   height: 30%;
   background: url('@/assets/images/screen/dataScreen-main-cb.png') no-repeat;
-  @include chart-bg;
 }
 
 .chart3 {
   height: 30%;
   background: url('@/assets/images/screen/dataScreen-main-cb.png') no-repeat;
-  @include chart-bg;
 }
 
-.title{
+div[class^='chart']{
+  @include chart-bg;
+  display: flex;
+  flex-direction: column;
+  .chartbox{
+    flex-grow: 1;
+  }
+
+  .title{
   .text-font{
     @include text-font;
   }
 }
+}
+
+
+
 </style>

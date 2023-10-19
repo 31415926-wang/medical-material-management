@@ -17,7 +17,9 @@ onMounted(() => {
             data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
             //内容区在该轴两侧不留白
             boundaryGap: false,
-
+            axisTick:{
+                    alignWithLabel:true  //在折线图或散点图中对齐会更合理
+                   },
         },
         yAxis: {
             type: 'value',
