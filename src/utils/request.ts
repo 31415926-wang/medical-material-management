@@ -2,7 +2,6 @@ import axios from "axios";
 import { ElMessage } from 'element-plus'
 import useUserStore from "@/store/modules/user";
 
- 
 const service = axios.create({
     baseURL: import.meta.env.VITE_APP_BASE_API,
     timeout: 120000
@@ -11,10 +10,9 @@ const service = axios.create({
 //使用请求拦截器(英文倒过来)
 service.interceptors.request.use((config) => {
 
-
     const userStore = useUserStore();
     if (userStore.token) {
-        config.headers.token = userStore.token;
+        config.headers.Authorization = userStore.token;
     }
 
     return config;
@@ -22,19 +20,19 @@ service.interceptors.request.use((config) => {
 
 service.interceptors.response.use((response) => {
     //如果返回的不是200，是其它特殊状态码，个性化显示
-    if (response.data.code == 200) {
-        console.log("请求响应1", response);
+    if (response.data.success == true) { //其实就是200
+        // console.log("请求响应1", response);
         return response.data
     }
     else {
         console.log("请求响应2", response);
         ElMessage({
             type: 'error',
-            message: response?.data?.data?.message || 'error'
+            message: response?.data?.data?.errorMsg || 'error'
         })
 
         // 401（未授权）或者403（禁止访问），具体的状态码可能会根据后端的实现而有所不同
-        if (response.data.code == 401 || response.data.code == 403) {
+        if (response.data.data.errorCode == 50001 || response.data.data.errorCode == 50002) {
            //若是token过期或者没有携带，清空token、用户信息，然后重新加载页面（间接实现了记住路由路径）
         const userStore = useUserStore();
         userStore.resetUserData();

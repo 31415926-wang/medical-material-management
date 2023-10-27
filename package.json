@@ -25,7 +25,9 @@
     "pinia-plugin-persistedstate": "^3.2.0",
     "vue": "^3.3.4",
     "vue-count-to": "^1.0.13",
-    "vue-router": "^4.2.4"
+    "vue-puzzle-vcode": "^1.1.10",
+    "vue-router": "^4.2.4",
+    "vue3-puzzle-vcode": "^1.0.16"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.9",

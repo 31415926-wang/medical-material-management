@@ -1,19 +1,17 @@
 import request from '@/utils/request'
-import type {loginFrom,loginResponse,userInfoResponse} from '@/types/api/user.api'
+import type {loginFrom,loginResponse,userInfoResponse} from '@/types/api/user'
 enum Urls {
-    // Login_url='/user/login', //模拟的
-    Login_url='/admin/acl/index/login',
-    UserInfo_url='/admin/acl/index/info', 
-    // UserInfo_url='/user/info', 
-    LoginOut_url='/admin/acl/index/logout',
+    Login_url='/system/user/login',
+    UserInfo_url='/system/user/info', 
+    // LoginOut_url='/system/user/logout',
 }  
- 
+  
 export const reqLogin = (data:loginFrom) => {
     return request<any,loginResponse>({
         url: Urls.Login_url,
         method: 'post', 
         data
-    })
+    }) 
 } 
 
 export const reqUserInfo = () => {
@@ -23,12 +21,12 @@ export const reqUserInfo = () => {
     })
 }
 
-export const reqLoginOut = () => {
-    return request<any,any>({
-        url: Urls.LoginOut_url,
-        method: 'post',
-    })
-}
+// export const reqLoginOut = () => {
+//     return request<any,any>({
+//         url: Urls.LoginOut_url,
+//         method: 'post',
+//     })
+// }
 
 
 

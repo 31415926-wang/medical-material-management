@@ -39,7 +39,7 @@ let env = loadEnv(mode, process.cwd());
         },
       },
     },
-    server:{
+    server:{ 
       proxy:{
         [env.VITE_APP_BASE_API]:{
           target:env.VITE_SERVE,

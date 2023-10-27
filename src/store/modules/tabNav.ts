@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { constantRoute } from "@/router/routes";
-import type { clickedRoute } from '@/types/store/tabNav.store'
+import type { clickedRoute } from '@/types/store/tabNav'
  
 const useTabNavStore = defineStore('tabNavStore', {
     state: () => {

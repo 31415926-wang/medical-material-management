@@ -51,7 +51,7 @@ const predefineColors = ref([
 ])
 
 const themeChange = () => {
-    console.log("颜色改变", TabNavStore.globalTheme);
+    // console.log("颜色改变", TabNavStore.globalTheme);
     //点击清空themeColor.value为null，会按框架默认的主颜色（特殊）
     document.documentElement.style.setProperty('--el-color-primary', TabNavStore.globalTheme)
 
@@ -59,8 +59,7 @@ const themeChange = () => {
 
 const darkModeChange = () => {
     // TabNavStore.globalDarkMode =true;
-
-    console.log("模式切换");
+    // console.log("模式切换");
     let rootDom = document.documentElement
     if (TabNavStore.globalDarkMode) {
         rootDom.classList.contains('dark') ? '' : rootDom.classList.add('dark');

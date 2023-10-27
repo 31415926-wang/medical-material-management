@@ -21,6 +21,7 @@ import 'virtual:svg-icons-register'
 //获取应用实例对象
 const app = createApp(App)
 
+//汉化
 app.use(ElementPlus, {
     locale: zhCn
 })

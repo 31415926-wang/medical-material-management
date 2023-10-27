@@ -22,8 +22,8 @@ export const constantRoute = [
     {
         path: '/:catchAll(.*)',
         redirect: '/404',
-        meta:{
-            hidden:true
+        meta: {
+            hidden: true
         }
     },
     {
@@ -40,99 +40,65 @@ export const constantRoute = [
                 meta: {
                     title: '首页',
                     icon: 'HomeFilled',
-                    affix:true   //开启粘滞tab切片
+                    affix: true   //开启粘滞tab切片
                 }
             }
         ]
     },
 
     {
-        path:'/screen',
-        component:()=> import('@/page/screen/index.vue'),
+        path: '/screen',
+        component: () => import('@/page/screen/index.vue'),
         meta: {
             title: '数据大屏',
             icon: 'DataAnalysis',
         }
-    },  
-
-
-
-
-    // //测试菜单路由
-    // //三级测试
-    // {
-    //     path: '/test1',
-    //     component: () => import('@/page/test/index.vue'),
-    //     meta: {
-    //         title: 'test1',
-    //         icon: 'Connection'
-    //     }
-    // },
-    {
-        path: '/test2',
-        component: Layout,
-        redirect: '/test2/test22',
-        meta: {
-            title: 'test2',
-            icon: 'Connection'
-        },
-        children: [{
-            path: 'test22',
-            component: () => import('@/page/test/index.vue'),
-            meta: {
-                title: 'test22',
-                icon: 'Discount'
-            }
-        }]
     },
-    // {
-    //     path: '/test3',
-    //     component: Layout,
-    //     meta: {
-    //         title: 'test3',
-    //         icon: 'Setting'
-    //     },
-    //     redirect: '/test3/test3-1/test3-1-1',
-    //     children: [
-    //         {
-    //             path: 'test3-1',
-    //             component: () => import('@/page/home/index.vue'),
-    //             meta: {
-    //                 title: 'test3-1',
-    //                 icon: 'ChatDotRound'
-    //             },
-    //             redirect: '/test3/test3-1/test3-1-1',
-    //             children: [
-    //                 {
-    //                     path: 'test3-1-1',
-    //                     component: () => import('@/page/test/index.vue'),
-    //                     meta: {
-    //                         title: 'test3-1-1',
-    //                         icon: 'Position'
-    //                     }
-    //                 },
-    //                 {
-    //                     path: 'test3-1-2',
-    //                     component: () => import('@/page/home/index.vue'),
-    //                     meta: {
-    //                         title: 'test3-1-2',
-    //                         icon: 'Discount'
-    //                     }
-    //                 },
-    //                 {
-    //                     path: 'test3-1-3',
-    //                     component: () => import('@/page/home/index.vue'),
-    //                     meta: {
-    //                         title: 'test3-1-3',
-    //                         icon: 'Discount'
-    //                     }
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // },
 
 
+    //系统管理
+    {
+        path: '/authority',
+        component: Layout,
+        meta: {
+            title: '权限管理',
+            icon: 'Setting'
+        },
+        children: [
+            {
+                path: 'menu',
+                component: () => import('@/page/authority/menu/index.vue'),
+                meta: {
+                    title: '菜单管理',
+                    icon: 'Grid'
+                },
+            }, 
+            {
+                path: 'role',
+                component: () => import('@/page/authority/role/index.vue'),
+                meta: {
+                    title: '角色管理',
+                    icon: 'Stamp'
+                },
+            },
+            {
+                path: 'user',
+                component: () => import('@/page/authority/user/index.vue'),
+                meta: {
+                    title: '用户管理',
+                    icon: 'UserFilled'
+                },
+            },
+            {
+                path: 'department',
+                component: () => import('@/page/authority/department/index.vue'),
+                meta: {
+                    title: '部门管理',
+                    icon: 'Refrigerator'
+                },
+            }
+        ]
+    }
 
 ]
 
