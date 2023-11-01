@@ -6,3 +6,6 @@ export default function (tableVm: any, option: object) {
         tableVm.value.hookCrudObject.crudInit(option);
     })
 }
+
+
+

@@ -13,10 +13,10 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 //存放不同模式下需要自适应的样式变量
 import '@/style/theme.css'
-
 //使用svg图标步骤 
 import 'virtual:svg-icons-register'
-
+//引入自定义的loading方法
+import loadingObj from '@/utils/elLoading'
 
 //获取应用实例对象
 const app = createApp(App)
@@ -32,6 +32,10 @@ globalComponents(app);
 
 //引入路由拦截器/路由鉴权
 import './permission'
+
+//全局属性、方法的设置，代替vue2的挂载原型
+app.provide('loading',loadingObj)
+
 
 //挂载到节点
 app.mount('#app')

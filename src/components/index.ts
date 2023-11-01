@@ -1,9 +1,9 @@
 //全局组件入口
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import SvgIcon from '@/components/SvgIcon/index.vue'
-import CustomTable from '@/components/Crud/CustomTable.vue'
+import CrudTable from '@/components/Crud/CrudTable.vue'
 
-const allGlobalComponents :any={ SvgIcon,CustomTable}
+const allGlobalComponents :any={ SvgIcon,CrudTable}
 //暴露自定义方法，接收app，定义全局组件
 export default  (app:any)=>{
         //全局注册el-icon，entries拆分对象为数组，元素为[键,值]，再解构赋值

@@ -96,6 +96,14 @@ export const constantRoute = [
                     title: '部门管理',
                     icon: 'Refrigerator'
                 },
+            },
+            {
+                path: 'test',
+                component: () => import('@/page/test/index.vue'),
+                meta: {
+                    title: '测试页面',
+                    icon: 'Refrigerator'
+                },
             }
         ]
     }

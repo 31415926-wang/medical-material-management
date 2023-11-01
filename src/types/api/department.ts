@@ -3,7 +3,8 @@ import type { responseBody,searchParam} from './index.ts'
 
 //列表\查询
 export interface depSearchParam  extends searchParam{
-    name?:string
+    name?:string,
+    [key: string]: any
 }
 
 export interface depList extends responseBody{

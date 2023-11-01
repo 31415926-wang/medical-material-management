@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { reqLogin, reqUserInfo } from '@/api/user'
 import { constantRoute } from '@/router/routes'
-import { ElMessage } from 'element-plus'
 import { ElNotification } from 'element-plus'
 import { getTimeState } from "@/utils/hourRegion";
 import { loginFrom, loginResponse, userInfo, userInfoResponse } from "@/types/api/user";
+import Tip from '@/utils/elMessageTip'
+
 
 const useUserStore = defineStore('User', {
     state: () => {
@@ -60,10 +61,7 @@ const useUserStore = defineStore('User', {
                 })
 
             } catch (error) {
-                ElMessage({
-                    type: 'error',
-                    message: '获取用户信息失败'
-                })
+                Tip('error','获取用户信息失败')
             }
         },
         async loginOut() {//是否需要保存路由地址，以供登录后跳转
@@ -73,10 +71,8 @@ const useUserStore = defineStore('User', {
                 this.resetUserData();
                 return 'Ok'; //告诉页面可以请求退出登录成功，可以重定向到login了，因为不需要记住路径，不考虑原地加载页面
             } catch (error) {
-                ElMessage({
-                    type: 'error',
-                    message: '退出登录失败'
-                })
+                Tip('error','退出登录失败')
+
             }
         },
         resetUserData() {

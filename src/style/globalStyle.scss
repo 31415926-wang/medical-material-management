@@ -1,5 +1,8 @@
 //清除默认样式
 @import '@/style/restcss.scss';
+//element-ui的默认样式修改
+@import '@/style/element.scss';
+
 html,body,#app{
     height: 100%;
 }
@@ -22,14 +25,5 @@ html,body,#app{
   align-items: center;  
 }
 
-
-//el-message提示字体
-.el-message{
-    font-size: 2.6rem !important;
-    top: 8% !important;
-}
-.el-message__content{
-    font-size: 1.3rem !important;
-}
 
 

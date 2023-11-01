@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ElMessage } from 'element-plus'
 import useUserStore from "@/store/modules/user";
+import Tip from '@/utils/elMessageTip'
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -49,23 +50,24 @@ service.interceptors.response.use((response) => {
     //当在请求接口的时候有处理失败的回调，弹出框会以那边的为主（因为弹出框时间一致，覆盖显示）
     //在此失败都是接口没有返回内容的情况，通过错误对象的响应状态码，尽可能的告诉用户原因
     let msg = '';
-    switch (error.response.status) {
-        case 404:
-            msg = '请求路径出错'
-            break;
-        case 500:
-            msg = '服务器出错'
-            break;
-
-        default:
-            msg = '网络出现问题'
-            break;
+    if (error.code=="ERR_NETWORK") {
+        msg = '网络出现问题'
+    }else{
+        switch (error.response.status) {
+            case 404:
+                msg = '请求路径出错'
+                break;
+            case 500:
+                msg = '服务器出错'
+                break;
+    
+            default:
+                msg = '请求出现问题'
+                break;
+        }
     }
 
-    ElMessage({
-        type: 'error',
-        message: msg,
-    })
+    Tip('error',msg);
 
     return Promise.reject(error)
 })
