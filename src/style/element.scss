@@ -1,15 +1,22 @@
 //el-message提示字体
 .el-message{
-    font-size: 2.6rem !important;
+    font-size: 2.3rem !important;
     top: 8% !important;
 }
 .el-message__content{
-    font-size: 1.3rem !important;
+    font-size: 1.1rem !important;
 }
+
 
 //el-table
 .el-table__header th {
     background: var(--el-fill-color-light) !important;
+  }
+
+
+//全选框
+  .el-checkbox{
+    height: var(--el-checkbox-height,24px) !important;
   }
 
 

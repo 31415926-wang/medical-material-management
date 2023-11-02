@@ -14,7 +14,8 @@ export interface crudInfo {
             getList: null | Function,
             addItem: null | Function,
             updateItem: null | Function,
-            deleteItem: null | Function
+            deleteItem: null | Function,
+            exportTable?:null | Function
         },
         resultData: resultData
     }

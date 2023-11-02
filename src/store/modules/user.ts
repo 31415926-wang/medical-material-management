@@ -2,13 +2,13 @@ import { defineStore } from 'pinia'
 import { reqLogin, reqUserInfo } from '@/api/user'
 import { constantRoute } from '@/router/routes'
 import { ElNotification } from 'element-plus'
-import { getTimeState } from "@/utils/hourRegion";
+import { getTimeState } from "@/utils";
 import { loginFrom, loginResponse, userInfo, userInfoResponse } from "@/types/api/user";
 import Tip from '@/utils/elMessageTip'
-
+ 
 
 const useUserStore = defineStore('User', {
-    state: () => {
+    state: () => { 
         return {
             userInfo: <userInfo>{},
             // token: get_tokens(),

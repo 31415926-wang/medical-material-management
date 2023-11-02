@@ -5,6 +5,8 @@ enum Urls {
     add_url = '/system/department/add',
     update_url = '/system/department/update',
     delete_url = '/system/department/delete',
+    export_url = '/system/department/excel',
+    
 }
 
 //列表/查询
@@ -15,6 +17,16 @@ export const getList = (params: depSearchParam) => {
         params
     })
 }
+
+//导出表格
+export const exportTable= () => {
+    return request<any, any>({
+        url: Urls.export_url,
+        method: 'post',
+        responseType: "blob"
+    })
+}
+
 
 //增
 export const addItem = (data:depAddOrUpateItem) => {
@@ -47,7 +59,8 @@ export default {
     getList,
     addItem,
     updateItem,
-    deleteItem
+    deleteItem,
+    exportTable
 }
 
 

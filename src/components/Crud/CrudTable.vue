@@ -22,7 +22,7 @@
     <div class="toolSection">
         <div class="batchBox">
             <el-button type="primary" icon="Plus">新增</el-button>
-            <el-button type="success" icon="Download">导出</el-button>
+            <el-button type="success" icon="Download" @click="hookCrudObject.handleExportTable">导出</el-button>
         </div>
 
         <div class="middleBox"></div>
@@ -33,11 +33,21 @@
                 <el-button plain type="info" icon="Search" @click="searchStatus = !searchStatus" />
                 <el-button plain icon="Refresh" @click="hookCrudObject.getData" />
 
-                <el-popover placement="bottom" title="Title" :width="200" trigger="click"
-                    content="this is content, this is content, this is content">
+                <el-popover placement="bottom" title="" :width="100" trigger="click">
                     <template #reference>
                         <el-button plain icon="Grid" />
                     </template>
+                    <template #default>
+                        <el-checkbox v-model="checkAllCol" :indeterminate="isIndeterminate"
+                            @change="handleCheckAllChange">全选</el-checkbox>
+                        <el-checkbox-group class="checkboxGroup" v-model="checkedCol"
+                            @change="handleCheckedCitiesChange">
+                            <el-checkbox v-for="city in colList" :key="city" :label="city">{{
+                                city
+                            }}</el-checkbox>
+                        </el-checkbox-group>
+                    </template>
+
                 </el-popover>
 
             </el-button-group>
@@ -62,7 +72,7 @@
 import hookCrud from '@/hook/crud/index'
 import { reactive, nextTick, onMounted, ref, useSlots, useAttrs } from 'vue';
 import { arrSearchBuilds } from '@/types/common/Crud/searchSection'
-import { resetObj } from '@/utils/commonMethod'
+import { resetObj } from '@/utils'
 let hookCrudObject = hookCrud();
 
 //获取默认插槽
@@ -127,14 +137,45 @@ const getSearchItem = () => {
         //存一份给crudInfo的查询参数，默认值' 
         hookCrudObject.searchParam.value[prop] = '';
         arrSearch.push(objItem)
-
     });
 }
 
 
+//全选功能
+const checkAllCol = ref(false)
+const isIndeterminate = ref(true)
+const checkedCol = ref([] as string[])
+const colList = reactive([] as string[])
+const handleCheckAllChange = (val: boolean) => {
+    checkedCol.value = val ? colList : []
+    isIndeterminate.value = false
+}
+const handleCheckedCitiesChange = (value: string[]) => {
+    const checkedCount = value.length
+    checkAllCol.value = checkedCount === colList.length
+    isIndeterminate.value = checkedCount > 0 && checkedCount < colList.length
+}
+
+const initControlCol=()=>{
+    defaultSlot.forEach((item: any, index: number) => {
+        if (item.type.name != 'ElTableColumn' || !item.props.label) {
+            return
+        }
+        checkedCol.value.push(item.props.label); //默认全选
+        colList.push(item.props.label);
+    });
+
+}
+
 
 nextTick(() => {
+    console.log("1实验",slots);
+    console.log("2实验",defaultSlot);
+    console.log("3实验",document.querySelector('.tableSection'));
+    
+    
     getSearchItem();
+    initControlCol();
 })
 
 </script>
@@ -158,4 +199,10 @@ div[class$="Section"],
         flex-grow: 1;
     }
 }
+
+.checkboxGroup{
+    display: flex;
+    flex-direction: column;
+}
 </style>
+@/utils

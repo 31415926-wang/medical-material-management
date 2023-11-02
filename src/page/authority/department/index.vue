@@ -1,7 +1,7 @@
 <template>
     <CrudTable ref="CrudTableRef">
 
-        <!-- <el-table-column type="selection" width="55" /> -->
+        <el-table-column id="test" type="selection" width="55" />
         <el-table-column type="index" label="序号" />
         <el-table-column min-width="3" prop="phone" label="办公电话"></el-table-column>
         <el-table-column min-width="2" prop="name" label="部门名" :hasSearch="true"></el-table-column>

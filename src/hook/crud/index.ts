@@ -1,9 +1,9 @@
 import { onMounted, ref, reactive, toRefs, computed, nextTick } from 'vue'
 import { merge } from "lodash";
-import { crudInfo, resultData } from '@/types/common/Crud/pagination'
+import { crudInfo, resultData } from '@/types/common/Crud'
 import loadingObj from '@/utils/elLoading'
-import {filterEmptyProp} from '@/utils/commonMethod'
-
+import { filterEmptyProp, handleExportFile } from '@/utils'
+import Tip from '@/utils/elMessageTip'
 export default function () {
 
 
@@ -15,13 +15,14 @@ export default function () {
                 page: 1,
                 size: 10,
             },
-            searchParam:{
+            searchParam: {
             },
             apiMethod: {
                 getList: null,
                 addItem: null,
                 updateItem: null,
-                deleteItem: null
+                deleteItem: null,
+                exportTable: null
             },
             resultData: <resultData>{}
         }
@@ -56,7 +57,7 @@ export default function () {
         },
         set(val) {
             //对象类型的计算属性，这里永远不会被调用
-            console.log("设置searchParam",val);
+            console.log("设置searchParam", val);
         }
     })
 
@@ -73,12 +74,12 @@ export default function () {
     }
 
     const getData = async () => {
-        let { apiMethod, pagination,searchParam } = crudInfo.option;
+        let { apiMethod, pagination, searchParam } = crudInfo.option;
         loadingObj.openLoading(document.querySelector(".tableSection") as HTMLElement);
         //可以在请求前将空的查询参数过滤掉，已防后台报错
-        let newSearchParam=filterEmptyProp(searchParam)
+        let newSearchParam = filterEmptyProp(searchParam)
         // console.log("过滤空参数",newSearchParam);
-        
+
         try {
             let result = await apiMethod.getList!({
                 pageNum: pagination.page,
@@ -91,14 +92,21 @@ export default function () {
 
         }
         loadingObj.closeLoading();
-
-
     }
+
+    //处理表格导出
+    const handleExportTable =async () => {
+        let tableExcelBlod =await crudInfo.option.apiMethod.exportTable!();
+        handleExportFile(tableExcelBlod,crudInfo.option.title);
+        Tip('success','导出表格成功!');
+    }
+
 
     // 返回对象给页面接收后调用
     return {
         crudInfo,
         crudInit,
+        handleExportTable,
         tableData,
         total,
         page,
