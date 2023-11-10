@@ -16,7 +16,7 @@ import '@/style/theme.css'
 //使用svg图标步骤 
 import 'virtual:svg-icons-register'
 //引入自定义的loading方法
-import loadingObj from '@/utils/elLoading'
+import loadingObj from '@/utils/element/elLoading'
 
 //获取应用实例对象
 const app = createApp(App)

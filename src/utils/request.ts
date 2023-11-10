@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ElMessage } from 'element-plus'
 import useUserStore from "@/store/modules/user";
-import Tip from '@/utils/elMessageTip'
+import Tip from '@/utils/element/elMessageTip'
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -47,9 +47,9 @@ service.interceptors.response.use((response) => {
             location.reload();   //页面重载
         }
 
-
         return Promise.reject(new Error('error'))
     }
+
 
 }, (error) => {
     //通过打印，能发现确实后台没有返回时，也会有响应的状态码

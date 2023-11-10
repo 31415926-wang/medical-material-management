@@ -4,7 +4,7 @@ import { constantRoute } from '@/router/routes'
 import { ElNotification } from 'element-plus'
 import { getTimeState } from "@/utils";
 import { loginFrom, loginResponse, userInfo, userInfoResponse } from "@/types/api/user";
-import Tip from '@/utils/elMessageTip'
+import Tip from '@/utils/element/elMessageTip'
  
 
 const useUserStore = defineStore('User', {

@@ -33,36 +33,31 @@ import footerLogo from './footerLogo/index.vue'
 import useUserStore from "@/store/modules/user";
 import useLayoutSettingStore from '@/store/modules/layoutSetting'
 import tabbar from './tabbar/index.vue'
-import { throttle } from "lodash";
 import { useRoute } from "vue-router";
+import windowSizeChange from '@/hook/comman/resize'
 
 let $route = useRoute();
 let userStore = useUserStore();
 let layoutSettingStore = useLayoutSettingStore();
 
 
-const foldFn = throttle(() => {
-    // console.log("尺寸变化");
+//尺寸变化时，全局方法传入回调，折叠菜单
+const handleSizeChange = () => {
+    // console.log("尺寸变化-布局");
     let clientWidth = document.body.clientWidth;
     if (!layoutSettingStore.fold && clientWidth < 1200) { //屏幕尺寸小于1200的时候，若是还展开着，则折叠
         layoutSettingStore.changeFold();
     }
     if (layoutSettingStore.fold && clientWidth >= 1200) {
         layoutSettingStore.changeFold();
-    }
-}, 500)
-// 监听窗口大小变化，折叠侧边栏
-window.addEventListener('resize', foldFn)
+    } 
+}
+let resize = windowSizeChange(handleSizeChange);
 
-//销毁组件时将监听销毁
-onBeforeUnmount(() => {
-    window.removeEventListener('resize', foldFn);
-})
  
 
 //过滤隐藏的菜单，考虑hidden可能存在多个位置
 import cloneDeep from 'lodash/cloneDeep'
-import { onBeforeUnmount } from "vue";
 const filterMenu = (arr: any) => {
     return arr.filter((item: any) => {
         if (item.children) {

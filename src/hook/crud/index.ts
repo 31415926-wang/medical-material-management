@@ -1,9 +1,13 @@
 import { onMounted, ref, reactive, toRefs, computed, nextTick } from 'vue'
 import { merge } from "lodash";
 import { crudInfo, resultData } from '@/types/common/Crud'
-import loadingObj from '@/utils/elLoading'
+import loadingObj from '@/utils/element/elLoading'
 import { filterEmptyProp, handleExportFile } from '@/utils'
-import Tip from '@/utils/elMessageTip'
+import Tip from '@/utils/element/elMessageTip'
+import Confirm from '@/utils/element/elMessageBox'
+import { tableCol } from "@/types/common/Crud/index"
+import $bus from '@/bus'
+
 export default function () {
 
 
@@ -22,11 +26,15 @@ export default function () {
                 addItem: null,
                 updateItem: null,
                 deleteItem: null,
-                exportTable: null
+                exportTable: null,
+                batchDelete: null
             },
+            selectedItems: [],
             resultData: <resultData>{}
         }
     });
+    //存储表格的初始化列信息
+    let tableCols = ref([] as tableCol[]);
 
     //计算属性需要被页面引用内容才会调
     let tableData = computed(() => {
@@ -61,12 +69,27 @@ export default function () {
         }
     })
 
-
-
     // 方法：初始化传入的基本配置
-    const crudInit = (passOption: object) => {
+    const crudInit = (passOption: object, tableColsParam: tableCol[]) => {
         //解决多层对象时，相同属性被直接覆盖的情况。引入新的问题，丢失响应式，需给realtive对象多加一层
         crudInfo.option = merge({}, crudInfo.option, passOption)
+
+        tableCols.value = tableColsParam;
+        tableCols.value.forEach((item) => {
+            //给每个列对象添加自定义属性，show，用与控制列
+            if (item.show == undefined) {
+                item.show = true //直接追加属性
+            }
+            //顺便同步一份查询属性名到crudInfo查询参数,默认值''
+            if (item.searchType) {
+                crudInfo.option.searchParam[item.prop] = ''
+            }
+        })
+
+        //确保上面tableCols完整，才能拿给列操作去处理，并且需要响应式
+        $bus.emit('initSelectedCol');
+
+
         nextTick(() => {//里面有获取DOM
             getData();
         })
@@ -94,17 +117,54 @@ export default function () {
         loadingObj.closeLoading();
     }
 
-    //处理表格导出
-    const handleExportTable =async () => {
-        let tableExcelBlod =await crudInfo.option.apiMethod.exportTable!();
-        handleExportFile(tableExcelBlod,crudInfo.option.title);
-        Tip('success','导出表格成功!');
+    //删除的回调
+    const deleteRow = async (id: number, isBatch = false) => {
+        let { apiMethod, selectedItems } = crudInfo.option;
+        //判断有没有选中项
+        if (isBatch) {
+            if (selectedItems.length == 0) {
+                Tip('warning', '其至少选中一项');
+                return;
+            }
+
+            Confirm('删除', async () => {
+                //调批量的接口
+                let ids: Number[] = [];
+                selectedItems.forEach((item, index) => {
+                    ids.push(item.id);
+                })
+                await apiMethod.batchDelete!(ids);
+                getData();
+                Tip('info', '删除成功！')
+            }, () => {
+            });
+
+        } else {
+            await apiMethod.deleteItem!(id)
+            Tip('success', '删除成功！');
+            getData();
+
+        }
+
+
     }
+
+    //处理表格导出
+    const handleExportTable = async () => {
+        let tableExcelBlod = await crudInfo.option.apiMethod.exportTable!();
+        handleExportFile(tableExcelBlod, crudInfo.option.title);
+        Tip('success', '导出表格成功!');
+    }
+
+
+  
+
 
 
     // 返回对象给页面接收后调用
     return {
         crudInfo,
+        tableCols,
         crudInit,
         handleExportTable,
         tableData,
@@ -112,7 +172,8 @@ export default function () {
         page,
         size,
         getData,
-        searchParam
+        searchParam,
+        deleteRow
     }
 }
 
