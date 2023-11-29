@@ -2,18 +2,23 @@
     <!-- 查询
     需要参数：查询字段，查询的标签、输入框类型
     -->
-    <div class="searchSection" v-show="Object.keys(hookCrudObject.searchParam).length > 0 && searchStatus">
-        <Search :hookCrudObjectParam="hookCrudObject"></Search>
+    <div class="searchSection" v-show="(Object.keys(hookCrudObject.searchParam.value).length > 0) && searchStatus">
+        <Search :hookCrudObjectParam="hookCrudObject">
+            <template #default="{scope}">
+                <slot name="search-custom" :scope="scope"></slot>
+            </template>
+        </Search>
     </div>
 
     <!-- 批量、导出、新增 -->
     <div class="toolSection">
-        <div class="batchBox">
+        <div>
             <el-button type="primary" icon="Plus" @click="handleAdd">新增</el-button>
             <!-- 自定义添加批量操作的功能 -->
             <slot name="batchSlot">
             </slot>
             <el-button type="danger" icon="Delete" v-show="needBatch"
+                :disabled="hookCrudObject.crudInfo.option.selectedItems?.length == 0"
                 @click="hookCrudObject.deleteRow(0, true)">删除</el-button>
             <el-button type="success" icon="Download" @click="hookCrudObject.handleExportTable">导出</el-button>
         </div>
@@ -33,7 +38,7 @@
         :highlight-current-row="isHighlightRow" @selection-change="handleSelectionChange">
 
         <el-table-column type="selection" width="55" v-if="needBatch" />
-        <el-table-column type="index" label="序号" />
+        <el-table-column type="index" label="序号" width="55" />
 
         <template v-for="(item, index) in hookCrudObject.tableCols.value" :key="index">
             <el-table-column :label="item.label" :prop="item.prop" :min-width="item.width ? item.width : 0"
@@ -46,11 +51,15 @@
             </el-table-column>
         </template>
 
-        <el-table-column fixed="right" label="操作" width="200">
+        <el-table-column v-if="needOperate" fixed="right" label="操作" :width="operateWidth">
             <template #default="scope">
                 <div style="padding: 10px 0;">
+                    <!-- 嵌入其它操作按钮 -->
+                    <slot name="operateExpand" :rowInfo="scope.row"></slot>
+
                     <el-button v-if="!closeViewDetail" type="info" class="mini" icon="View"
                         @click="handleViewDetail(scope.row)"></el-button>
+
                     <el-button type="warning" class="mini" icon="EditPen" @click="handleEditor(scope.row)"></el-button>
 
                     <Popover type="danger" class="mini" icon="Delete" title="删除"
@@ -69,30 +78,33 @@
         :hookCrudObjectParam="hookCrudObject"></Pagination>
 
 
+
     <!-- 弹出框 -->
     <!-- 详细:默认有，自定义写插槽即可 -->
-    <Dialog  ref="detailForm" title="详细" v-if="!closeViewDetail" :rowInfo="rowInfo" :tableCols="hookCrudObject.tableCols">
+    <Dialog ref="detailForm" :width="dialogWidths.detail" :title="hookCrudObject.title.value + '详细'" v-if="!closeViewDetail"
+        :rowInfo="rowInfo" :tableCols="hookCrudObject.tableCols">
         <slot name="detailForm" :rowInfo="rowInfo">
         </slot>
     </Dialog>
 
     <!-- 新增：直接写表单项，但是处理回调需在总组件传 -->
-    <Dialog ref="addForm" title="新增" :needSubmit="true" >
+    <Dialog ref="addForm" :width="dialogWidths.add" :title="hookCrudObject.title.value + '新增'" :needSubmit="true"
+        @submitFn="handleSubmit" @handleCloseBefore="closeBeforeFn" @handleOpenBefore="$emit('openBefore')">
         <slot name="addForm" :formInfo="formInfo"></slot>
     </Dialog>
 
     <!-- 编辑：直接写表单项，但是处理回调需在总组件传 -->
-    <Dialog ref="editorForm" title="编辑" :needSubmit="true">
+    <Dialog ref="editorForm" :width="dialogWidths.editor" :title="hookCrudObject.title.value + '编辑'" :needSubmit="true"
+        @submitFn="handleSubmit" @handleCloseBefore="closeBeforeFn" @handleOpenBefore="$emit('openBefore')">
         <slot name="editorForm" :formInfo="formInfo"></slot>
     </Dialog>
-
 </template>
 
 
  
 <script setup lang='ts'>
 import hookCrud from '@/hook/crud/index'
-import { ref, onMounted, nextTick } from 'vue';
+import { ref } from 'vue';
 import Popover from './Popover.vue'
 import Pagination from './Pagination.vue'
 import ToolGroup from './ToolGroup.vue'
@@ -100,7 +112,7 @@ import Search from './Search.vue'
 import Dialog from './Dialog.vue'
 
 
-defineProps({
+let $prop = defineProps({
     size: {
         type: String,
         default: 'default'
@@ -117,12 +129,40 @@ defineProps({
         type: Boolean,
         default: false
     },
+    needOperate: {
+        type: Boolean,
+        default: false
+    },
     closeViewDetail: {
         type: Boolean,
         default: false
     },
+    //弹出框的大小，默认新增、修改适配一列表单项的，而详细框两列
+    dialogWidths: {
+        type: Object,
+        default: {
+            add: '20%',
+            editor: '20%',
+            detail: '34%'
+        }
+    },
+    operateWidth: {
+        type: Number,
+        default: 220
+    },
+    addCheckForm: {
+        type: Object,
+        default: {}
+    },
+    editorCheckForm: {
+        type: Object,
+        default: {}
+    }
 
 })
+
+
+let $emit = defineEmits(['openBefore']);
 
 
 let hookCrudObject = hookCrud();
@@ -132,12 +172,18 @@ let hookCrudObject = hookCrud();
 let searchStatus = ref(true)
 
 let rowInfo = ref({});//点击单行的信息存储
-let formInfo = ref({});//弹框填写表单
+let formInfo = ref({} as any);//弹框填写表单
 
 //ref获取实例
 let detailForm = ref();
 let addForm = ref();
 let editorForm = ref();
+
+
+//可能出现弹出框表单校验
+let nowFormType = ref(''); //表示当前是弹出框的类型，新增还是编辑框。
+// let addCheckForm = ref();
+// let editorCheckForm = ref();
 
 //行的多选处理
 const handleSelectionChange = (val: any) => {
@@ -153,19 +199,74 @@ const handleViewDetail = ((row: any) => {
 //点击新增
 const handleAdd = () => {
     addForm.value.dialogVisible = true;
-    
+    formInfo.value = {};
+    nowFormType.value = 'add';
 }
 
 //点击编辑
 const handleEditor = (row: any) => {
     editorForm.value.dialogVisible = true;
-    formInfo.value= { ...row }
+    formInfo.value = { ...row };
+    nowFormType.value = 'editor';
 }
 
 
+const beforeSubmit = () => {
+
+    let type = nowFormType.value;
+    let refGoal: string = type == 'add' ? 'addCheckForm' : 'editorCheckForm';
+
+    //判断是否有弹出框校验表单
+    if ((type == 'add' && $prop.addCheckForm) || (type == 'editor' && $prop.editorCheckForm)) {
+        // console.log("有校验");
+        // @ts-ignore
+        return $prop[refGoal].validate((valid: any) => {
+            // console.log("校验结果", valid);
+            if (!valid) {
+                throw 'error'
+            }
+        })
+
+    } else {
+        // console.log("无校验");
+        return Promise.resolve("Success")
+    }
+
+}
+
+const handleSubmit = (callback: any) => {
+
+    //校验表单
+    beforeSubmit().then(async () => {
+        // console.log("beforeSubmit通过 / 没有校验");
+        //调接口
+        try {
+            let resultMsg = await hookCrudObject.addOrUpdate((formInfo.value.id ? 1 : 0), formInfo.value);
+            callback(true)
+        } catch (error) {
+            callback(false)
+        }
+    }).catch(() => {
+        // console.log("beforeSubmit不通过");
+        callback(false)
+    })
+
+}
+
+const closeBeforeFn = () => {
+    let type = nowFormType.value;
+    let refGoal: string = type == 'add' ? 'addCheckForm' : 'editorCheckForm';
+    //判断是否有弹出框校验表单
+    if ((type == 'add' && $prop.addCheckForm) || (type == 'editor' && $prop.editorCheckForm)) {
+        // @ts-ignore
+        $prop[refGoal].resetFields()
+    }
+}
+
 
 defineExpose({
-    hookCrudObject
+    hookCrudObject,
+    nowFormType
 })
 
 

@@ -1,5 +1,5 @@
 <template>
-  <el-icon @click="changeExpandStatus" style="margin-right: 20px;">
+  <el-icon @click="changeExpandStatus" style="margin-right: 20px;cursor: pointer;">
     <component :is="!layoutSettingStore.fold?'Fold' :'Expand'"></component>
   </el-icon>
 

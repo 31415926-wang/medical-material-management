@@ -9,9 +9,11 @@ export function resetObj(paramObj: any){
 
 //过滤掉对象的属性值为''的属性，返回一个新对象
 export function filterEmptyProp(paramObj: any) {
+    
     let newObj: any = {};
     for (var key in paramObj) {
-        if (paramObj[key] != '' && paramObj[key] != null) {
+        
+        if (paramObj[key] !== '' && paramObj[key] !== null) { //不全等会有0==null
             newObj[key] = paramObj[key];
         }
     }
@@ -56,9 +58,40 @@ export const getTimeState = () => {
 };
 
 
+
+//处理elment-ui图标，转换为element-plush的命名
+export const handleIcon = (iconStr: string) => {
+    if (iconStr) {
+        let resultIconArr = iconStr.split('');
+        //找出需要大写的索引
+        let indexsToUP = [0]
+        resultIconArr.forEach((item, index) => {
+            if (item == '-') {
+                indexsToUP.push(index + 1)
+            }
+        })
+        indexsToUP.forEach((item, index) => {
+            resultIconArr[item] = resultIconArr[item].toUpperCase();
+        })
+
+        let resultStr = resultIconArr.join(',').replaceAll(',', '')
+        resultStr = resultStr.replaceAll('El-Icon-', '')
+
+        if (resultStr.indexOf('-') == -1) {
+            return resultStr;
+        }else{//否则去除最长的那个
+            return resultStr.split('-')[0].length > resultStr.split('-')[1].length ?  resultStr.split('-')[0] : resultStr.split('-')[1]
+        }
+
+
+    }
+
+}
+
 export default {
     filterEmptyProp,
     resetObj,
     getTimeState,
-    handleExportFile
+    handleExportFile,
+    handleIcon
 }

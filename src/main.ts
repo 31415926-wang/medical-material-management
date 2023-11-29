@@ -25,6 +25,9 @@ const app = createApp(App)
 app.use(ElementPlus, {
     locale: zhCn
 })
+// 基于断点的隐藏类
+import 'element-plus/theme-chalk/display.css'
+
 app.use(router);
 app.use(pinia);
 // app.use(plugins);

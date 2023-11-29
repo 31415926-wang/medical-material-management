@@ -1,5 +1,5 @@
 <template>
-    <CrudTable ref="CrudTableRef" :needBatch="true">
+    <CrudTable ref="CrudTableRef" :needOperate="true" :addCheckForm="addCheckForm" :editorCheckForm="editorCheckForm">
 
         <!-- 自定义的列 -->
         <template v-slot:totalCol="{ scope }">
@@ -7,27 +7,40 @@
         </template>
 
         <!-- 新增弹框 -->
-        <template v-slot:addForm="">
-          2222
+        <template v-slot:addForm="{ formInfo }">
+            <el-form ref="addCheckForm" :inline="false" :model="formInfo" label-width="80px" :rules="rules">
+                <el-form-item label="部门名称" prop="name">
+                    <el-input v-model="formInfo.name"  placeholder="请输入部门名称"/>
+                </el-form-item>
+                <el-form-item label="办公电话" prop="phone">
+                    <el-input v-model="formInfo.phone"  placeholder="请输入办公电话"/>
+                </el-form-item>
+                <el-form-item label="办公地址" prop="address">
+                    <el-input v-model="formInfo.address"  placeholder="请输入办公地址"/>
+                </el-form-item>
+            </el-form>
         </template>
 
         <!-- 编辑框 -->
         <template v-slot:editorForm="{ formInfo }">
-            <el-form :inline="false" :model="formInfo" label-width="100px" style="text-align: center;">
-                <el-form-item label="部门名称" >
-                    <el-input v-model="formInfo.id" />
+            <el-form ref="editorCheckForm" :inline="false" :model="formInfo" label-width="80px" :rules="rules">
+                <el-form-item label="部门名称" prop="name">
+                    <el-input v-model="formInfo.name"  placeholder="请输入部门名称"/>
                 </el-form-item>
-                <el-form-item label="办公电话" >
-                    <el-input v-model="formInfo.phone" />
+                <el-form-item label="办公电话" prop="phone">
+                    <el-input v-model="formInfo.phone"  placeholder="请输入办公电话"/>
                 </el-form-item>
-                <el-form-item label="办公地址" >
-                    <el-input v-model="formInfo.address" />
+                <el-form-item label="办公地址" prop="address">
+                    <el-input v-model="formInfo.address"  placeholder="请输入办公地址"/>
                 </el-form-item>
             </el-form>
-        </template> 
+        </template>
 
 
     </CrudTable>
+
+
+
 </template>
 
 <script setup lang='ts'>
@@ -35,6 +48,11 @@ import { ref, reactive, computed } from 'vue'
 import depApiMethod from '@/api/department/index';
 import initCrud from '@/hook/crud/initCrud'
 import { tableCol } from "@/types/common/Crud/index"
+import {rulesValidatePhone,rulesValidateEmail } from '@/utils/validate'
+
+
+let addCheckForm = ref();
+let editorCheckForm = ref();
 
 
 let CrudTableRef = ref();
@@ -77,14 +95,24 @@ let tableCols = reactive([
 
 initCrud(CrudTableRef, {
     title: '部门',
-    pagination: {
-        size: 20,
-    },
     apiMethod: depApiMethod
 },
     tableCols
 );
 
+
+//@ts-ignore
+const rules = reactive<FormRules<RuleForm>>({
+    name: [
+        { required: true, message: '请输入部门名称', trigger: 'blur' },
+    ],
+    phone: [
+        { required: true, message: '请输入办公电话', trigger: 'blur' },
+        { validator: rulesValidatePhone, trigger: 'blur' }],
+    address: [
+        { required: true, message: '请输入办公地址', trigger: 'blur' },
+        { min: 3, max: 10, message: '最小长度3-10', trigger: 'blur' }],
+})
 
 
 </script>

@@ -12,7 +12,10 @@ export interface depList extends responseBody{
         total: number,
         rows:depListItem[]
     }
-}
+} 
+export interface depListAll extends responseBody{
+    data:depListItem[]
+} 
 
 export interface depListItem{
     id: number,
@@ -27,6 +30,7 @@ export interface depListItem{
 
 //添加
 export interface depAddOrUpateItem{
+    id?:number,
     address: string,
     name : string,
     phone: number
@@ -35,6 +39,11 @@ export interface depAddOrUpateItem{
 export interface depOperateResponse extends responseBody{
     data:null
 }
+
+
+
+
+
 
 
 

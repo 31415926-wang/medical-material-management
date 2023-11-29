@@ -1,13 +1,52 @@
 <template>
-    <span  v-for="(item, index) in arr" :key="index">{{item }}{{index}}</span>
+    测试页面
+    <br>
+    <br>
+    <el-transfer
+    v-model="value"
+    filterable
+    :filter-method="filterMethod"
+    filter-placeholder="State Abbreviations"
+    :data="data"
+  />
 </template>
   
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 
-let arr = ref({ a: 1111 ,b:222})
+interface Option {
+  key: number
+  label: string
+  initial: string
+}
 
+const generateData = () => {
+  const data: Option[] = []
+  const states = [
+    'California',
+    'Illinois',
+    'Maryland',
+    'Texas',
+    'Florida',
+    'Colorado',
+    'Connecticut ',
+  ]
+  const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT']
+  states.forEach((city, index) => {
+    data.push({
+      label: city,
+      key: index,
+      initial: initials[index],
+    })
+  })
+  return data
+}
 
+const data = ref<Option[]>(generateData())
+const value = ref([])
 
+const filterMethod = (query:any, item:any) => {
+  return item.initial.toLowerCase().includes(query.toLowerCase())
+}
 </script>
 

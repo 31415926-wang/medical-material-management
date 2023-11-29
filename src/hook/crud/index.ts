@@ -35,6 +35,9 @@ export default function () {
     });
     //存储表格的初始化列信息
     let tableCols = ref([] as tableCol[]);
+    let title = computed(() => {
+        return crudInfo.option.title;
+    })
 
     //计算属性需要被页面引用内容才会调
     let tableData = computed(() => {
@@ -70,7 +73,7 @@ export default function () {
     })
 
     // 方法：初始化传入的基本配置
-    const crudInit = (passOption: object, tableColsParam: tableCol[]) => {
+    const crudInit = (passOption: object, tableColsParam: tableCol[],getDataAfter?:Function) => {
         //解决多层对象时，相同属性被直接覆盖的情况。引入新的问题，丢失响应式，需给realtive对象多加一层
         crudInfo.option = merge({}, crudInfo.option, passOption)
 
@@ -91,7 +94,15 @@ export default function () {
 
 
         nextTick(() => {//里面有获取DOM
-            getData();
+            getData().then(()=>{
+                console.log("获取数据成功");
+             //处理表格格式，若需要追加属性的话
+                if (getDataAfter) {
+                    getDataAfter(crudInfo.option.resultData);
+                }
+            })
+
+
         })
 
     }
@@ -99,7 +110,7 @@ export default function () {
     const getData = async () => {
         let { apiMethod, pagination, searchParam } = crudInfo.option;
         loadingObj.openLoading(document.querySelector(".tableSection") as HTMLElement);
-        //可以在请求前将空的查询参数过滤掉，已防后台报错
+        //可以在请求前将空的查询参数过滤掉，以防后台报错
         let newSearchParam = filterEmptyProp(searchParam)
         // console.log("过滤空参数",newSearchParam);
 
@@ -112,9 +123,30 @@ export default function () {
             crudInfo.option.resultData = result.data;
             console.log("请求的分页列表", result.data);
         } catch (error) {
-
+            throw new Error("请求分页失败");
         }
         loadingObj.closeLoading();
+    }
+
+    enum operateType {
+        add = 0,
+        update = 1
+    }
+
+    const addOrUpdate = async (type: number, obj: Object) => { //0增加、1修改
+        let { apiMethod } = crudInfo.option;
+        try {
+            let method = (type == operateType.add) ? 'addItem' : 'updateItem';
+            //@ts-ignore
+            await apiMethod[method](obj);
+            Tip('success', '操作成功');
+            getData();
+            return true;
+        } catch(e) {
+            return Promise.reject(e);
+        }
+
+
     }
 
     //删除的回调
@@ -145,9 +177,10 @@ export default function () {
             getData();
 
         }
-
-
     }
+
+
+
 
     //处理表格导出
     const handleExportTable = async () => {
@@ -157,7 +190,7 @@ export default function () {
     }
 
 
-  
+
 
 
 
@@ -173,7 +206,9 @@ export default function () {
         size,
         getData,
         searchParam,
-        deleteRow
+        deleteRow,
+        addOrUpdate,
+        title
     }
 }
 

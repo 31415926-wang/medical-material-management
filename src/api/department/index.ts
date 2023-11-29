@@ -1,12 +1,12 @@
 import request from '@/utils/request'
-import type { depSearchParam, depList, depAddOrUpateItem,depOperateResponse } from '@/types/api/department'
+import type { depListAll,depSearchParam, depList, depAddOrUpateItem,depOperateResponse } from '@/types/api/department'
 enum Urls {
     list_url = '/system/department/findDepartmentList',
     add_url = '/system/department/add',
     update_url = '/system/department/update',
     delete_url = '/system/department/delete',
     export_url = '/system/department/excel',
-    
+    listAll_url = '/system/department/findAll',
 }
 
 //列表/查询
@@ -15,6 +15,12 @@ export const getList = (params: depSearchParam) => {
         url: Urls.list_url,
         method: 'get',
         params
+    })
+}
+export const getListAll = () => {
+    return request<any, depListAll>({
+        url: Urls.listAll_url,
+        method: 'get',
     })
 }
 
@@ -37,9 +43,9 @@ export const addItem = (data:depAddOrUpateItem) => {
 }
 
 //改
-export const updateItem = (id:number, data:depAddOrUpateItem) => {
+export const updateItem = (data:depAddOrUpateItem) => {
     return request<any, depOperateResponse>({
-        url: Urls.update_url+'/'+id,
+        url: Urls.update_url+'/'+data.id,
         method: 'put',
         data
     })
@@ -59,9 +65,8 @@ export default {
     addItem,
     updateItem,
     deleteItem,
-    exportTable
+    exportTable,
+    getListAll
 }
-
-
 
 
