@@ -8,7 +8,7 @@
             </el-button-group>
         </div>
         <h3 class="titleRow">菜单权限树</h3>
-        <el-tree ref="treeRef" :data="treeData" :props="defaultProps" :default-expanded-keys="treeExpandedArr"
+        <el-tree ref="treeRef" :data="treeData" :props="defaultProps" node-key="id" :default-expanded-keys="treeExpandedArr"
             :filter-node-method="filterNode" highlight-current>
             <template #default="{ node, data }">
                 <div class="custom-tree-node">
@@ -91,7 +91,7 @@
 
 
 <script setup lang='ts'>
-import { onMounted, ref, watch, reactive } from 'vue'
+import { onMounted, ref, watch, reactive, onUnmounted, getCurrentInstance } from 'vue'
 import { ElTree } from 'element-plus'
 import menuApiMethod from '@/api/menu';
 import Tip from '@/utils/element/elMessageTip'
@@ -137,9 +137,8 @@ const handleGetTree = () => {
         console.log("菜单数据", result.data);
         treeExpandedArr.value = result.data.open;
         treeData.value = result.data.tree;
-        //@ts-ignore
-        treeRef.value.updateKeyChildren(null, treeData.value);
         LoadingTool.closeLoading();
+
     }).catch(() => {
         LoadingTool.closeLoading();
     })
@@ -196,17 +195,17 @@ const appendOrEditoNode = (type: paramType, nodeData?: treeItem) => {
     switch (type) {
         case paramType.appendOneLevel:
             menuDialogTitle.value = '添加一级节点';
-            menuDialogForm.value.parentId=0; //一级父节点为0
+            menuDialogForm.value.parentId = 0; //一级父节点为0
             break;
         case paramType.appendNode:
             menuDialogTitle.value = `添加节点: 当前<span class="dialogTitle">[${nodeData!.menuName}]</span>`;
-            menuDialogForm.value.parentId=nodeData?.id; //新增节点的父节点
-            
+            menuDialogForm.value.parentId = nodeData?.id; //新增节点的父节点
+
             break;
         case paramType.editorNode:
             menuDialogTitle.value = `编辑节点: <span class="dialogTitle">[${nodeData!.menuName}]</span>`;
-            console.log("编辑行对象",nodeData);
-            menuDialogForm.value=nodeData;
+            console.log("编辑行对象", nodeData);
+            menuDialogForm.value = {...nodeData};
             break;
     }
 }
@@ -224,24 +223,33 @@ const handleCloseBefore = () => {
     menuDialogVisible.value = false;
 
 }
+
 const menuHandleSumit = () => {
     menuDialogCheck.value.validate().then(() => {
         menuLoadingStatus.value = true;
         // console.log("提交的表单",menuDialogForm.value);
         let prop = menuDialogForm.value.id ? 'updateItem' : 'addMenuItem';
         // @ts-ignore
-        menuApiMethod[prop](menuDialogForm.value).then(()=>{
-        Tip("success",'提交成功！');
-        handleCloseBefore();
-        menuLoadingStatus.value = false;
-        handleGetTree();
-        }).catch(()=>{
-        menuLoadingStatus.value = false;
+        menuApiMethod[prop](menuDialogForm.value).then(() => {
+            Tip("success", '提交成功！');
+            handleCloseBefore();
+            menuLoadingStatus.value = false;
+            handleGetTree();
+        }).catch(() => {
+            menuLoadingStatus.value = false;
         })
 
     })
 
 }
+
+
+onUnmounted(() => {
+    console.log("页面组件销毁");
+})
+
+
+
 
 
 </script>
