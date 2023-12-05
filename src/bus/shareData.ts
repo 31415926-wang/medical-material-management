@@ -13,6 +13,19 @@ export const SEX_OPTIONS = [
     }
 ]
 
+//菜单节点类型
+export const MENUTYPE_OPTIONS = [
+    {
+        value:0,
+        label:'菜单'
+    },
+    {
+        value:1,
+        label:'按钮'
+    }
+]
+
+
 
 //根据value寻找label
 export function GetLabel(goalValue:any,goalArr:any){

@@ -61,7 +61,8 @@ export const getTimeState = () => {
 
 //处理elment-ui图标，转换为element-plush的命名
 export const handleIcon = (iconStr: string) => {
-    if (iconStr) {
+
+    if (iconStr && iconStr.includes('el') ) {
         let resultIconArr = iconStr.split('');
         //找出需要大写的索引
         let indexsToUP = [0]
@@ -82,9 +83,11 @@ export const handleIcon = (iconStr: string) => {
         }else{//否则去除最长的那个
             return resultStr.split('-')[0].length > resultStr.split('-')[1].length ?  resultStr.split('-')[0] : resultStr.split('-')[1]
         }
-
-
+    } else {
+        return ''
     }
+
+    
 
 }
 

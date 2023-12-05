@@ -16,7 +16,7 @@ export interface userList extends responseBody {
 }
 
 //获取单个用户分配权限情况
-interface role {
+export interface role {
     disabled:boolean
     key:number
     label:string

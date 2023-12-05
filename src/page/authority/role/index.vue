@@ -48,7 +48,7 @@
                 <template #default="{ node, data }">
                     <span class="custom-tree-node">
                         <span><el-icon style="margin-right:7px ;">
-                                <component :is="handleIcon(data.icon)" />
+                                <component  v-if="handleIcon(data.icon) != ''" :is="handleIcon(data.icon)" />
                             </el-icon>{{ node.label }}</span>
                     </span>
                 </template>

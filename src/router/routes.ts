@@ -69,18 +69,11 @@ export const constantRoute = [
                 path: 'menu',
                 component: () => import('@/page/authority/menu/index.vue'),
                 meta: {
-                    title: '菜单管理',
+                    title: '菜单权限',
                     icon: 'Grid'
                 },
             }, 
-            {
-                path: 'role',
-                component: () => import('@/page/authority/role/index.vue'),
-                meta: {
-                    title: '角色管理',
-                    icon: 'Stamp'
-                },
-            },
+        
             {
                 path: 'user',
                 component: () => import('@/page/authority/user/index.vue'),
@@ -95,6 +88,14 @@ export const constantRoute = [
                 meta: {
                     title: '部门管理',
                     icon: 'Refrigerator'
+                },
+            },
+            {
+                path: 'role',
+                component: () => import('@/page/authority/role/index.vue'),
+                meta: {
+                    title: '角色管理',
+                    icon: 'Stamp'
                 },
             },
             {

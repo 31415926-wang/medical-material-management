@@ -2,13 +2,17 @@
     测试页面
     <br>
     <br>
+
+
     <el-transfer
-    v-model="value"
-    filterable
-    :filter-method="filterMethod"
-    filter-placeholder="State Abbreviations"
+    v-model="transferSelected"
     :data="data"
+    filterable
+    filter-placeholder="请输入搜索内容"
+    :titles="['可分配角色列表', '已选中的角色列表']"
+      :button-texts="['移除角色', '添加角色']"
   />
+
 </template>
   
 <script lang="ts" setup>
@@ -17,7 +21,6 @@ import { ref } from 'vue'
 interface Option {
   key: number
   label: string
-  initial: string
 }
 
 const generateData = () => {
@@ -31,22 +34,18 @@ const generateData = () => {
     'Colorado',
     'Connecticut ',
   ]
-  const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT']
   states.forEach((city, index) => {
     data.push({
       label: city,
       key: index,
-      initial: initials[index],
     })
   })
   return data
 }
 
 const data = ref<Option[]>(generateData())
-const value = ref([])
+const transferSelected = ref([])
 
-const filterMethod = (query:any, item:any) => {
-  return item.initial.toLowerCase().includes(query.toLowerCase())
-}
+
 </script>
 

@@ -2,7 +2,6 @@
 /* 用户管理接口 */
 
 import request from '@/utils/request'
-// import type { authInfoResponse,userSearchParam,userListItem,userAddOrUpateItem,userOperateResponse}  from "@/types/api/user"
 import type { userList, userSearchParam ,userAddOrUpateItem ,userOperateResponse,userRolesCaseResponse}  from "@/types/api/userManage"
 
 enum Urls {

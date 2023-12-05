@@ -10,7 +10,7 @@ import $bus from '@/bus'
 
 export default function () {
 
-
+ 
     // 数据：配置信息+接口数据
     let crudInfo = reactive<crudInfo>({
         option: {

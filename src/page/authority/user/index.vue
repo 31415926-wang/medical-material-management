@@ -1,6 +1,6 @@
 <template>
-    <CrudTable ref="CrudTableRef" @openBefore="handleopenBefore" :operateWidth="260"  :needOperate="true" :addCheckForm="addCheckForm"
-        :editorCheckForm="editorCheckForm" :dialogWidths="{
+    <CrudTable ref="CrudTableRef" @openBefore="handleopenBefore" :operateWidth="260" :needOperate="true"
+        :addCheckForm="addCheckForm" :editorCheckForm="editorCheckForm" :dialogWidths="{
             add: '34%',
             editor: '34%',
             detail: '34%'
@@ -9,7 +9,7 @@
         <!-- 自定义添加查询内容 -->
         <template #search-custom="{ scope }">
             <br>
-            <el-form-item label="部门" >
+            <el-form-item label="部门">
                 <el-select v-model="scope.searchParam.departmentId" clearable placeholder="请选择部门">
                     <el-option v-for="item in departmentList" :key="Number(item.id)" :label="item.name"
                         :value="Number(item.id)">
@@ -19,7 +19,7 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item label="性别" >
+            <el-form-item label="性别">
                 <el-radio-group v-model="scope.searchParam.sex">
                     <el-radio :label="1" size="large" style="padding-bottom: 3px;">男</el-radio>
                     <el-radio :label="0" size="large" style="padding-bottom: 3px;">女</el-radio>
@@ -42,7 +42,7 @@
         </template>
 
         <!--自定义行拓展功能 -->
-        <template #operateExpand="{rowInfo}">
+        <template #operateExpand="{ rowInfo }">
             <el-tooltip content="分配角色" placement="top" effect="dark">
                 <el-button icon="Setting" type="success" @click="openSetDialog(rowInfo)"></el-button>
             </el-tooltip>
@@ -193,7 +193,14 @@
     <!-- 分配角色弹框-->
     <el-dialog v-model="dialogSetShow" title="分配角色" :before-close="handleSetCloseBefore">
         <div class="custom-scrollbar dialog-container">
-            
+            <el-transfer
+                v-model="transferSelected"
+                :data="optionList"
+                filterable
+                filter-placeholder="请输入搜索内容"
+                :titles="['可分配角色列表', '已选中的角色列表']"
+                :button-texts="['移除角色', '添加角色']"
+             />
         </div>
         <template #footer>
             <el-button icon="CloseBold" @click="handleSetCloseBefore">
@@ -202,8 +209,6 @@
             <el-button type="primary" icon="Setting" :loading="loadingSetStatus" @click="handleSetSumit">确定分配</el-button>
         </template>
     </el-dialog>
-
-
 </template>
 
 <script setup lang='ts'>
@@ -215,8 +220,9 @@ import { tableCol } from "@/types/common/Crud/index"
 import { depListItem } from '@/types/api/department'
 import { SEX_OPTIONS, GetLabel } from "@/bus/shareData"
 import Tip from '@/utils/element/elMessageTip'
-import { userListItem } from "@/types/api/userManage"
+import { userListItem, role } from "@/types/api/userManage"
 import { rulesValidatePhone, rulesValidateEmail } from '@/utils/validate'
+import LoadingTool from "@/utils/element/elLoading"
 
 
 let addCheckForm = ref();
@@ -355,36 +361,49 @@ const handleopenBefore = () => {
 }
 
 //分配角色弹框
-let dialogSetShow=ref(false);
+let dialogSetShow = ref(false);
 let loadingSetStatus = ref(false);
+let setId=ref<number>();//存储选中行的id
+const transferSelected = ref<number[]>([]); // 已选中的角色
+const optionList = ref<role[]>([]); // 可选的角色
 
-const openSetDialog =(row:userListItem)=>{
-    dialogSetShow.value=true;
+
+const openSetDialog = (row: userListItem) => {
+    dialogSetShow.value = true;
+    setId.value=row.id; 
+    LoadingTool.openLoading(document.querySelector('.dialog-container') as HTMLElement);
     //获取该用户分配的数据情况
-    userApiMethod.getUserRolesCase(row.id).then((result)=>{
-        console.log("获取分配信息情况",result.data);
-
-    }).catch(()=>{})
-
+    userApiMethod.getUserRolesCase(setId.value).then((result) => {
+        console.log("获取分配信息情况", result.data);
+        transferSelected.value = result.data.values;
+        optionList.value = result.data.roles;
+        LoadingTool.closeLoading();
+    }).catch(() => {
+        LoadingTool.closeLoading();
+        Tip('success', '获取分配角色列表失败');
+     })
 }
 
 const handleSetCloseBefore = () => {
     dialogSetShow.value = false;
+    transferSelected.value = <number[]>[];
+    optionList.value = <role[]>[];
 }
+
 const handleSetSumit = async () => {
     loadingSetStatus.value = true
-    // roleApiMethod.setAuthInfo(treeData.id, selectedNodes).then(() => {
-    //     setLoadingStatus.value = false
-    //     handleSetCloseBefore();
-    //     Tip('success', '分配权限成功');
-    // }).catch(() => {
-    //     authLoadingStatus.value = false
-    // })
+    userApiMethod.assignRoles(<number>setId.value, transferSelected.value).then(() => {
+        loadingSetStatus.value = false
+        handleSetCloseBefore();
+        Tip('success', '分配角色成功');
+    }).catch(() => {
+        loadingSetStatus.value = false
+    })
 
 }
 
 
-onMounted(()=>{
+onMounted(() => {
     // 查询需要下拉框
     handleopenBefore();
 })

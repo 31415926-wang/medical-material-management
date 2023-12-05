@@ -1,5 +1,5 @@
 <template>
-    <div class="main_box">
+    <div class="main_box custom-scrollbar">
             <router-view v-if="showRouterView">
             </router-view>
     </div>
