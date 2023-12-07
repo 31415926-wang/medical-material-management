@@ -11,17 +11,26 @@
             $emit('handle')">确定</el-button>
         </div>
         <template #reference>
-            <el-button v-bind="useAttrs()" @click="visiblePopover = true"></el-button>
+            <el-button v-if="operate" v-bind="useAttrs()" @click="visiblePopover = true">{{operate}}</el-button>
+            <el-button v-else v-bind="useAttrs()" @click="visiblePopover = true"></el-button>
         </template>
     </el-popover>
 </template>
-
+ 
 <script setup lang='ts'>
 import {  ref, useAttrs } from 'vue';
 
 let $emit = defineEmits(['handle'])
-let props =defineProps(['title'])
-
+let props =defineProps({
+    title:{
+        type:String,
+    },
+    operate:{
+        type:String,
+        default:''
+    }
+})
+    
 
 let visiblePopover = ref(false)
 

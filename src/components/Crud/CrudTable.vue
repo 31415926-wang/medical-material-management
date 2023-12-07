@@ -4,7 +4,7 @@
     -->
     <div class="searchSection" v-show="(Object.keys(hookCrudObject.searchParam.value).length > 0) && searchStatus">
         <Search :hookCrudObjectParam="hookCrudObject">
-            <template #default="{scope}">
+            <template #default="{ scope }">
                 <slot name="search-custom" :scope="scope"></slot>
             </template>
         </Search>
@@ -57,14 +57,34 @@
                     <!-- 嵌入其它操作按钮 -->
                     <slot name="operateExpand" :rowInfo="scope.row"></slot>
 
-                    <el-button v-if="!closeViewDetail" type="info" class="mini" icon="View"
-                        @click="handleViewDetail(scope.row)"></el-button>
+                    <!-- 是否使用传统的按钮样式及功能 -->
+                    <span v-show="">
+                    <!-- 图标操作按钮、还是文字操作按钮 -->
+                        <span v-if="operateButtonType == 'iconType'">
+                            <el-button v-if="!closeViewDetail" type="info" class="mini" icon="View"
+                                @click="handleViewDetail(scope.row)"></el-button>
 
-                    <el-button type="warning" class="mini" icon="EditPen" @click="handleEditor(scope.row)"></el-button>
+                            <el-button type="warning" class="mini" icon="EditPen"
+                                @click="handleEditor(scope.row)"></el-button>
 
-                    <Popover type="danger" class="mini" icon="Delete" title="删除"
-                        @handle="hookCrudObject.deleteRow(scope.row.id)">
-                    </Popover>
+                            <Popover type="danger" class="mini" icon="Delete" title="删除"
+                                @handle="hookCrudObject.deleteRow(scope.row.id)">
+                            </Popover>
+                        </span>
+
+                        <span v-else-if="operateButtonType == 'textType'">
+                            <el-button v-if="!closeViewDetail" text type='primary' class="mini" icon="View"
+                                @click="handleViewDetail(scope.row)">详细</el-button>
+
+                            <el-button text type='primary' class="mini" icon="EditPen"
+                                @click="handleEditor(scope.row)">编辑</el-button>
+
+                            <Popover type='primary' text icon="Delete" class="mini" title="删除" operate="删除"
+                                @handle="hookCrudObject.deleteRow(scope.row.id)">
+                            </Popover>
+                        </span>
+                    </span>
+
                 </div>
             </template>
         </el-table-column>
@@ -149,6 +169,10 @@ let $prop = defineProps({
     operateWidth: {
         type: Number,
         default: 220
+    },
+    operateButtonType: { //操作图标的表现形式
+        type: String,
+        default: 'iconType'
     },
     addCheckForm: {
         type: Object,

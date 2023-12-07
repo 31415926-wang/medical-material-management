@@ -66,12 +66,14 @@
 <script setup lang='ts'>
 import { ref, reactive } from 'vue'
 import initCrud from '@/hook/crud/initCrud'
-import roleApiMethod from '@/api/role/index';
+import roleApiMethod from '@/api/authority/role/index';
 import { tableCol } from "@/types/common/Crud/index"
-import { treeItemInfo, roleListItem } from "@/types/api/role"
+import { treeItemInfo, roleListItem } from "@/types/api/authority/role"
 import Tip from '@/utils/element/elMessageTip'
 import LoadingTool from "@/utils/element/elLoading"
 import {handleIcon} from '@/utils/index'
+
+
 
 let addCheckForm = ref();
 let editorCheckForm = ref();

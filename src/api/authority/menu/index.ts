@@ -1,6 +1,6 @@
 //菜单管理接口
 import request from '@/utils/request'
-import type { getMenuTreeResponse,operateResponse,treeItem} from "@/types/api/menu"
+import type { getMenuTreeResponse,operateResponse,treeItem} from "@/types/api/authority/menu"
 
 enum Urls {
     list_url = '/system/menu/tree',

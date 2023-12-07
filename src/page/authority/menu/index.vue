@@ -91,14 +91,14 @@
 
 
 <script setup lang='ts'>
-import { onMounted, ref, watch, reactive, onUnmounted, getCurrentInstance } from 'vue'
+import { onMounted, ref, watch, reactive, onUnmounted } from 'vue'
 import { ElTree } from 'element-plus'
-import menuApiMethod from '@/api/menu';
+import menuApiMethod from '@/api/authority/menu';
 import Tip from '@/utils/element/elMessageTip'
 import LoadingTool from "@/utils/element/elLoading"
 import { handleExportFile } from '@/utils'
 import { handleIcon } from '@/utils/index'
-import { treeItem } from '@/types/api/menu'
+import { treeItem } from '@/types/api/authority/menu'
 import Confirm from '@/utils/element/elMessageBox'
 import { MENUTYPE_OPTIONS } from '@/bus/shareData'
 

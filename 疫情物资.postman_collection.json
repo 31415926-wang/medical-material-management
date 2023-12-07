@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "0139dbca-efbc-4bec-8f4a-c547feeef54f",
+		"name": "疫情物资",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30877336"
+	},
+	"item": [
+		{
+			"name": "部门",
+			"item": [
+				{
+					"name": "部门列表",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTk0NTk0MjgsInVzZXJuYW1lIjoiYWRtaW4ifQ.IbZSl5a9mUm2WMN62gObIyp-9Z65dvqfWeC4Z4FCQS0",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://www.localhost:8989/system/department/findDepartmentList?pageNum=1&pageSize=10",
+							"protocol": "http",
+							"host": [
+								"www",
+								"localhost"
+							],
+							"port": "8989",
+							"path": [
+								"system",
+								"department",
+								"findDepartmentList"
+							],
+							"query": [
+								{
+									"key": "pageNum",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "name",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "修改部门",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTgzMjMwMTMsInVzZXJuYW1lIjoiYWRtaW4ifQ.4xPprL6He3gA5ilwpWh5Td10rHShoH6kG82d1N5Zic4",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"IT部测试11\", \r\n    \"phone\": \"15975112233\",\r\n    \"address\": \"深圳宝安区112\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://www.localhost:8989/system/department/update/17",
+							"protocol": "http",
+							"host": [
+								"www",
+								"localhost"
+							],
+							"port": "8989",
+							"path": [
+								"system",
+								"department",
+								"update",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除部门",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTkwMTcyODksInVzZXJuYW1lIjoiYWRtaW4ifQ.XsIMORsEj6E5x_BU00U_cT-nIS9aUvp7U5Svnf9Ph9k",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://www.localhost:8989/system/department/delete/18",
+							"protocol": "http",
+							"host": [
+								"www",
+								"localhost"
+							],
+							"port": "8989",
+							"path": [
+								"system",
+								"department",
+								"delete",
+								"18"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "用户管理",
+			"item": [
+				{
+					"name": "新增",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "登录",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://www.localhost:8989/system/user/login",
+					"protocol": "http",
+					"host": [
+						"www",
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"system",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取用户信息",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTgyMzY0OTksInVzZXJuYW1lIjoiYWRtaW4ifQ.QKXQibltmQ9Le689wVHB7ErlEOJeYUUTtWrlPzYQ2pk",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://www.localhost:8989/system/user/info",
+					"protocol": "http",
+					"host": [
+						"www",
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"system",
+						"user",
+						"info"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

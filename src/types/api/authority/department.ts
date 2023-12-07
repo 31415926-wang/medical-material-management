@@ -1,4 +1,4 @@
-import type { responseBody,searchParam} from './index.ts'
+import type { responseBody,searchParam} from '../index'
 
 
 //列表\查询
@@ -27,7 +27,7 @@ export interface depListItem{
     total: number
 }
 
-
+ 
 //添加
 export interface depAddOrUpateItem{
     id?:number,

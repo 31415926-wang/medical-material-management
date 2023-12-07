@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { depListAll,depSearchParam, depList, depAddOrUpateItem,depOperateResponse } from '@/types/api/department'
+import type { depListAll,depSearchParam, depList, depAddOrUpateItem,depOperateResponse } from '@/types/api/authority/department'
 enum Urls {
     list_url = '/system/department/findDepartmentList',
     add_url = '/system/department/add',
@@ -8,7 +8,7 @@ enum Urls {
     export_url = '/system/department/excel',
     listAll_url = '/system/department/findAll',
 }
-
+ 
 //列表/查询
 export const getList = (params: depSearchParam) => {
     return request<any, depList>({

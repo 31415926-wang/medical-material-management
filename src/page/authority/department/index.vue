@@ -45,7 +45,7 @@
 
 <script setup lang='ts'>
 import { ref, reactive, computed } from 'vue'
-import depApiMethod from '@/api/department/index';
+import depApiMethod from '@/api/authority/department/index';
 import initCrud from '@/hook/crud/initCrud'
 import { tableCol } from "@/types/common/Crud/index"
 import {rulesValidatePhone,rulesValidateEmail } from '@/utils/validate'

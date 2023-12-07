@@ -2,7 +2,7 @@
 /* 用户管理接口 */
 
 import request from '@/utils/request'
-import type { userList, userSearchParam ,userAddOrUpateItem ,userOperateResponse,userRolesCaseResponse}  from "@/types/api/userManage"
+import type { userList, userSearchParam ,userAddOrUpateItem ,userOperateResponse,userRolesCaseResponse}  from "@/types/api/authority/userManage"
 
 enum Urls {
     list_url = '/system/user/findUserList',
@@ -13,7 +13,6 @@ enum Urls {
     isBan_url = '/system/user/updateStatus',
 }
 
-
 //列表/查询
 export const getList = (params: userSearchParam) => {
     return request<any, userList>({
@@ -22,7 +21,6 @@ export const getList = (params: userSearchParam) => {
         params
     })
 }
-
 
 //导出表格
 export const exportTable= () => {

@@ -25,6 +25,21 @@ export const MENUTYPE_OPTIONS = [
     }
 ]
 
+//物资状态
+export const GOODSTATUS_OPTIONS = [
+    {
+        value:0,
+        label:'正常'
+    },
+    {
+        value:1,
+        label:'回收站'
+    },
+    {
+        value:2,
+        label:'待审核'
+    }
+]
 
 
 //根据value寻找label

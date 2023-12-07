@@ -214,15 +214,17 @@
 <script setup lang='ts'>
 import { ref, reactive, onMounted } from 'vue'
 import initCrud from '@/hook/crud/initCrud'
-import userApiMethod from '@/api/userManage/index';
-import departApiMethod from '@/api/department/index';
+import userApiMethod from '@/api/authority/userManage/index';
+import departApiMethod from '@/api/authority/department/index';
 import { tableCol } from "@/types/common/Crud/index"
-import { depListItem } from '@/types/api/department'
+import { depListItem } from '@/types/api/authority/department'
 import { SEX_OPTIONS, GetLabel } from "@/bus/shareData"
 import Tip from '@/utils/element/elMessageTip'
-import { userListItem, role } from "@/types/api/userManage"
+import { userListItem, role } from "@/types/api/authority/userManage"
 import { rulesValidatePhone, rulesValidateEmail } from '@/utils/validate'
 import LoadingTool from "@/utils/element/elLoading"
+
+
 
 
 let addCheckForm = ref();

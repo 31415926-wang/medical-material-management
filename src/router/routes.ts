@@ -97,17 +97,65 @@ export const constantRoute = [
                     title: '角色管理',
                     icon: 'Stamp'
                 },
-            },
-            {
-                path: 'test',
-                component: () => import('@/page/test/index.vue'),
-                meta: {
-                    title: '测试页面',
-                    icon: 'Refrigerator'
-                },
             }
         ]
+    },
+
+    {
+        path:'/goods',
+        component:Layout,
+        meta:{
+            title:'物资管理',
+            icon:'Collection'
+        },
+        children:[
+            {
+                path:'info',
+                component:()=>import('@/page/goods/info/index.vue'),
+                meta:{
+                    title:'物资资料',
+                    icon:'CreditCard'
+                }
+            },
+            {
+                path:'source',
+                component:()=>import('@/page/goods/source/index.vue'),
+                meta:{
+                    title:'物资来源',
+                    icon:'Box'
+                }
+            },
+            {
+                path:'destination',
+                component:()=>import('@/page/goods/destination/index.vue'),
+                meta:{
+                    title:'物资去处',
+                    icon:'Money'
+                }
+            },
+            {
+                path:'category',
+                component:()=>import('@/page/goods/category/index.vue'),
+                meta:{
+                    title:'物资类别',
+                    icon:'Refrigerator'
+                }
+            },
+            // {
+            //     path: 'test',
+            //     component: () => import('@/page/test/index.vue'),
+            //     meta: {
+            //         title: '测试页面',
+            //         icon: 'Refrigerator'
+            //     },
+            // }
+        ]
     }
+
+    
+    
+    
+
 
 ]
 

@@ -1,7 +1,7 @@
 
 
 
-import type { responseBody, searchParam } from './index.ts'
+import type { responseBody, searchParam } from '../index.js'
 
 
 export interface userSearchParam extends searchParam {

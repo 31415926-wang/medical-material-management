@@ -2,7 +2,7 @@
 /* 角色管理接口 */
 
 import request from '@/utils/request'
-import type {roleList, authInfoResponse,roleSearchParam,roleListItem,roleAddOrUpateItem,roleOperateResponse}  from "@/types/api/role"
+import type {roleList, authInfoResponse,roleSearchParam,roleListItem,roleAddOrUpateItem,roleOperateResponse}  from "@/types/api/authority/role"
 
 enum Urls {
     list_url = '/system/role/findRoleList',
