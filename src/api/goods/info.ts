@@ -1,20 +1,33 @@
 //物资资料接口
 import request from '@/utils/request'
-import { infoSearchParam,infoItem } from '@/types/api/goods/info'
+import { infoSearchParam,infoItem,itemCategory,goodsAddItem } from '@/types/api/goods/info'
 import { pageRes,operateRes } from '@/types/api/index'
 
 enum Urls {
     list_url = '/business/product/findProductList',
+    add_url = '/business/product/add',
     remove_url = '/business/product/remove',
+    category_tree_url = '/business/productCategory/categoryTree',
+    get_goods_item_url = '/business/product/edit',
+    update_item_url = '/business/product/update',
 }
 
 
 //查询列表
 export const getList = (params:infoSearchParam) => {
-    return request<pageRes<infoItem>>({
+    return request<pageRes<infoItem>>({   //这里自动限制的是拦截器那边返回的对象.Data的结构
         url: Urls.list_url,
         method: 'get',
         params
+    })
+}
+
+//添加单个
+export const addItem = (data:goodsAddItem) => {
+    return request<operateRes>({
+        url: Urls.add_url,
+        method: 'post',
+        data
     })
 }
 
@@ -28,73 +41,41 @@ export const deleteItem = (id:number) => {
 }
 
 
-//添加单个
-// http://www.localhost:8989/product/add
-//post
-// categoryKeys: [33, 34, 37]
-// model: "2个/包"
-// name: "测试物资1"
-// remark: "测试物资备注1"
-// sort: 2
-// unit: "包"
+//获得分类树
+export const getCategoryTree = () => {
+    return request<pageRes<itemCategory>>({
+        url: Urls.category_tree_url,
+        method: 'get',
+    })
+}
 
 
-// 编辑获取单个
-//business/product/edit/17
-// data:{
-// categoryKeys:null
-// createTime:"2020-03-18"
-// id:17
-// imageUrl:"group1/M00/00/00/rBofMl5yGl2AR3rCAAArOxrzeKs522.jpg"
-// model:"10个/包"
-// modifiedTime:"2020-08-19"
-// name:"N95口罩"
-// oneCategoryId:33
-// pnum:"3DFC8EA0-6"
-// remark:"救命的口罩"
-// sort:1
-// status:0
-// threeCategoryId:37
-// twoCategoryId:34
-// unit:"包"
-// }
-// success:true
-
+//编辑，获取单个商品信息
+export const getGoodsItem = (id:number) => {
+    return request<infoItem>({
+        url: Urls.get_goods_item_url+'/'+id,
+        method: 'get',
+    })
+}
 
 //更新单个
-// /business/product/update/17
-// put
-// categoryKeys:[33, 34, 37]
-// createTime:"2020-03-18"
-// id:17
-// imageUrl:"group1/M00/00/00/rBofMl5yGl2AR3rCAAArOxrzeKs522.jpg"
-// model:"10个/包"
-// modifiedTime:"2020-08-19"
-// name:"N95口罩1"
-// oneCategoryId:33
-// pnum:"3DFC8EA0-6"
-// remark:"救命的口罩"
-// sort:2
-// status:0
-// threeCategoryId:37
-// twoCategoryId:34
-// unit:"包"
-
-
-//上传图片
-// /system/upload/image
-//post
-
-
-//获得分类树
-//business/productCategory/categoryTree
-//get
+export const updateItem = (data:infoItem) => {
+    return request<operateRes>({
+        url: Urls.update_item_url+'/'+data.id,
+        method: 'put',
+        data
+    })
+}
 
 
 
 export default {
     getList,
-    deleteItem
+    deleteItem,
+    getCategoryTree,
+    addItem,
+    getGoodsItem,
+    updateItem
 }
 
 

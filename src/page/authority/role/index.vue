@@ -1,5 +1,5 @@
 <template>
-    <CrudTable ref="CrudTableRef" :needOperate="true" :operateWidth="260" :addCheckForm="addCheckForm"
+    <CrudTable ref="CrudTableRef" :needOperate="true" :operateColWidth="260" :addCheckForm="addCheckForm"
         :editorCheckForm="editorCheckForm">
 
         <template v-slot:statusCol="{ scope }">

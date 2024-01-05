@@ -8,7 +8,7 @@
                 <slot name="search-custom" :scope="scope"></slot>
             </template>
         </Search>
-    </div>
+    </div> 
 
     <!-- 批量、导出、新增 -->
     <div class="toolSection">
@@ -20,7 +20,7 @@
             <el-button type="danger" icon="Delete" v-show="needBatch"
                 :disabled="hookCrudObject.crudInfo.option.selectedItems?.length == 0"
                 @click="hookCrudObject.deleteRow(0, true)">删除</el-button>
-            <el-button type="success" icon="Download" @click="hookCrudObject.handleExportTable">导出</el-button>
+            <el-button v-show="!hiddenExport" type="success" icon="Download" @click="hookCrudObject.handleExportTable">导出</el-button>
         </div>
 
         <div class="middleBox"></div>
@@ -51,15 +51,15 @@
             </el-table-column>
         </template>
 
-        <el-table-column v-if="needOperate" fixed="right" label="操作" :width="operateWidth">
+        <el-table-column v-if="needOperate" fixed="right" label="操作" :width="operateColWidth">
             <template #default="scope">
                 <div style="padding: 10px 0;">
                     <!-- 嵌入其它操作按钮 -->
                     <slot name="operateExpand" :rowInfo="scope.row"></slot>
 
                     <!-- 是否使用传统的按钮样式及功能 -->
-                    <span v-show="">
                     <!-- 图标操作按钮、还是文字操作按钮 -->
+                    <span v-if="!customOperate">
                         <span v-if="operateButtonType == 'iconType'">
                             <el-button v-if="!closeViewDetail" type="info" class="mini" icon="View"
                                 @click="handleViewDetail(scope.row)"></el-button>
@@ -166,7 +166,7 @@ let $prop = defineProps({
             detail: '34%'
         }
     },
-    operateWidth: {
+    operateColWidth: {
         type: Number,
         default: 220
     },
@@ -181,6 +181,14 @@ let $prop = defineProps({
     editorCheckForm: {
         type: Object,
         default: {}
+    },
+    hiddenExport:{
+        type:Boolean,
+        default:false
+    },
+    customOperate:{
+        type:Boolean,
+        default:false 
     }
 
 })
@@ -262,7 +270,7 @@ const handleSubmit = (callback: any) => {
 
     //校验表单
     beforeSubmit().then(async () => {
-        // console.log("beforeSubmit通过 / 没有校验");
+        console.log("beforeSubmit通过 / 没有校验");
         //调接口
         try {
             let resultMsg = await hookCrudObject.addOrUpdate((formInfo.value.id ? 1 : 0), formInfo.value);

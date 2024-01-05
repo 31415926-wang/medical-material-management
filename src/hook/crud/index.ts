@@ -95,7 +95,7 @@ export default function () {
 
         nextTick(() => {//里面有获取DOM
             getData().then(()=>{
-                console.log("获取数据成功");
+                // console.log("获取数据成功");
              //处理表格格式，若需要追加属性的话
                 if (getDataAfter) {
                     getDataAfter(crudInfo.option.resultData);
@@ -139,6 +139,7 @@ export default function () {
             let method = (type == operateType.add) ? 'addItem' : 'updateItem';
             //@ts-ignore
             await apiMethod[method](obj);
+
             Tip('success', '操作成功');
             getData();
             return true;

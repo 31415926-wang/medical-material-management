@@ -9,7 +9,7 @@
             </el-form-item>
         </template>
 
-        <!--
+        <!-- 
         {{ hookCrudObjectParam.searchParam }}
                 通过直接追加属性的形式，增加自定义内容
             -->
@@ -17,7 +17,7 @@
                 searchParam: hookCrudObjectParam.searchParam.value,
                 getData: hookCrudObjectParam.getData
             }"></slot>
-
+ 
         <el-form-item>
             <el-button type="primary" icon="Search" @click="hookCrudObjectParam.getData">查询</el-button>
             <el-button icon="CircleClose" @click="handleReset">清空</el-button>

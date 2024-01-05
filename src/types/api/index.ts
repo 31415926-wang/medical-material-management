@@ -12,11 +12,13 @@ export interface searchParam {
 
 //分页返回的结构
 export interface pageRes<T>{
-    data:{
+   /*  data:{
         rows:T[],
         total:number
     }
-    success:boolean
+    success:boolean */
+    rows:T[],
+    total:number
 }
  
 //操作返回的结构

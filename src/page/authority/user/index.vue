@@ -1,5 +1,5 @@
 <template>
-    <CrudTable ref="CrudTableRef" @openBefore="handleopenBefore" :operateWidth="260" :needOperate="true"
+    <CrudTable ref="CrudTableRef" @openBefore="handleopenBefore" :operateColWidth="260" :needOperate="true"
         :addCheckForm="addCheckForm" :editorCheckForm="editorCheckForm" :dialogWidths="{
             add: '34%',
             editor: '34%',

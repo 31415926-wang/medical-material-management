@@ -1,4 +1,5 @@
 
+import { number } from 'echarts';
 import type { searchParam } from '../index'
 
 
@@ -11,51 +12,54 @@ export interface infoSearchParam extends searchParam{
 }
 
 
-//信息的单体结构
+//列表信息的单体结构 / 编辑获取的单个信息， !赋值断言，表明我们不会让其为空
 export class infoItem {
-    // !赋值断言，表明我们不会让其为空
-    categoryKeys!: null | number;
-    createTime!: string;
+    
+    categoryKeys!: null | number | number[];
+    createTime!: string; 
     id!:  number;
     imageUrl!: string;
     model!: string;
     modifiedTime!: string;
     name!: string;
-    oneCategoryId!: number;
+    oneCategoryId!: undefined | number;
     pnum!: string;
     remark!: string;
     sort!: number;
     status!: number;
-    threeCategoryId!:  number;
-    twoCategoryId!:  number;
+    threeCategoryId!:  undefined | number;
+    twoCategoryId!:  undefined | number;
     unit!: string;
-   
     constructor(){
         
     }
 }
 
+//添加的单体
+export interface goodsAddItem{
+    categoryKeys:[],
+    id?:  number,
+    imageUrl: string,
+    model: string,
+    name: string,
+    remark: string,
+    sort: number,
+    unit: string
+}
 
 
-
-// {
-//     "categoryKeys":  null,
-//     "createTime":  "2020-03-18",
-//     "id":  17,
-//     "imageUrl":  "group1/M00/00/00/rBofMl5yGl2AR3rCAAArOxrzeKs522.jpg",
-//     "model":  "10个/包",
-//     "modifiedTime":  "2020-08-19",
-//     "name":  "N95口罩",
-//     "oneCategoryId":  33,
-//     "pnum":  "3DFC8EA0-6",
-//     "remark":  "救命的口罩",
-//     "sort":  1,
-//     "status":  0,
-//     "threeCategoryId":  37,
-//     "twoCategoryId":  34,
-//     "unit":  "包"
-//  }
- 
+export interface itemCategory
+{
+    createTime: string;
+    id: number;
+    lev: number;
+    modifiedTime: string;
+    name: string;
+    pid: number;
+    remark: string;
+    sort: number;
+    children:itemCategory[]
+}
 
 
 
