@@ -91,7 +91,7 @@ let props1 = defineProps(
     }
 )
 
-
+//  handleOpenBefore:打开弹框前需执行的函数，如获取下拉框
 let $emit = defineEmits(['submitFn', 'handleCloseBefore', 'handleOpenBefore']);
 
 const dialogVisible = ref<boolean>(false)

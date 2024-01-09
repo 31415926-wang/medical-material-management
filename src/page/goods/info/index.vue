@@ -4,7 +4,7 @@
         :addCheckForm="addCheckForm" :editorCheckForm="editorCheckForm" operateButtonType='textType' :customOperate="true"
         :hiddenExport=true 
         :dialogWidths="{
-            add: '32%',
+            add: '32%', 
             editor: '32%',
             detail: '34%'
         }">
@@ -196,11 +196,6 @@ const rules = reactive<FormRules<RuleForm>>({
 
 
 let tableCols = reactive([
-    // {
-    //     prop: 'phone',
-    //     label: '图片',
-    //     width: 3,
-    // },
     {
         prop: 'name',
         label: '物资名称',

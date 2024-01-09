@@ -8,7 +8,7 @@
                 <slot name="search-custom" :scope="scope"></slot>
             </template>
         </Search>
-    </div> 
+    </div>
 
     <!-- 批量、导出、新增 -->
     <div class="toolSection">
@@ -20,7 +20,8 @@
             <el-button type="danger" icon="Delete" v-show="needBatch"
                 :disabled="hookCrudObject.crudInfo.option.selectedItems?.length == 0"
                 @click="hookCrudObject.deleteRow(0, true)">删除</el-button>
-            <el-button v-show="!hiddenExport" type="success" icon="Download" @click="hookCrudObject.handleExportTable">导出</el-button>
+            <el-button v-show="!hiddenExport" type="success" icon="Download"
+                @click="hookCrudObject.handleExportTable">导出</el-button>
         </div>
 
         <div class="middleBox"></div>
@@ -40,7 +41,24 @@
         <el-table-column type="selection" width="55" v-if="needBatch" />
         <el-table-column type="index" label="序号" width="55" />
 
+        <!--自定义会出现嵌套的列 -->
+        <slot name="nestCol">
+        </slot>
+
+        <!-- 传入的tableCols格式：
+            prop: '',     //列对应的属性名
+            label: '',   //列的标签
+            width: 3,   //列的宽度
+            searchType: 'input',  加入查询字段，并且显示查询框类型
+            show:false   //是否显示
+            rebuild：true   //是否重写改列，当显示内容的格式/样式要自定义的时候
+        -->
+
         <template v-for="(item, index) in hookCrudObject.tableCols.value" :key="index">
+            <!--
+            <el-table-column :label="item.label" :prop="item.prop" 
+                :sortable="item.sortable" v-if="item.show">
+            -->
             <el-table-column :label="item.label" :prop="item.prop" :min-width="item.width ? item.width : 0"
                 :sortable="item.sortable" v-if="item.show">
                 <!-- 在需要自定义列内容时，传入插槽即可；对应字段需设置rebuild -->
@@ -50,6 +68,7 @@
 
             </el-table-column>
         </template>
+
 
         <el-table-column v-if="needOperate" fixed="right" label="操作" :width="operateColWidth">
             <template #default="scope">
@@ -109,13 +128,13 @@
 
     <!-- 新增：直接写表单项，但是处理回调需在总组件传 -->
     <Dialog ref="addForm" :width="dialogWidths.add" :title="hookCrudObject.title.value + '新增'" :needSubmit="true"
-        @submitFn="handleSubmit" @handleCloseBefore="closeBeforeFn" @handleOpenBefore="$emit('openBefore')">
+        @submitFn="handleSubmit" @handleCloseBefore="closeBeforeFn" @handleOpenBefore="$emit('openDialogBefore')">
         <slot name="addForm" :formInfo="formInfo"></slot>
     </Dialog>
 
     <!-- 编辑：直接写表单项，但是处理回调需在总组件传 -->
     <Dialog ref="editorForm" :width="dialogWidths.editor" :title="hookCrudObject.title.value + '编辑'" :needSubmit="true"
-        @submitFn="handleSubmit" @handleCloseBefore="closeBeforeFn" @handleOpenBefore="$emit('openBefore')">
+        @submitFn="handleSubmit" @handleCloseBefore="closeBeforeFn" @handleOpenBefore="$emit('openDialogBefore')">
         <slot name="editorForm" :formInfo="formInfo"></slot>
     </Dialog>
 </template>
@@ -131,6 +150,8 @@ import ToolGroup from './ToolGroup.vue'
 import Search from './Search.vue'
 import Dialog from './Dialog.vue'
 
+// import { useAttrs } from 'vue';
+// let $useAttrs = useAttrs();  //接收的方法与参数
 
 let $prop = defineProps({
     size: {
@@ -174,6 +195,7 @@ let $prop = defineProps({
         type: String,
         default: 'iconType'
     },
+    // addCheckForm、editorCheckForm在使用到新增、编辑封装的弹出框，都需分别用到
     addCheckForm: {
         type: Object,
         default: {}
@@ -182,19 +204,26 @@ let $prop = defineProps({
         type: Object,
         default: {}
     },
-    hiddenExport:{
-        type:Boolean,
-        default:false
+    hiddenExport: {
+        type: Boolean,
+        default: false
     },
-    customOperate:{
-        type:Boolean,
-        default:false 
-    }
+    customOperate: {
+        type: Boolean,
+        default: false
+    },
+    needReqDetail: {  //是否需要在编辑/详细按钮点击时根据id得到详细信息
+        type: Boolean,
+        default: false
+    },
 
 })
 
-
-let $emit = defineEmits(['openBefore']);
+/* 
+     beforeSubmitHanle :提交表单前可以处理格式
+     openDialogBefore:打开弹框前需执行的函数，如获取下拉框
+*/
+let $emit = defineEmits(['openDialogBefore','beforeSubmitHanle']);
 
 
 let hookCrudObject = hookCrud();
@@ -223,24 +252,42 @@ const handleSelectionChange = (val: any) => {
 }
 
 //点击详细按钮
-const handleViewDetail = ((row: any) => {
-    rowInfo.value = { ...row };
+const handleViewDetail = async (row: any) => {
+    //是否请求单个id对应的详细数据
+    judgeReqDetail(row);
+
     detailForm.value.dialogVisible = true;
-})
+}
 
 //点击新增
 const handleAdd = () => {
+
     addForm.value.dialogVisible = true;
     formInfo.value = {};
     nowFormType.value = 'add';
 }
 
 //点击编辑
-const handleEditor = (row: any) => {
+const handleEditor = async (row: any) => {
+    //是否请求单个id对应的详细数据
+    judgeReqDetail(row);
+
     editorForm.value.dialogVisible = true;
-    formInfo.value = { ...row };
     nowFormType.value = 'editor';
+
 }
+
+const judgeReqDetail = async (row: any) => {
+    if ($prop.needReqDetail) {
+        let result = await hookCrudObject.getRowDetail(row.id);
+        formInfo.value = result;
+    } else {
+        formInfo.value = { ...row };
+    }
+}
+
+
+
 
 
 const beforeSubmit = () => {
@@ -271,6 +318,10 @@ const handleSubmit = (callback: any) => {
     //校验表单
     beforeSubmit().then(async () => {
         console.log("beforeSubmit通过 / 没有校验");
+
+        //提交前处理数据
+        $emit('beforeSubmitHanle',formInfo);
+
         //调接口
         try {
             let resultMsg = await hookCrudObject.addOrUpdate((formInfo.value.id ? 1 : 0), formInfo.value);
@@ -301,9 +352,8 @@ defineExpose({
     nowFormType
 })
 
-
-
 </script>
+
 
 
 <style scoped lang='scss'>
@@ -327,5 +377,9 @@ div[class$="Section"],
 .checkboxGroup {
     display: flex;
     flex-direction: column;
+}
+
+.el-button+span {
+    margin-left: 12px;
 }
 </style>

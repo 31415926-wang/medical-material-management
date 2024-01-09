@@ -21,8 +21,10 @@ export interface crudInfo {
             deleteItem: null | Function,
             exportTable?:null | Function
             batchDelete?:null | Function
+            getDetailById?:null | Function
         },
-        resultData: resultData
+        resultData: resultData,
+        getDataAfterFn:any
     }
 }
 

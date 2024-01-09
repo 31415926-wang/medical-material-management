@@ -1,5 +1,4 @@
 
-import { number } from 'echarts';
 import type { searchParam } from '../index'
 
 

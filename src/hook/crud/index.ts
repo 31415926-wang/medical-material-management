@@ -10,7 +10,7 @@ import $bus from '@/bus'
 
 export default function () {
 
- 
+
     // 数据：配置信息+接口数据
     let crudInfo = reactive<crudInfo>({
         option: {
@@ -30,7 +30,8 @@ export default function () {
                 batchDelete: null
             },
             selectedItems: [],
-            resultData: <resultData>{}
+            resultData: <resultData>{},
+            getDataAfterFn:null //若需要每次获得表格数据后做再处理
         }
     });
     //存储表格的初始化列信息
@@ -73,7 +74,10 @@ export default function () {
     })
 
     // 方法：初始化传入的基本配置
-    const crudInit = (passOption: object, tableColsParam: tableCol[],getDataAfter?:Function) => {
+    /* 
+        参数3：获取表格数据后处理
+    */
+    const crudInit = (passOption: object, tableColsParam: tableCol[], getDataAfterFn?: Function) => {
         //解决多层对象时，相同属性被直接覆盖的情况。引入新的问题，丢失响应式，需给realtive对象多加一层
         crudInfo.option = merge({}, crudInfo.option, passOption)
 
@@ -94,15 +98,10 @@ export default function () {
 
 
         nextTick(() => {//里面有获取DOM
-            getData().then(()=>{
-                // console.log("获取数据成功");
-             //处理表格格式，若需要追加属性的话
-                if (getDataAfter) {
-                    getDataAfter(crudInfo.option.resultData);
-                }
-            })
-
-
+            getData();
+            if (getDataAfterFn) {
+                crudInfo.option.getDataAfterFn=getDataAfterFn;
+            }
         })
 
     }
@@ -122,11 +121,30 @@ export default function () {
             })
             crudInfo.option.resultData = result.data;
             console.log("请求的分页列表", result.data);
-        } catch (error) {
-            throw new Error("请求分页失败");
+
+            //处理表格格式，若需要追加属性的话
+            if ( crudInfo.option.getDataAfterFn) {
+                crudInfo.option.getDataAfterFn(crudInfo.option.resultData);
+            }
+
+        } catch (error: any) {
+            throw new Error("请求分页失败", error);
         }
         loadingObj.closeLoading();
     }
+
+    //根据id获取一个行的详细数据
+    const getRowDetail = (id:number) =>{
+        return new Promise((resolve,reject)=>{
+            crudInfo.option.apiMethod.getDetailById!(id).then((result:any)=>{
+                resolve(result.data);
+            }).catch((error:any)=>{
+                reject(error);
+            })
+        })
+    }
+
+
 
     enum operateType {
         add = 0,
@@ -143,7 +161,7 @@ export default function () {
             Tip('success', '操作成功');
             getData();
             return true;
-        } catch(e) {
+        } catch (e) {
             return Promise.reject(e);
         }
 
@@ -209,7 +227,8 @@ export default function () {
         searchParam,
         deleteRow,
         addOrUpdate,
-        title
+        title,
+        getRowDetail
     }
 }
 
