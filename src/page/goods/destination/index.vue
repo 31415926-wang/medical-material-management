@@ -86,7 +86,6 @@
                 <el-form-item label="联系人" prop="contact">
                     <el-input v-model="formInfo.contact" placeholder="请输入联系人" />
                 </el-form-item>
-           
                 <el-form-item label="电话" prop="phone">
                     <el-input v-model="formInfo.phone" placeholder="请输入电话号码" />
                 </el-form-item>
@@ -96,9 +95,6 @@
 
             </el-form>
         </template>
-
-
-
 
     </CrudTable>
 </template>

@@ -1,281 +1,131 @@
 <template>
-      <el-cascader :options="options" :props="props1" clearable />
-  </template>
-  
-  <script lang="ts" setup>
+  <div>
+    <el-table
+      :data="tableData"
+      style="width: 100%; margin-bottom: 20px"
+      row-key="id"
+      border
+    >
+      <el-table-column prop="date" label="Date" sortable />
+      <el-table-column prop="name" label="Name" sortable />
+      <el-table-column prop="address" label="Address" sortable />
+    </el-table>
 
-  const props1 = {
-    checkStrictly: true,
-  }
- 
-  
-  const options = [
-    {
-      value: 'guide',
-      label: 'Guide',
-      children: [
-        {
-          value: 'disciplines',
-          label: 'Disciplines',
-          children: [
-            {
-              value: 'consistency',
-              label: 'Consistency',
-            },
-            {
-              value: 'feedback',
-              label: 'Feedback',
-            },
-            {
-              value: 'efficiency',
-              label: 'Efficiency',
-            },
-            {
-              value: 'controllability',
-              label: 'Controllability',
-            },
-          ],
-        },
-        {
-          value: 'navigation',
-          label: 'Navigation',
-          children: [
-            {
-              value: 'side nav',
-              label: 'Side Navigation',
-            },
-            {
-              value: 'top nav',
-              label: 'Top Navigation',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      value: 'component',
-      label: 'Component',
-      children: [
-        {
-          value: 'basic',
-          label: 'Basic',
-          children: [
-            {
-              value: 'layout',
-              label: 'Layout',
-            },
-            {
-              value: 'color',
-              label: 'Color',
-            },
-            {
-              value: 'typography',
-              label: 'Typography',
-            },
-            {
-              value: 'icon',
-              label: 'Icon',
-            },
-            {
-              value: 'button',
-              label: 'Button',
-            },
-          ],
-        },
-        {
-          value: 'form',
-          label: 'Form',
-          children: [
-            {
-              value: 'radio',
-              label: 'Radio',
-            },
-            {
-              value: 'checkbox',
-              label: 'Checkbox',
-            },
-            {
-              value: 'input',
-              label: 'Input',
-            },
-            {
-              value: 'input-number',
-              label: 'InputNumber',
-            },
-            {
-              value: 'select',
-              label: 'Select',
-            },
-            {
-              value: 'cascader',
-              label: 'Cascader',
-            },
-            {
-              value: 'switch',
-              label: 'Switch',
-            },
-            {
-              value: 'slider',
-              label: 'Slider',
-            },
-            {
-              value: 'time-picker',
-              label: 'TimePicker',
-            },
-            {
-              value: 'date-picker',
-              label: 'DatePicker',
-            },
-            {
-              value: 'datetime-picker',
-              label: 'DateTimePicker',
-            },
-            {
-              value: 'upload',
-              label: 'Upload',
-            },
-            {
-              value: 'rate',
-              label: 'Rate',
-            },
-            {
-              value: 'form',
-              label: 'Form',
-            },
-          ],
-        },
-        {
-          value: 'data',
-          label: 'Data',
-          children: [
-            {
-              value: 'table',
-              label: 'Table',
-            },
-            {
-              value: 'tag',
-              label: 'Tag',
-            },
-            {
-              value: 'progress',
-              label: 'Progress',
-            },
-            {
-              value: 'tree',
-              label: 'Tree',
-            },
-            {
-              value: 'pagination',
-              label: 'Pagination',
-            },
-            {
-              value: 'badge',
-              label: 'Badge',
-            },
-          ],
-        },
-        {
-          value: 'notice',
-          label: 'Notice',
-          children: [
-            {
-              value: 'alert',
-              label: 'Alert',
-            },
-            {
-              value: 'loading',
-              label: 'Loading',
-            },
-            {
-              value: 'message',
-              label: 'Message',
-            },
-            {
-              value: 'message-box',
-              label: 'MessageBox',
-            },
-            {
-              value: 'notification',
-              label: 'Notification',
-            },
-          ],
-        },
-        {
-          value: 'navigation',
-          label: 'Navigation',
-          children: [
-            {
-              value: 'menu',
-              label: 'Menu',
-            },
-            {
-              value: 'tabs',
-              label: 'Tabs',
-            },
-            {
-              value: 'breadcrumb',
-              label: 'Breadcrumb',
-            },
-            {
-              value: 'dropdown',
-              label: 'Dropdown',
-            },
-            {
-              value: 'steps',
-              label: 'Steps',
-            },
-          ],
-        },
-        {
-          value: 'others',
-          label: 'Others',
-          children: [
-            {
-              value: 'dialog',
-              label: 'Dialog',
-            },
-            {
-              value: 'tooltip',
-              label: 'Tooltip',
-            },
-            {
-              value: 'popover',
-              label: 'Popover',
-            },
-            {
-              value: 'card',
-              label: 'Card',
-            },
-            {
-              value: 'carousel',
-              label: 'Carousel',
-            },
-            {
-              value: 'collapse',
-              label: 'Collapse',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      value: 'resource',
-      label: 'Resource',
-      children: [
-        {
-          value: 'axure',
-          label: 'Axure Components',
-        },
-        {
-          value: 'sketch',
-          label: 'Sketch Templates',
-        },
-        {
-          value: 'docs',
-          label: 'Design Documentation',
-        },
-      ],
-    },
-  ]
-  </script>
-  
+    <el-table
+      :data="tableData1"
+      style="width: 100%"
+      row-key="id"
+      border
+      lazy
+      :load="load"
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+    >
+      <el-table-column prop="date" label="Date" />
+      <el-table-column prop="name" label="Name" />
+      <el-table-column prop="address" label="Address" />
+    </el-table>
+  </div>
+</template>
+<script lang="ts" setup>
+interface User {
+  id: number
+  date: string
+  name: string
+  address: string
+  hasChildren?: boolean
+  children?: User[]
+}
+
+const load = (
+  row: User,
+  treeNode: unknown,
+  resolve: (date: User[]) => void
+) => {
+  setTimeout(() => {
+    resolve([
+      {
+        id: 31,
+        date: '2016-05-01',
+        name: '1wangxiaohu',
+        address: 'No. 189, Grove St, Los Angeles',
+      },
+      {
+        id: 32,
+        date: '2016-05-01',
+        name: '2wangxiaohu',
+        address: 'No. 189, Grove St, Los Angeles',
+      },
+    ])
+  }, 1000)
+}
+
+const tableData: User[] = [
+  {
+    id: 1,
+    date: '2016-05-02',
+    name: 'wangxiaohu',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    id: 2,
+    date: '2016-05-04',
+    name: 'wangxiaohu',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    id: 3,
+    date: '2016-05-01',
+    name: '3wangxiaohu',
+    address: 'No. 189, Grove St, Los Angeles',
+    children: [
+      {
+        id: 31,
+        date: '2016-05-01',
+        name: 'wangxiaohu',
+        address: 'No. 189, Grove St, Los Angeles',
+      },
+      {
+        id: 32,
+        date: '2016-05-01',
+        name: 'wangxiaohu',
+        address: 'No. 189, Grove St, Los Angeles',
+      },
+    ],
+  },
+  {
+    id: 4,
+    date: '2016-05-03',
+    name: 'wangxiaohu',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+]
+
+
+const tableData1: User[] = [
+  {
+    id: 1,
+    date: '2016-05-02',
+    name: 'wangxiaohu',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    id: 2,
+    date: '2016-05-04',
+    name: 'wangxiaohu',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    id: 3,
+    date: '2016-05-01',
+    name: 'wangxiaohu',
+    hasChildren: true,
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    id: 4,
+    date: '2016-05-03',
+    name: 'wangxiaohu',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+]
+</script>

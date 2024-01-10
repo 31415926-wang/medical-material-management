@@ -11,7 +11,7 @@ enum Urls {
     delete_item_url = '/business/supplier/delete',
     req_citys_url = "/json/provinces.json"
 }
-
+ 
 
 
 //查询列表

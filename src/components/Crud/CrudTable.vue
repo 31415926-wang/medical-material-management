@@ -11,7 +11,7 @@
     </div>
 
     <!-- 批量、导出、新增 -->
-    <div class="toolSection">
+    <div class="toolSection" v-if="!hiddenToolSection">
         <div>
             <el-button type="primary" icon="Plus" @click="handleAdd">新增</el-button>
             <!-- 自定义添加批量操作的功能 -->
@@ -36,10 +36,11 @@
     <!-- 表格体 -->
     <el-table class="tableSection" :data="hookCrudObject.tableData.value" border style="width: 100%;" :size="size"
         :cell-style="{ 'text-align': 'center' }" :header-cell-style="{ 'text-align': 'center', 'color': '#000' }"
-        :highlight-current-row="isHighlightRow" @selection-change="handleSelectionChange">
+        :highlight-current-row="isHighlightRow" @selection-change="handleSelectionChange" row-key="id"
+        :tree-props="treeProps">
 
         <el-table-column type="selection" width="55" v-if="needBatch" />
-        <el-table-column type="index" label="序号" width="55" />
+        <el-table-column type="index" label="序号" width="55" v-if="needIndex" />
 
         <!--自定义会出现嵌套的列 -->
         <slot name="nestCol">
@@ -61,7 +62,8 @@
             -->
             <el-table-column :label="item.label" :prop="item.prop" :min-width="item.width ? item.width : 0"
                 :sortable="item.sortable" v-if="item.show">
-                <!-- 在需要自定义列内容时，传入插槽即可；对应字段需设置rebuild -->
+                <!-- 在需要自定义列内容时，传入插槽即可；对应字段需设置rebuild
+                -->
                 <template #default="scope" v-if="item.rebuild">
                     <slot :name="item.prop + 'Col'" :scope="scope"></slot>
                 </template>
@@ -149,6 +151,7 @@ import Pagination from './Pagination.vue'
 import ToolGroup from './ToolGroup.vue'
 import Search from './Search.vue'
 import Dialog from './Dialog.vue'
+import { treeProps } from 'element-plus/es/components/tree-v2/src/virtual-tree';
 
 // import { useAttrs } from 'vue';
 // let $useAttrs = useAttrs();  //接收的方法与参数
@@ -166,9 +169,13 @@ let $prop = defineProps({
         type: String,
         default: 'total, sizes, prev, pager, next, jumper'
     },
-    needBatch: {
+    needBatch: { //是否需要多选
         type: Boolean,
         default: false
+    },
+    needIndex: { //是否需要序号
+        type: Boolean,
+        default: true
     },
     needOperate: {
         type: Boolean,
@@ -204,7 +211,11 @@ let $prop = defineProps({
         type: Object,
         default: {}
     },
-    hiddenExport: {
+    hiddenExport: {//隐藏导出按钮
+        type: Boolean,
+        default: false
+    },
+    hiddenToolSection: {//隐藏所有工具按钮
         type: Boolean,
         default: false
     },
@@ -216,6 +227,11 @@ let $prop = defineProps({
         type: Boolean,
         default: false
     },
+    //不给table设置该属性或者传空对象，都是以children属性判断有没有展开
+    treeProps: {
+        type: Object,
+        default: {}
+    }
 
 })
 
@@ -223,7 +239,7 @@ let $prop = defineProps({
      beforeSubmitHanle :提交表单前可以处理格式
      openDialogBefore:打开弹框前需执行的函数，如获取下拉框
 */
-let $emit = defineEmits(['openDialogBefore','beforeSubmitHanle']);
+let $emit = defineEmits(['openDialogBefore', 'beforeSubmitHanle']);
 
 
 let hookCrudObject = hookCrud();
@@ -320,7 +336,7 @@ const handleSubmit = (callback: any) => {
         console.log("beforeSubmit通过 / 没有校验");
 
         //提交前处理数据
-        $emit('beforeSubmitHanle',formInfo);
+        $emit('beforeSubmitHanle', formInfo);
 
         //调接口
         try {
@@ -382,4 +398,38 @@ div[class$="Section"],
 .el-button+span {
     margin-left: 12px;
 }
+
+/* 以下修改树形表格的图标 */
+/* 去掉默认图标 */
+::v-deep .el-table__expand-icon>.el-icon>svg {
+    display: none !important;
+    ;
+}
+
+::v-deep .el-table__expand-icon {
+    width: 1.1rem !important;
+    height: 1.1rem !important;
+    position: relative;
+    top: 1px;
+}
+
+
+::v-deep .el-table__expand-icon>.el-icon {
+    /* 默认的inline-flex会使伪元素无法溢出 */
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+::v-deep .el-table__expand-icon>.el-icon::after {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    background-image: url('@/assets/images/icons/fold-right.svg');
+    background-size: 100% 100%;
+}
+
+
 </style>
