@@ -19,6 +19,14 @@ export interface itemList {
 }
 
 
+export interface addOrUpdateItem {
+    name: string,
+    pid?: number,
+    remark: string,
+    sort: number
+}
+
+
 
 
 

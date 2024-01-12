@@ -1,5 +1,13 @@
 <template>
-  <CrudTable ref="CrudTableRef" :treeProps="{ children: 'children' }" :needIndex="false" :hiddenToolSection="true">
+  <CrudTable ref="CrudTableRef" 
+  :treeProps="{ children: 'children' }" 
+  :needIndex="false" 
+  :hiddenToolSection="true"
+  :needOperate="true"
+  :closeViewDetail="true"
+  :operateColWidth="170"
+  :editorCheckForm="editorCheckForm"
+  >
     <!--自定义列-->
     <template v-slot:levCol="{ scope }">
       <el-tag :type="statusHanlde(scope.row?.lev)">{{ switchText(scope.row?.lev) }}</el-tag>
@@ -11,6 +19,22 @@
       <span>{{ scope.row?.name }}</span>
     </template>
 
+    
+     <!--编辑框-->
+     <template v-slot:editorForm="{ formInfo }">
+            <el-form ref="editorCheckForm" :model="formInfo" label-width="80px" :rules="rules">
+                <el-form-item label="分类名称" prop="name">
+                    <el-input v-model="formInfo.name" placeholder="请填写分类名称" />
+                </el-form-item>
+                <el-form-item label="备注" prop="remark">
+                    <el-input type="textarea" v-model="formInfo.remark" placeholder="请填写备注" />
+                </el-form-item>
+                <el-form-item label="排序" prop="sort">
+                    <el-input-number v-model="formInfo.sort" :min="1" />
+                </el-form-item>
+            </el-form>
+        </template>
+
       
   </CrudTable>
 </template>
@@ -21,6 +45,22 @@ import apiMethod from '@/api/goods/category'
 import { tableCol } from "@/types/common/Crud";
 import initCrud from "@/hook/crud/initCrud";
 
+
+//@ts-ignore
+const rules = reactive<FormRules<RuleForm>>({
+    name: [
+        { required: true, message: '请填写分类名称', trigger: 'blur' },
+    ],
+    remark: [
+        { required: true, message: '请填写备注', trigger: 'blur' },
+    ],
+    sort: [
+        { required: true, message: '请填写序号', trigger: 'blur' },
+    ]
+   
+})
+
+let editorCheckForm = ref();
 
 let CrudTableRef = ref();
 let tableCols = reactive([

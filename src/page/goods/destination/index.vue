@@ -134,10 +134,7 @@ const rules = reactive<FormRules<RuleForm>>({
     ],
     sort: [
         { required: true, message: '请输入排序号', trigger: 'blur' },
-    ],
-
-
-
+    ]
 })
 
 let tableCols = reactive([
