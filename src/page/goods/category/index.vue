@@ -3,11 +3,12 @@
   :treeProps="{ children: 'children' }" 
   :needIndex="false" 
   :hiddenToolSection="true"
+  :defaultToolBtList="[]"
   :needOperate="true"
   :closeViewDetail="true"
   :operateColWidth="170"
   :editorCheckForm="editorCheckForm"
-  >
+  > 
     <!--自定义列-->
     <template v-slot:levCol="{ scope }">
       <el-tag :type="statusHanlde(scope.row?.lev)">{{ switchText(scope.row?.lev) }}</el-tag>
@@ -68,34 +69,29 @@ let tableCols = reactive([
   {
     prop: 'name',
     label: '分类名称',
-    width: 3,
     rebuild: true
   },
   {
     prop: 'sort',
     label: '排序',
-    width: 1,
-    sortable: true
+    sortable: true,
+    width:150
   },
   {
     prop: 'createTime',
     label: '创建时间',
-    width: 3,
   },
   {
     prop: 'modifiedTime',
     label: '修改时间',
-    width: 3,
   },
   {
     prop: 'remark',
     label: '备注',
-    width: 3,
   },
   {
     prop: 'lev',
     label: '层级',
-    width: 2,
     rebuild: true
   },
 ] as tableCol[]);

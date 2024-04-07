@@ -1,6 +1,6 @@
 //物资资料接口
 import request from '@/utils/request'
-import { infoSearchParam, infoItem, itemCategory, goodsAddItem } from '@/types/api/goods/info'
+import { infoSearchParam, infoItem, itemCategory, goodsAddItem,productStocksInfoItem } from '@/types/api/goods/info'
 import { pageRes, operateRes } from '@/types/api/index'
 
 enum Urls {
@@ -10,6 +10,7 @@ enum Urls {
     category_tree_url = '/business/productCategory/categoryTree',
     get_goods_item_url = '/business/product/edit',
     update_item_url = '/business/product/update',
+    find_product_stocks = '/business/product/findProductStocks',
 }
 
 
@@ -67,7 +68,14 @@ export const updateItem = (data: infoItem) => {
     })
 }
 
-
+//获取库存列表
+export const findProductStocks = (params: infoSearchParam) => {
+    return request<pageRes<productStocksInfoItem>>({
+        url: Urls.find_product_stocks,
+        method: 'get',
+        params
+    })
+} 
 
 
 export default {
@@ -77,6 +85,7 @@ export default {
     addItem,
     getGoodsItem,
     updateItem,
+    findProductStocks
 }
 
 

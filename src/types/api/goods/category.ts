@@ -8,7 +8,7 @@ export interface listSearchParam extends searchParam {
 
 export interface itemList {
     createTime: string,
-    id: number,
+    id: number, 
     lev: number,
     modifiedTime: string,
     name: string,

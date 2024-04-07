@@ -10,14 +10,12 @@ import $bus from '@/bus'
 
 export default function () {
 
-
     // 数据：配置信息+接口数据
-    let crudInfo = reactive<crudInfo>({
-        option: {
-            title: '',
+    let crudInfo = ref<crudInfo>({
+            title: '', 
             pagination: {
                 page: 1,
-                size: 10,
+                size: 10, 
             },
             searchParam: {
             },
@@ -29,43 +27,42 @@ export default function () {
                 exportTable: null,
                 batchDelete: null
             },
-            selectedItems: [],
+            selectedItems: [],  //多选中的已选项
             resultData: <resultData>{},
             getDataAfterFn:null //若需要每次获得表格数据后做再处理
-        }
     });
-    //存储表格的初始化列信息
+    //存储表格的初始化列信息 
     let tableCols = ref([] as tableCol[]);
     let title = computed(() => {
-        return crudInfo.option.title;
+        return crudInfo.value.title;
     })
 
     //计算属性需要被页面引用内容才会调
     let tableData = computed(() => {
-        return crudInfo.option.resultData?.rows || [];
+        return crudInfo.value.resultData?.rows || [];
     })
     let total = computed(() => {
-        return crudInfo.option.resultData?.total || 0;
+        return crudInfo.value.resultData?.total || 0;
     })
     let page = computed({
         get() {
-            return crudInfo.option.pagination.page;
+            return crudInfo.value.pagination.page;
         },
         set(val) {
-            crudInfo.option.pagination.page = val;
+            crudInfo.value.pagination.page = val;
         }
     })
     let size = computed({
         get() {
-            return crudInfo.option.pagination.size;
+            return crudInfo.value.pagination.size;
         },
         set(val) {
-            crudInfo.option.pagination.size = val;
+            crudInfo.value.pagination.size = val;
         }
     })
     let searchParam = computed({
         get() {
-            return crudInfo.option.searchParam;
+            return crudInfo.value.searchParam;
         },
         set(val) {
             //对象类型的计算属性，这里永远不会被调用
@@ -73,13 +70,15 @@ export default function () {
         }
     })
 
+
+
     // 方法：初始化传入的基本配置
     /* 
         参数3：获取表格数据后处理
     */
     const crudInit = (passOption: object, tableColsParam: tableCol[], getDataAfterFn?: Function) => {
         //解决多层对象时，相同属性被直接覆盖的情况。引入新的问题，丢失响应式，需给realtive对象多加一层
-        crudInfo.option = merge({}, crudInfo.option, passOption)
+        crudInfo.value = merge({}, crudInfo.value, passOption)
 
         tableCols.value = tableColsParam;
         tableCols.value.forEach((item) => {
@@ -89,7 +88,7 @@ export default function () {
             }
             //顺便同步一份查询属性名到crudInfo查询参数,默认值''
             if (item.searchType) {
-                crudInfo.option.searchParam[item.prop] = ''
+                crudInfo.value.searchParam[item.prop] = ''
             }
         })
 
@@ -100,14 +99,14 @@ export default function () {
         nextTick(() => {//里面有获取DOM
             getData();
             if (getDataAfterFn) {
-                crudInfo.option.getDataAfterFn=getDataAfterFn;
+                crudInfo.value.getDataAfterFn=getDataAfterFn;
             }
         })
 
     }
 
     const getData = async () => {
-        let { apiMethod, pagination, searchParam } = crudInfo.option;
+        let { apiMethod, pagination, searchParam } = crudInfo.value;
         loadingObj.openLoading(document.querySelector(".tableSection") as HTMLElement);
         //可以在请求前将空的查询参数过滤掉，以防后台报错
         let newSearchParam = filterEmptyProp(searchParam)
@@ -119,12 +118,12 @@ export default function () {
                 pageSize: pagination.size,
                 ...newSearchParam
             })
-            crudInfo.option.resultData = result.data;
+            crudInfo.value.resultData = result.data;
             console.log("请求的分页列表", result.data);
 
             //处理表格格式，若需要追加属性的话
-            if ( crudInfo.option.getDataAfterFn) {
-                crudInfo.option.getDataAfterFn(crudInfo.option.resultData);
+            if ( crudInfo.value.getDataAfterFn) {
+                crudInfo.value.getDataAfterFn(crudInfo.value.resultData);
             }
 
         } catch (error: any) {
@@ -136,7 +135,7 @@ export default function () {
     //根据id获取一个行的详细数据
     const getRowDetail = (id:number) =>{
         return new Promise((resolve,reject)=>{
-            crudInfo.option.apiMethod.getDetailById!(id).then((result:any)=>{
+            crudInfo.value.apiMethod.getDetailById!(id).then((result:any)=>{
                 resolve(result.data);
             }).catch((error:any)=>{
                 reject(error);
@@ -150,9 +149,9 @@ export default function () {
         add = 0,
         update = 1
     }
-
+ 
     const addOrUpdate = async (type: number, obj: Object) => { //0增加、1修改
-        let { apiMethod } = crudInfo.option;
+        let { apiMethod } = crudInfo.value;
         try {
             let method = (type == operateType.add) ? 'addItem' : 'updateItem';
             //@ts-ignore
@@ -170,7 +169,7 @@ export default function () {
 
     //删除的回调
     const deleteRow = async (id: number, isBatch = false) => {
-        let { apiMethod, selectedItems } = crudInfo.option;
+        let { apiMethod, selectedItems } = crudInfo.value;
         //判断有没有选中项
         if (isBatch) {
             if (selectedItems.length == 0) {
@@ -199,17 +198,16 @@ export default function () {
     }
 
 
-
-
     //处理表格导出
     const handleExportTable = async () => {
-        let tableExcelBlod = await crudInfo.option.apiMethod.exportTable!();
-        handleExportFile(tableExcelBlod, crudInfo.option.title);
+        if (crudInfo.value.apiMethod.exportTable == null) {
+        Tip('error', '缺少导出接口!');
+         return;
+        }
+        let tableExcelBlod = await crudInfo.value.apiMethod.exportTable!();
+        handleExportFile(tableExcelBlod, crudInfo.value.title);
         Tip('success', '导出表格成功!');
     }
-
-
-
 
 
 

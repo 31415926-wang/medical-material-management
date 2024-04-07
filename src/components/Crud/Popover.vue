@@ -1,7 +1,7 @@
 
 <!-- 气泡确认框 -->
 <template>
-    <el-popover :visible="visiblePopover" placement="top" :width="160">
+    <el-popover :visible="visiblePopover" :text="true" placement="top" :width="160">
         <p><el-icon style="color: orange;">
                 <QuestionFilled />
             </el-icon>确定{{props.title}}选中项吗?</p>
@@ -11,8 +11,7 @@
             $emit('handle')">确定</el-button>
         </div>
         <template #reference>
-            <el-button v-if="operate" v-bind="useAttrs()" @click="visiblePopover = true">{{operate}}</el-button>
-            <el-button v-else v-bind="useAttrs()" @click="visiblePopover = true"></el-button>
+            <el-button  v-bind="useAttrs()" @click="visiblePopover = true">{{operate}}</el-button>
         </template>
     </el-popover>
 </template>

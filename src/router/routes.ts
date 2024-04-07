@@ -72,8 +72,8 @@ export const constantRoute = [
                     title: '菜单权限',
                     icon: 'Grid'
                 },
-            }, 
-        
+            },
+
             {
                 path: 'user',
                 component: () => import('@/page/authority/user/index.vue'),
@@ -102,60 +102,130 @@ export const constantRoute = [
     },
 
     {
-        path:'/goods',
-        component:Layout,
-        meta:{
-            title:'物资管理',
-            icon:'Collection'
+        path: '/goods',
+        component: Layout,
+        meta: {
+            title: '物资管理',
+            icon: 'Collection'
         },
-        children:[
+        children: [
             {
-                path:'info',
-                component:()=>import('@/page/goods/info/index.vue'),
-                meta:{
-                    title:'物资资料',
-                    icon:'CreditCard'
+                path: 'info',
+                component: () => import('@/page/goods/info/index.vue'),
+                meta: {
+                    title: '物资资料',
+                    icon: 'CreditCard'
                 }
             },
             {
-                path:'source',
-                component:()=>import('@/page/goods/source/index.vue'),
-                meta:{
-                    title:'物资来源',
-                    icon:'Box'
+                path: 'source',
+                component: () => import('@/page/goods/source/index.vue'),
+                meta: {
+                    title: '物资来源',
+                    icon: 'Box'
                 }
             },
             {
-                path:'destination',
-                component:()=>import('@/page/goods/destination/index.vue'),
-                meta:{
-                    title:'物资去处',
-                    icon:'Money'
+                path: 'destination',
+                component: () => import('@/page/goods/destination/index.vue'),
+                meta: {
+                    title: '物资去处',
+                    icon: 'Money'
                 }
             },
             {
-                path:'category',
-                component:()=>import('@/page/goods/category/index.vue'),
-                meta:{
-                    title:'物资类别',
-                    icon:'Refrigerator'
+                path: 'category',
+                component: () => import('@/page/goods/category/index.vue'),
+                meta: {
+                    title: '物资类别',
+                    icon: 'Refrigerator'
                 }
             },
+           
+        ]
+    },
+
+    {
+        path: '/inventory',
+        component: Layout,
+        meta: {
+            title: '库存管理',
+            icon: 'School'
+        },
+        children: [
+            {
+                path: 'storage',
+                component: () => import('@/page/inventory/storage/index.vue'),
+                meta: {
+                    title: '物资入库',
+                    icon: 'DocumentAdd'
+                }
+            },
+            {
+                path: 'addStocks',
+                component: () => import('@/page/inventory/addStocks/index.vue'),
+                meta: {
+                    title: '添加入库',
+                    icon: 'DocumentAdd',
+                    hidden:true
+                }
+            },
+            {
+                path: 'provide',
+                component: () => import('@/page/inventory/provide/index.vue'),
+                meta: {
+                    title: '物资发放',
+                    icon: 'Postcard'
+                }
+            },
+            {
+                path: 'addProvide',
+                component: () => import('@/page/inventory/addProvide/index.vue'),
+                meta: {
+                    title: '发放物资',
+                    icon: 'Postcard',
+                    hidden:true
+
+                }
+            },
+        ]
+
+    },
+    {
+        path: '/report',
+        component: Layout,
+        meta: {
+            title: '健康中心',
+            icon: 'Notebook'
+        },
+        children: [
+            {
+                path: 'record',
+                component: () => import('@/page/report/record/index.vue'),
+                meta: {
+                    title: '健康打卡',
+                    icon: 'AddLocation'
+                }
+            },
+            // {
+            //     path: 'mapInfo',
+            //     component: () => import('@/page/report/mapInfo/index.vue'),
+            //     meta: {
+            //         title: '全国疫情',
+            //         icon: 'TrendCharts'
+            //     }
+            // },
             // {
             //     path: 'test',
             //     component: () => import('@/page/test/index.vue'),
             //     meta: {
             //         title: '测试页面',
-            //         icon: 'Refrigerator'
+            //         icon: 'Refrigerator',
             //     },
             // }
         ]
+
     }
-
-    
-    
-    
-
 
 ]
 

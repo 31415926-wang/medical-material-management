@@ -1,131 +1,196 @@
 <template>
-  <div>
-    <el-table
-      :data="tableData"
-      style="width: 100%; margin-bottom: 20px"
-      row-key="id"
-      border
-    >
-      <el-table-column prop="date" label="Date" sortable />
-      <el-table-column prop="name" label="Name" sortable />
-      <el-table-column prop="address" label="Address" sortable />
-    </el-table>
-
-    <el-table
-      :data="tableData1"
-      style="width: 100%"
-      row-key="id"
-      border
-      lazy
-      :load="load"
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-    >
-      <el-table-column prop="date" label="Date" />
-      <el-table-column prop="name" label="Name" />
-      <el-table-column prop="address" label="Address" />
-    </el-table>
-  </div>
+  <el-form
+    ref="ruleFormRef"
+    style="max-width: 600px"
+    :model="ruleForm"
+    :rules="rules"
+    label-width="auto"
+    class="demo-ruleForm"
+    :size="formSize"
+    status-icon
+  >
+    <el-form-item label="Activity name" prop="name">
+      <el-input v-model="ruleForm.name" />
+    </el-form-item>
+    <el-form-item label="Activity zone" prop="region">
+      <el-select v-model="ruleForm.region" placeholder="Activity zone">
+        <el-option label="Zone one" value="shanghai" />
+        <el-option label="Zone two" value="beijing" />
+      </el-select>
+    </el-form-item>
+    <el-form-item label="Activity count" prop="count">
+      <el-select-v2
+        v-model="ruleForm.count"
+        placeholder="Activity count"
+        :options="options"
+      />
+    </el-form-item>
+    <el-form-item label="Activity time" required>
+      <el-col :span="11">
+        <el-form-item prop="date1">
+          <el-date-picker
+            v-model="ruleForm.date1"
+            type="date"
+            label="Pick a date"
+            placeholder="Pick a date"
+            style="width: 100%"
+          />
+        </el-form-item>
+      </el-col>
+      <el-col class="text-center" :span="2">
+        <span class="text-gray-500">-</span>
+      </el-col>
+      <el-col :span="11">
+        <el-form-item prop="date2">
+          <el-time-picker
+            v-model="ruleForm.date2"
+            label="Pick a time"
+            placeholder="Pick a time"
+            style="width: 100%"
+          />
+        </el-form-item>
+      </el-col>
+    </el-form-item>
+    <el-form-item label="Instant delivery" prop="delivery">
+      <el-switch v-model="ruleForm.delivery" />
+    </el-form-item>
+    <el-form-item label="Activity type" prop="type">
+      <el-checkbox-group v-model="ruleForm.type">
+        <el-checkbox value="Online activities" name="type">
+          Online activities
+        </el-checkbox>
+        <el-checkbox value="Promotion activities" name="type">
+          Promotion activities
+        </el-checkbox>
+        <el-checkbox value="Offline activities" name="type">
+          Offline activities
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          Simple brand exposure
+        </el-checkbox>
+      </el-checkbox-group>
+    </el-form-item>
+    <el-form-item label="Resources" prop="resource">
+      <el-radio-group v-model="ruleForm.resource">
+        <el-radio value="Sponsorship">Sponsorship</el-radio>
+        <el-radio value="Venue">Venue</el-radio>
+      </el-radio-group>
+    </el-form-item>
+    <el-form-item label="Activity form" prop="desc">
+      <el-input v-model="ruleForm.desc" type="textarea" />
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="submitForm(ruleFormRef)">
+        Create
+      </el-button>
+      <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+    </el-form-item>
+  </el-form>
 </template>
+
 <script lang="ts" setup>
-interface User {
-  id: number
-  date: string
+import { reactive, ref } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
+
+interface RuleForm {
   name: string
-  address: string
-  hasChildren?: boolean
-  children?: User[]
+  region: string
+  count: string
+  date1: string
+  date2: string
+  delivery: boolean
+  type: string[]
+  resource: string
+  desc: string
 }
 
-const load = (
-  row: User,
-  treeNode: unknown,
-  resolve: (date: User[]) => void
-) => {
-  setTimeout(() => {
-    resolve([
-      {
-        id: 31,
-        date: '2016-05-01',
-        name: '1wangxiaohu',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-      {
-        id: 32,
-        date: '2016-05-01',
-        name: '2wangxiaohu',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-    ])
-  }, 1000)
+const formSize = ref('default')
+const ruleFormRef = ref<FormInstance>()
+const ruleForm = reactive<RuleForm>({
+  name: 'Hello',
+  region: '',
+  count: '',
+  date1: '',
+  date2: '',
+  delivery: false,
+  type: [],
+  resource: '',
+  desc: '',
+})
+
+const rules = reactive<FormRules<RuleForm>>({
+  name: [
+    { required: true, message: 'Please input Activity name', trigger: 'blur' },
+    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
+  ],
+  region: [
+    {
+      required: true,
+      message: 'Please select Activity zone',
+      trigger: 'change',
+    },
+  ],
+  count: [
+    {
+      required: true,
+      message: 'Please select Activity count',
+      trigger: 'change',
+    },
+  ],
+  date1: [
+    {
+      type: 'date',
+      required: true,
+      message: 'Please pick a date',
+      trigger: 'change',
+    },
+  ],
+  date2: [
+    {
+      type: 'date',
+      required: true,
+      message: 'Please pick a time',
+      trigger: 'change',
+    },
+  ],
+  type: [
+    {
+      type: 'array',
+      required: true,
+      message: 'Please select at least one activity type',
+      trigger: 'change',
+    },
+  ],
+  resource: [
+    {
+      required: true,
+      message: 'Please select activity resource',
+      trigger: 'change',
+    },
+  ],
+  desc: [
+    { required: true, message: 'Please input activity form', trigger: 'blur' },
+  ],
+})
+
+const submitForm = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      console.log('submit!')
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
 }
 
-const tableData: User[] = [
-  {
-    id: 1,
-    date: '2016-05-02',
-    name: 'wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    id: 2,
-    date: '2016-05-04',
-    name: 'wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    id: 3,
-    date: '2016-05-01',
-    name: '3wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
-    children: [
-      {
-        id: 31,
-        date: '2016-05-01',
-        name: 'wangxiaohu',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-      {
-        id: 32,
-        date: '2016-05-01',
-        name: 'wangxiaohu',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-    ],
-  },
-  {
-    id: 4,
-    date: '2016-05-03',
-    name: 'wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.resetFields()
+}
 
-
-const tableData1: User[] = [
-  {
-    id: 1,
-    date: '2016-05-02',
-    name: 'wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    id: 2,
-    date: '2016-05-04',
-    name: 'wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    id: 3,
-    date: '2016-05-01',
-    name: 'wangxiaohu',
-    hasChildren: true,
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    id: 4,
-    date: '2016-05-03',
-    name: 'wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
+const options = Array.from({ length: 10000 }).map((_, idx) => ({
+  value: `${idx + 1}`,
+  label: `${idx + 1}`,
+}))
 </script>

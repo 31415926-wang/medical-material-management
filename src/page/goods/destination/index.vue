@@ -1,7 +1,7 @@
 
 <template>
     <CrudTable ref="CrudTableRef" :addCheckForm="addCheckForm" :editorCheckForm="editorCheckForm" :needOperate="true"
-        :closeViewDetail="true" operateButtonType="textType" :operateColWidth="180" :hiddenExport="true"
+        :closeViewDetail="true" operateButtonType="textType" :operateColWidth="180" 
         :needReqDetail="true" :dialogWidths="{
             add: '35%',
             editor: '32%',
@@ -10,22 +10,22 @@
 
         <template v-slot:nestCol>
             <el-table-column label="物资去向地址">
-                <el-table-column prop="address1" label="省份" min-width="3">
+                <el-table-column prop="address1" label="省份" >
                     <template #default="scope">
                             <span style="color: #529b2e;">{{ scope.row.address1 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="address2" label="市" min-width="3">
+                <el-table-column prop="address2" label="市" >
                     <template #default="scope">
                             <span style="color: #b88230;">{{ scope.row.address2 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="address3" label="区县" min-width="3">
+                <el-table-column prop="address3" label="区县" >
                     <template #default="scope">
                             <span style="color: #f89898;">{{ scope.row.address3 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" label="地址" min-width="3">
+                <el-table-column prop="name" label="地址" >
                 </el-table-column>
             </el-table-column>
         </template>
@@ -107,10 +107,9 @@ import initCrud from "@/hook/crud/initCrud";
 import { pageRes } from "@/types/api";
 import { itemList, cityItem } from "@/types/api/goods/source";
 import { rulesValidatePhone, rulesValidateEmail } from '@/utils/validate'
+import type {  FormRules } from 'element-plus'
 
-
-//@ts-ignore
-const rules = reactive<FormRules<RuleForm>>({
+const rules = reactive<FormRules<{}>>({
     address1: [
         { required: true, message: '请选择省份', trigger: 'change' },
     ],
@@ -153,26 +152,18 @@ let tableCols = reactive([
     {
         prop: 'createTime',
         label: '抵达时间',
-        width: 4,
         sortable:true
     },
   
     {
         prop: 'contact',
         label: '联系人',
-        width: 3,
         searchType: 'input'
     },
     {
         prop: 'phone',
         label: '电话',
-        width: 3,
     },
-    // {
-    //     prop: 'sort',
-    //     label: '排序',
-    //     width: 3,
-    // },
 
 ] as tableCol[]);
 
@@ -210,8 +201,8 @@ const reqSpareOption = async () => {
         return 0;
     }
     let result = await destinationApiMethod.getCityList();
-    console.log("城市数据", result);
-    optionList.value = result as any;
+    console.log("城市数据1", result.data);
+    optionList.value = result.data;
     //一级地区
     options1.value = optionList.value.filter((item: cityItem) => {
         return !item.parent

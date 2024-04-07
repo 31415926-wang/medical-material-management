@@ -14,7 +14,7 @@ html,body,#app{
 //自定义滚动条样式
 
   .custom-scrollbar::-webkit-scrollbar {
-    width: 9px;
+    width: 6px;
   }
   
   .custom-scrollbar::-webkit-scrollbar-thumb {
@@ -37,10 +37,10 @@ html,body,#app{
 
 
 //测试边框
-.border1{
+.border{
     border: 1px solid red;
 }
-.border2{
+.border-2{
     border: 1px solid rgb(56, 211, 90);
 }
 //快捷子元素居中

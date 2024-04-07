@@ -83,24 +83,21 @@ let tableCols = reactive([
     {
         prop: 'roleName',
         label: '角色名',
-        width: 2,
         searchType: 'input'
     },
     {
         prop: 'createTime',
         label: '创建时间',
-        width: 2,
     },
     {
         prop: 'status',
         label: '是否禁用',
-        width: 1,
-        rebuild: true
+        rebuild: true,
+        width:160
     },
     {
         prop: 'remark',
         label: '备注',
-        width: 4,
     },
 ] as tableCol[]);
 

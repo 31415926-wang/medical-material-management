@@ -1,7 +1,94 @@
+    <!-- 
+        使用步骤：
+
+        1.传入的表格tableCols结构数组，每一项的内容：
+            prop: '',     //列对应的属性名
+            label: '',   //列的标签
+            width: 3,   //列的宽度
+            sortable: true  //该列是否可排序
+            searchType: 'input',  加入查询字段，并且显示查询框类型
+            show:false   //是否显示
+            rebuild：true   //是否重写改列，当显示内容的格式/样式要自定义的时候
+
+        2.initCrud初始化表格，参数：表格ref实例、题目名称、api请求方法对象、tableCols结构、[自定义函数：对请求后的每列表进行格式处理或者追加属性]
+
+        initCrud(CrudTableRef, {
+                title: 'xx',
+                apiMethod: xxApiMethod
+            },
+                tableCols,
+                handlexxFn
+            );
+
+
+            
+        #其它：
+
+        1.操作列：
+
+           -开启操作列，默认图标形式：
+            <CrudTable ref="CrudTableRef" :needOperate="true">
+
+           -拓展操作列，通过插槽operateExpand；自定义整个操作列，开启customOperate
+
+            <template #operateExpand="{ rowInfo }">
+                <el-button text type='primary' class="mini" icon="EditPen" @click="handleColEditor(rowInfo.id)">编辑</el-button>
+            </template>
+
+            :customOperate="true"
+
+
+        2.自定义数据列，开启rebuild后，结合插槽：
+
+            <template v-slot:列key+Col="{ scope }">
+                <el-text type="warning">{{ scope.row?.列key }}</el-text>
+            </template>
+
+        
+        3.查询字段的开启：
+
+           配置列结构使用searchType: 'input'  ，指定其输入的基本类型，输入框与原生的Data\number等，下拉或者其它的应自定义。
+
+           自定义查询的字段及内容：通过自定义插槽，绑定好参数即可。
+
+            <template v-slot:search-custom="{ scope }">
+                <el-form-item label="物资状态">
+                    <el-select v-model="scope.searchParam.status" >
+                        <el-option v-for="item in GOODSTATUS_OPTIONS" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
+                </el-form-item>
+            </template>
+
+
+
+
+        注意：
+
+             1.api必须统一暴露出对象，且方法名称需按如下：
+                getList
+                addItem
+                updateItem
+                deleteItem
+             
+             2.若需手动调用表格api，如手动获取数据、删除等
+                CrudTableRef.value.hookCrudObject.crudInfo.ApiMethod.deleteItem(id);
+                CrudTableRef.value.hookCrudObject.getData();
+
+
+        -->
+
+
+
+
+
 <template>
     <!-- 查询
     需要参数：查询字段，查询的标签、输入框类型
     -->
+
+    <div class="CrudTableContainer">
+
     <div class="searchSection" v-show="(Object.keys(hookCrudObject.searchParam.value).length > 0) && searchStatus">
         <Search :hookCrudObjectParam="hookCrudObject">
             <template #default="{ scope }">
@@ -11,56 +98,54 @@
     </div>
 
     <!-- 批量、导出、新增 -->
-    <div class="toolSection" v-if="!hiddenToolSection">
+    <div class="toolSection">
         <div>
-            <el-button type="primary" icon="Plus" @click="handleAdd">新增</el-button>
+            <el-button v-if="defaultToolBtList.includes('add')" type="primary" icon="Plus" @click="handleAdd">新增</el-button>
             <!-- 自定义添加批量操作的功能 -->
             <slot name="batchSlot">
             </slot>
-            <el-button type="danger" icon="Delete" v-show="needBatch"
-                :disabled="hookCrudObject.crudInfo.option.selectedItems?.length == 0"
+            <el-button v-if="defaultToolBtList.includes('delete') && needBatch"  type="danger" icon="Delete"
+                :disabled="hookCrudObject.crudInfo.value.selectedItems?.length == 0"
                 @click="hookCrudObject.deleteRow(0, true)">删除</el-button>
-            <el-button v-show="!hiddenExport" type="success" icon="Download"
+            <el-button v-if="defaultToolBtList.includes('export')"  type="success" icon="Download"
                 @click="hookCrudObject.handleExportTable">导出</el-button>
         </div>
 
         <div class="middleBox"></div>
 
         <!-- 小工具 -->
-        <div class="toolBox">
+        <div class="toolBox" v-if="!hiddenToolSection">
             <ToolGroup ref="ToolGroupSection" v-model:searchStatus="searchStatus" :hookCrudObjectParam="hookCrudObject">
             </ToolGroup>
         </div>
     </div>
 
+
     <!-- 表格体 -->
     <el-table class="tableSection" :data="hookCrudObject.tableData.value" border style="width: 100%;" :size="size"
-        :cell-style="{ 'text-align': 'center' }" :header-cell-style="{ 'text-align': 'center', 'color': '#000' }"
-        :highlight-current-row="isHighlightRow" @selection-change="handleSelectionChange" row-key="id"
-        :tree-props="treeProps">
+        :cell-style="{ 'text-align': 'center','height':rowHeight }" :header-cell-style="{ 'text-align': 'center', 'color': '#000' }"
+        :highlight-current-row="isHighlightRow" @selection-change="handleSelectionChange" 
+        row-key="id"
+        :tree-props="treeProps"
+        >
 
-        <el-table-column type="selection" width="55" v-if="needBatch" />
+        <el-table-column type="selection" width="55" v-if="needBatch" 
+        :reserve-selection="true"
+        />
         <el-table-column type="index" label="序号" width="55" v-if="needIndex" />
 
         <!--自定义会出现嵌套的列 -->
         <slot name="nestCol">
         </slot>
 
-        <!-- 传入的tableCols格式：
-            prop: '',     //列对应的属性名
-            label: '',   //列的标签
-            width: 3,   //列的宽度
-            searchType: 'input',  加入查询字段，并且显示查询框类型
-            show:false   //是否显示
-            rebuild：true   //是否重写改列，当显示内容的格式/样式要自定义的时候
-        -->
+
 
         <template v-for="(item, index) in hookCrudObject.tableCols.value" :key="index">
             <!--
-            <el-table-column :label="item.label" :prop="item.prop" 
+            <el-table-column :label="item.label" :prop="item.prop" :min-width="item.width ? item.width : 0"
                 :sortable="item.sortable" v-if="item.show">
             -->
-            <el-table-column :label="item.label" :prop="item.prop" :min-width="item.width ? item.width : 0"
+            <el-table-column :label="item.label" :prop="item.prop" :width="item.width ? item.width:''"
                 :sortable="item.sortable" v-if="item.show">
                 <!-- 在需要自定义列内容时，传入插槽即可；对应字段需设置rebuild
                 -->
@@ -72,7 +157,7 @@
         </template>
 
 
-        <el-table-column v-if="needOperate" fixed="right" label="操作" :width="operateColWidth">
+        <el-table-column v-if="needOperate" fixed="right" label="操作" :width="Number(width)<768? null: (operateColWidth?operateColWidth:null)">
             <template #default="scope">
                 <div style="padding: 10px 0;">
                     <!-- 嵌入其它操作按钮 -->
@@ -80,30 +165,18 @@
 
                     <!-- 是否使用传统的按钮样式及功能 -->
                     <!-- 图标操作按钮、还是文字操作按钮 -->
-                    <span v-if="!customOperate">
-                        <span v-if="operateButtonType == 'iconType'">
-                            <el-button v-if="!closeViewDetail" type="info" class="mini" icon="View"
-                                @click="handleViewDetail(scope.row)"></el-button>
+                    <span v-if="!customOperate" >
+                              <el-button v-if="!closeViewDetail" :type="useIconType?'info':'primary'" class="mini" icon="View"
+                                :text="!useIconType"  
+                                @click="handleViewDetail(scope.row)">{{useIconType?'':'详细'}}</el-button>
 
-                            <el-button type="warning" class="mini" icon="EditPen"
-                                @click="handleEditor(scope.row)"></el-button>
+                            <el-button :type="useIconType?'warning':'primary'" class="mini" icon="EditPen" 
+                                :text="!useIconType" 
+                                @click="handleEditor(scope.row)">{{useIconType?'':'编辑'}} </el-button>
 
-                            <Popover type="danger" class="mini" icon="Delete" title="删除"
+                            <Popover :type="useIconType?'danger':'primary'"  :text="!useIconType"  class="mini" icon="Delete" title="删除" :operate="useIconType? '':'删除'"
                                 @handle="hookCrudObject.deleteRow(scope.row.id)">
-                            </Popover>
-                        </span>
-
-                        <span v-else-if="operateButtonType == 'textType'">
-                            <el-button v-if="!closeViewDetail" text type='primary' class="mini" icon="View"
-                                @click="handleViewDetail(scope.row)">详细</el-button>
-
-                            <el-button text type='primary' class="mini" icon="EditPen"
-                                @click="handleEditor(scope.row)">编辑</el-button>
-
-                            <Popover type='primary' text icon="Delete" class="mini" title="删除" operate="删除"
-                                @handle="hookCrudObject.deleteRow(scope.row.id)">
-                            </Popover>
-                        </span>
+                            </Popover> 
                     </span>
 
                 </div>
@@ -115,15 +188,14 @@
 
     <!-- 对应官网，如果传入page-size、total，要有对应的处理回调，尤其是page-size，且布局有sizes -->
     <Pagination background class="pageSection" :layout="pageLayout" :current-page="hookCrudObject.page.value"
-        :page-size="hookCrudObject.size.value" :total="hookCrudObject.total.value" :page-sizes="[10, 20, 30, 40, 50, 100]"
-        :hookCrudObjectParam="hookCrudObject"></Pagination>
-
-
+        :page-size="hookCrudObject.size.value" :total="hookCrudObject.total.value"
+        :page-sizes="pageSizes" :hookCrudObjectParam="hookCrudObject"></Pagination>
+    </div>
 
     <!-- 弹出框 -->
     <!-- 详细:默认有，自定义写插槽即可 -->
-    <Dialog ref="detailForm" :width="dialogWidths.detail" :title="hookCrudObject.title.value + '详细'" v-if="!closeViewDetail"
-        :rowInfo="rowInfo" :tableCols="hookCrudObject.tableCols">
+    <Dialog ref="detailForm" :width="dialogWidths.detail" :title="hookCrudObject.title.value + '详细'"
+        v-if="!closeViewDetail" :rowInfo="rowInfo" :tableCols="hookCrudObject.tableCols">
         <slot name="detailForm" :rowInfo="rowInfo">
         </slot>
     </Dialog>
@@ -142,16 +214,27 @@
 </template>
 
 
- 
+
 <script setup lang='ts'>
 import hookCrud from '@/hook/crud/index'
-import { ref } from 'vue';
+import { ref ,onMounted } from 'vue';
 import Popover from './Popover.vue'
 import Pagination from './Pagination.vue'
 import ToolGroup from './ToolGroup.vue'
 import Search from './Search.vue'
 import Dialog from './Dialog.vue'
 import { treeProps } from 'element-plus/es/components/tree-v2/src/virtual-tree';
+import {useSlots,computed} from "vue"
+import { useWindowSize } from '@vueuse/core'
+
+ let uSlots = useSlots()
+const { width, height } = useWindowSize()
+
+
+ //判断是否有传某个插槽
+ const hasUseSlot=(key :string)=>{
+    return Object.keys(uSlots).includes(key);
+ }  
 
 // import { useAttrs } from 'vue';
 // let $useAttrs = useAttrs();  //接收的方法与参数
@@ -164,6 +247,10 @@ let $prop = defineProps({
     isHighlightRow: {
         type: Boolean,
         default: false
+    },
+    rowHeight: {
+        type: String,
+        default: 'auto'
     },
     'pageLayout': {
         type: String,
@@ -194,9 +281,8 @@ let $prop = defineProps({
             detail: '34%'
         }
     },
-    operateColWidth: {
-        type: Number,
-        default: 220
+    operateColWidth: { //操作列的宽度
+        type: Number
     },
     operateButtonType: { //操作图标的表现形式
         type: String,
@@ -210,10 +296,6 @@ let $prop = defineProps({
     editorCheckForm: {
         type: Object,
         default: {}
-    },
-    hiddenExport: {//隐藏导出按钮
-        type: Boolean,
-        default: false
     },
     hiddenToolSection: {//隐藏所有工具按钮
         type: Boolean,
@@ -231,6 +313,14 @@ let $prop = defineProps({
     treeProps: {
         type: Object,
         default: {}
+    },
+    defaultToolBtList:{
+        type:Array,
+        default: ['add','delete','export']
+    },
+    pageSizes:{
+        type:Array,
+        default:[10, 20, 30, 40, 50, 100]
     }
 
 })
@@ -256,6 +346,11 @@ let detailForm = ref();
 let addForm = ref();
 let editorForm = ref();
 
+//是否开启是图标操作按钮
+const useIconType =computed(()=>{
+    return $prop.operateButtonType == 'iconType'? true :false;
+})
+
 
 //可能出现弹出框表单校验
 let nowFormType = ref(''); //表示当前是弹出框的类型，新增还是编辑框。
@@ -264,7 +359,10 @@ let nowFormType = ref(''); //表示当前是弹出框的类型，新增还是编
 
 //行的多选处理
 const handleSelectionChange = (val: any) => {
-    hookCrudObject.crudInfo.option.selectedItems = val
+    hookCrudObject.crudInfo.value.selectedItems = val;
+    // val[0].name='1111'  //会影响原表格
+    console.log("已选项目",val);
+    
 }
 
 //点击详细按钮
@@ -273,6 +371,7 @@ const handleViewDetail = async (row: any) => {
     judgeReqDetail(row);
 
     detailForm.value.dialogVisible = true;
+
 }
 
 //点击新增
@@ -294,11 +393,12 @@ const handleEditor = async (row: any) => {
 }
 
 const judgeReqDetail = async (row: any) => {
+
     if ($prop.needReqDetail) {
         let result = await hookCrudObject.getRowDetail(row.id);
-        formInfo.value = result;
+        rowInfo.value = result!;
     } else {
-        formInfo.value = { ...row };
+        rowInfo.value = { ...row };
     }
 }
 
@@ -384,6 +484,7 @@ div[class$="Section"],
 
 .toolSection {
     display: flex;
+    position: relative;
 
     .middleBox {
         flex-grow: 1;
@@ -431,5 +532,18 @@ div[class$="Section"],
     background-size: 100% 100%;
 }
 
+</style>
+
+<style>
+/* 手机尺寸下，按钮间取消间距，因为按钮一般都换行 */
+@media screen and (max-width:768px) {
+    .CrudTableContainer .el-button+.el-button{
+         margin-left: 0 !important;
+    } 
+
+    .el-button + span{
+    margin-left: 0 !important;
+    }
+}
 
 </style>

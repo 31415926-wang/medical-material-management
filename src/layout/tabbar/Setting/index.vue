@@ -81,4 +81,11 @@ const loginOut = async () => {
     @include mx-right;
   }
 }
+
+@media screen and (max-width:768px) {
+.userImg {
+    display: none;
+}
+}
+
 </style>

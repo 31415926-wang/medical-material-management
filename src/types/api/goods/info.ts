@@ -12,26 +12,23 @@ export interface infoSearchParam extends searchParam{
 
 
 //列表信息的单体结构 / 编辑获取的单个信息， !赋值断言，表明我们不会让其为空
-export class infoItem {
-    
-    categoryKeys!: null | number | number[];
-    createTime!: string; 
-    id!:  number;
-    imageUrl!: string;
-    model!: string;
-    modifiedTime!: string;
-    name!: string;
-    oneCategoryId!: undefined | number;
-    pnum!: string;
-    remark!: string;
-    sort!: number;
-    status!: number;
-    threeCategoryId!:  undefined | number;
-    twoCategoryId!:  undefined | number;
-    unit!: string;
-    constructor(){
-        
-    }
+export interface infoItem {
+    categoryKeys: null | number | number[];
+    createTime: string; 
+    id:  number;
+    imageUrl: string;
+    model: string;
+    modifiedTime: string;
+    name: string;
+    oneCategoryId?: number;
+    pnum: string;
+    remark: string;
+    sort: number;
+    status: number;
+    threeCategoryId?:  number;
+    twoCategoryId?:  number;
+    unit: string;
+  
 }
 
 //添加的单体
@@ -58,6 +55,19 @@ export interface itemCategory
     remark: string;
     sort: number;
     children:itemCategory[]
+}
+ 
+
+//获取库存列表的单体
+export interface productStocksInfoItem{
+    id: number
+    imageUrl: string
+    model: string
+    name: string
+    pnum: string
+    remark: null
+    stock: number
+    unit: string
 }
 
 

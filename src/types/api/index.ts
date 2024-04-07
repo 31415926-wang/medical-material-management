@@ -19,7 +19,7 @@ export interface pageRes<T>{
     success:boolean */
     rows:T[],
     total:number
-}
+} 
  
 //操作返回的结构
 export interface operateRes{

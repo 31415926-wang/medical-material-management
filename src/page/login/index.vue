@@ -78,8 +78,8 @@ const rules = reactive<FormRules<RuleForm>>({
 let formRef = ref();
 let loadingBtn = ref(false);
 let formInfo = reactive<loginFrom>({
-  username: '',
-  password: ''
+  username: 'admin',
+  password: '123456'
 })
 let checkRemember = ref<boolean>(false);
 let showVerify = ref<boolean>(false);

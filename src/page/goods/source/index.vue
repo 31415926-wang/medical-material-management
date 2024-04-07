@@ -1,7 +1,7 @@
 
 <template>
     <CrudTable ref="CrudTableRef" :addCheckForm="addCheckForm" :editorCheckForm="editorCheckForm" :needOperate="true"
-        :closeViewDetail="true" operateButtonType="textType" :operateColWidth="180" :hiddenExport="true"
+        :closeViewDetail="true" operateButtonType="textType" :operateColWidth="180" 
         :needReqDetail="true" :dialogWidths="{
             add: '35%',
             editor: '32%',
@@ -10,22 +10,22 @@
 
         <template v-slot:nestCol>
             <el-table-column label="物资提供方地址">
-                <el-table-column prop="address1" label="省份" min-width="3">
+                <el-table-column prop="address1" label="省份" >
                     <template #default="scope">
                             <span style="color: #529b2e;">{{ scope.row.address1 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="address2" label="市" min-width="3">
+                <el-table-column prop="address2" label="市" >
                     <template #default="scope">
                             <span style="color: #b88230;">{{ scope.row.address2 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="address3" label="区县" min-width="3">
+                <el-table-column prop="address3" label="区县" >
                     <template #default="scope">
                             <span style="color: #f89898;">{{ scope.row.address3 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" label="地址" min-width="3">
+                <el-table-column prop="name" label="地址" >
                 </el-table-column>
             </el-table-column>
         </template>
@@ -166,28 +166,24 @@ let tableCols = reactive([
     {
         prop: 'createTime',
         label: '创建时间',
-        width: 4,
     },
     {
         prop: 'email',
         label: '邮箱',
-        width: 4,
     },
     {
         prop: 'contact',
         label: '联系人',
-        width: 3,
         searchType: 'input'
     },
     {
         prop: 'phone',
         label: '电话',
-        width: 3,
     },
     {
         prop: 'sort',
         label: '排序',
-        width: 3,
+        width:100
     },
 
 ] as tableCol[]);
@@ -226,8 +222,8 @@ const reqSpareOption = async () => {
         return 0;
     }
     let result = await sourceApiMethod.getCityList();
-    console.log("城市数据", result);
-    optionList.value = result as any;
+    console.log("城市数据", result.data);
+    optionList.value = result.data;
     //一级地区
     options1.value = optionList.value.filter((item: cityItem) => {
         return !item.parent

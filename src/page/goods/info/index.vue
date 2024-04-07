@@ -1,8 +1,8 @@
 
 <template>
-    <CrudTable ref="CrudTableRef" :needOperate="true" :closeViewDetail="true" :operateColWidth="155"
-        :addCheckForm="addCheckForm" :editorCheckForm="editorCheckForm" operateButtonType='textType' :customOperate="true"
-        :hiddenExport=true 
+    <CrudTable ref="CrudTableRef" :needOperate="true" :closeViewDetail="true" :operateColWidth="175"
+        :addCheckForm="addCheckForm" :editorCheckForm="editorCheckForm" operateButtonType='textType' 
+        :customOperate="true"
         :dialogWidths="{
             add: '32%', 
             editor: '32%',
@@ -199,41 +199,39 @@ let tableCols = reactive([
     {
         prop: 'name',
         label: '物资名称',
-        width: 3,
         searchType: 'input'
     },
     {
         prop: 'pnum',
         label: '物资编号',
-        width: 4,
     },
     {
         prop: 'model',
         label: '物资规格',
-        width: 2,
-        rebuild: true
+        rebuild: true,
+        width:150
+
     },
     {
         prop: 'unit',
         label: '单位',
-        width: 1,
-        rebuild: true
+        rebuild: true,
+        width:150
+
     },
     {
         prop: 'remark',
         label: '备注',
-        width: 3,
     },
     {
         prop: 'status',
         label: '状态',
-        width: 2,
-        rebuild: true
+        rebuild: true,
+        width:150
     },
     {
         prop: 'createTime',
         label: '创建时间',
-        width: 2,
     }
 
 ] as tableCol[]);

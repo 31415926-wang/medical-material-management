@@ -32,11 +32,11 @@ service.interceptors.response.use((response) => {
         return response.data
     }
     else {
-        console.log("请求响应2", response);
+        // console.log("请求响应2", response);
 
         //若是请求城市json
         if (Array.isArray(response.data)) {
-            return response.data
+            return response
         }
 
         ElMessage({

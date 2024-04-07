@@ -4,12 +4,16 @@
   </el-icon>
 
   <el-breadcrumb separator-icon="ArrowRight">
-    <el-breadcrumb-item v-for="(item, index) in $route.matched" :key="index"
+    <template  v-for="(item, index) in $route.matched">
+      <el-breadcrumb-item v-if="item.path!='/'" :key="index" 
       :to="{ path: item.path }">
-      <el-icon class="breadcrumbIcon" >
-      <component :is="item.meta?.icon"></component>
+      <el-icon class="breadcrumbIcon"  >
+      <component :is="item.meta?.icon" ></component>
       </el-icon>
-      {{ item.meta?.title }}</el-breadcrumb-item>
+      <span class="breadcrumbTitle" >{{ item.meta?.title }}</span>
+    </el-breadcrumb-item>
+    </template>
+
   </el-breadcrumb>
 </template>
 
@@ -33,4 +37,15 @@ const changeExpandStatus = () => {
   position: relative;
   top: 1.5px;
 }
+
+.breadcrumbTitle{
+  margin-left:5px
+}
+@media screen and (max-width:768px) {
+  .breadcrumbTitle{
+  display: none
+}
+}
+
+
 </style>

@@ -4,7 +4,6 @@ interface rowItem{
 }
 
 export interface crudInfo {
-    option: {
         title: string,
         pagination: {
             page: number,
@@ -25,7 +24,6 @@ export interface crudInfo {
         },
         resultData: resultData,
         getDataAfterFn:any
-    }
 }
 
 

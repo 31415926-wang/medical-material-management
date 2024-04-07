@@ -34,7 +34,7 @@ import useUserStore from "@/store/modules/user";
 import useLayoutSettingStore from '@/store/modules/layoutSetting'
 import tabbar from './tabbar/index.vue'
 import { useRoute } from "vue-router";
-import windowSizeChange from '@/hook/comman/resize'
+import windowSizeChange from '@/hook/common/resize'
 
 let $route = useRoute();
 let userStore = useUserStore();
@@ -98,6 +98,21 @@ let newMenuList = filterMenu(cloneDeep(userStore.menuRoutes));
 </script>
 
 <style scoped lang='scss'>
+
+
+@media screen and (min-width: 1281px) {
+    .layout_left_side {
+         width: $base_menu_width;
+    }   
+}
+@media screen and (max-width: 1280px) {
+    .layout_left_side {
+         width: 226px;
+    }   
+}
+
+
+
 .layout_contain_box {
     height: 100%;
     display: flex;
@@ -105,11 +120,10 @@ let newMenuList = filterMenu(cloneDeep(userStore.menuRoutes));
     .layout_left_side {
         overflow-x: hidden;
         height: 100%;
-        width: $base_menu_width;
+      
         background-color: var(--custom-menu-bg-color);
         padding: 5px 0px;
         transition: all 0.6s;
-
 
         .el-menu {
             border-right: none;

@@ -18,7 +18,7 @@ const hanleChange = (val: number, type: string) => {
         props.hookCrudObjectParam.size.value = val;
         props.hookCrudObjectParam.page.value = 1;
     }
-    //请求接口
+    //请求接口 
     props.hookCrudObjectParam.getData();
 }
 

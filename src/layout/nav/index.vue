@@ -1,7 +1,5 @@
 <template>
   <div class="nav_box">
-
-
     <ul class="menuList" v-show="showContextmenu" @click.stop="hanleCloseMore($event)">
               <li :data-type="1">关闭左侧</li>
               <li :data-type="2">关闭右侧</li>
@@ -37,6 +35,7 @@
     </el-tabs>
 
   </div>
+
 </template>
 
 
@@ -192,6 +191,20 @@ const changeTab = (name: any) => {
     margin-right:7px ;
   }
 }
+
+@media screen and (max-width:768px) {
+::v-deep .el-tabs--card>.el-tabs__header {
+  .el-tabs__item {
+    margin-left:0px ;
+    margin-right:0px ;
+    padding-left:14px ;
+    padding-right:14px ;
+    
+  }
+}
+}
+
+
 
  @mixin mask-img{
   -webkit-mask: url('@/assets/images/tabbar-bg.png');

@@ -87,14 +87,15 @@ export const handleIcon = (iconStr: string) => {
         return ''
     }
 
-    
-
 }
+
+
 
 export default {
     filterEmptyProp,
     resetObj,
     getTimeState,
     handleExportFile,
-    handleIcon
+    handleIcon,
+    
 }

@@ -60,36 +60,31 @@ let tableCols = reactive([
     {
         prop: 'phone',
         label: '办公电话',
-        width: 3,
     },
     {
         prop: 'name',
         label: '部门名',
-        width: 2,
         searchType: 'input'
     },
     {
         prop: 'total',
         label: '人数',
-        width: 2,
-        rebuild: true
+        rebuild: true,
+        width:150
     },
     {
         prop: 'createTime',
         label: '创建时间',
-        width: 2,
         sortable: true,
         searchType: 'date'
     },
     {
         prop: 'modifiedTime',
         label: '修改时间',
-        width: 2
     },
     {
         prop: 'address',
         label: '办公地址',
-        width: 3,
     }
 ] as tableCol[]);
 

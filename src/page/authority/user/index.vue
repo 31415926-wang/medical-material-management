@@ -4,7 +4,8 @@
             add: '34%',
             editor: '34%',
             detail: '34%'
-        }">
+        }"
+        >
 
         <!-- 自定义添加查询内容 -->
         <template #search-custom="{ scope }">
@@ -44,10 +45,10 @@
         <!--自定义行拓展功能 -->
         <template #operateExpand="{ rowInfo }">
             <el-tooltip content="分配角色" placement="top" effect="dark">
-                <el-button icon="Setting" type="success" @click="openSetDialog(rowInfo)"></el-button>
+                <el-button icon="Setting" class="mini"  type="success" @click="openSetDialog(rowInfo)"></el-button>
             </el-tooltip>
         </template>
-
+ 
 
         <!-- 新增弹框 ：后台对邮箱、手机号、日期格式都做了限制-->
         <template v-slot:addForm="{ formInfo }">
@@ -225,8 +226,6 @@ import { rulesValidatePhone, rulesValidateEmail } from '@/utils/validate'
 import LoadingTool from "@/utils/element/elLoading"
 
 
-
-
 let addCheckForm = ref();
 let editorCheckForm = ref();
 
@@ -235,49 +234,43 @@ let tableCols = reactive([
     {
         prop: 'username',
         label: '用户名',
-        width: 2,
-        searchType: 'input'
+        searchType: 'input',
     },
     {
         prop: 'nickname',
         label: '昵称',
-        width: 2,
-        searchType: 'input'
+        searchType: 'input',
     },
     {
         prop: 'sex',
         label: '性别',
-        width: 1,
-        rebuild: true
+        rebuild: true,
+        width:100
     },
     {
         prop: 'departmentName',
         label: '所属部门',
-        width: 2,
     },
     {
         prop: 'birth',
         label: '生日',
-        width: 2,
         sortable: true
     },
     {
         prop: 'email',
         label: '邮箱',
-        width: 2,
         searchType: 'input',
         rebuild: true
     },
     {
         prop: 'phoneNumber',
         label: '电话',
-        width: 2,
     },
     {
         prop: 'status',
         label: '是否禁用',
-        width: 1,
-        rebuild: true
+        rebuild: true,
+        width:100
     }
 ] as tableCol[]);
 
