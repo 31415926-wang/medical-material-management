@@ -1,0 +1,21 @@
+@import '@/style/restcss.scss';
+
+
+
+html,body,#app{
+    height: 100%;
+}
+*{
+    box-sizing: border-box;
+}
+
+
+//快捷子元素居中
+.flex-center-x-y{
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+  }
+
+
+  

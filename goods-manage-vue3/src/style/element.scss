@@ -1,0 +1,77 @@
+
+:root:root  {
+  // --el-color-primary:red !important;
+
+  .el-select{
+    --el-select-width:177px;
+  }
+}
+
+//el-message提示字体
+.el-message{
+    font-size: 2.3rem !important;
+    top: 8% !important;
+}
+.el-message__content{
+    font-size: 1.1rem !important;
+}
+
+
+//el-table
+.el-table__header th {
+    background: var(--el-fill-color-light) !important;
+  }
+
+
+//全选框
+  .el-checkbox{
+    height: var(--el-checkbox-height,24px) !important;
+  }
+
+
+//加载中样式图标
+.el-loading-spinner {
+    background-image: url('@/assets/images/loader.gif');/*设置自己想要的图片或gif*/
+    background-repeat: no-repeat;
+    background-size: 27px 27px;
+    height: 50px;
+    width: 100%;
+    background-position: center;
+}
+
+.el-loading-spinner .circular {/*隐藏 默认的 loading 动画*/
+    display: none;
+}
+
+
+//自定义修改按钮尺寸
+
+.mini.el-button{
+  padding: 11px 13px !important;
+  font-size: 12px !important;
+}
+.mini.el-button.is-text{
+  padding: 6px 1px !important;
+  font-size: 13px !important;
+}
+
+
+//主板块的卡片
+.main_card .el-card__body{
+   padding: 30px 25px;
+}
+.main_card {
+  height: 100% !important;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.05) !important;
+  overflow-y: auto !important;
+
+}
+
+
+/* 去掉按钮内容为空时，认为存在有span的问题 */
+.el-button > span:empty{
+  display: none;
+}
+
+
+
