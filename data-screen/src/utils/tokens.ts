@@ -5,7 +5,7 @@ export const set_tokens=(str:string)=>{
 }
 export const get_tokens=()=>{
     // @ts-ignore
-    // return sessionStorage.getItem('User')
+    // return sessionStorage.getItem('User') 
     return JSON.parse(sessionStorage.getItem('User')).token  //按照主应用存在仓库的格式去拿
 }
 export const remove_tokens=()=>{
