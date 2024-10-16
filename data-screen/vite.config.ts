@@ -7,10 +7,13 @@ import qiankun from "vite-plugin-qiankun";
 export default defineConfig(({ command, mode }) => {
   let env = loadEnv(mode, process.cwd());
   return {
+    build: {
+      outDir: '../docs/data-screen' // 生产构建的输出目录
+    },
     server: {
       port: 5174,
     },
-    baseL: mode === 'production' ? env.VITE_APP_PUBLIC : '',
+    base: mode === 'production' ? env.VITE_APP_PUBLIC : '',
     plugins: [
       vue(),
       qiankun('son-app', {

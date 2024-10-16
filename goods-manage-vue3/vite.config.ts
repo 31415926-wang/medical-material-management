@@ -16,7 +16,10 @@ export default defineConfig(({ command, mode }) => {
   let env = loadEnv(mode, process.cwd());  //加载环境变量，在配置文件不能使用import.meta.env.xx
 
   return {
-    baseL: mode === 'production' ? env.VITE_APP_PUBLIC : '',
+    base: mode === 'production' ? env.VITE_APP_PUBLIC : '',
+    build: {
+      outDir: '../docs/goods-manage-vue3' // 生产构建的输出目录
+    },
     server: {
       port: 5173,
     },
