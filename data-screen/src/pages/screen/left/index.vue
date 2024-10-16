@@ -97,10 +97,10 @@ const handleStr = (str: string, goalLength: number) => {
     }
     return resultStr
 }
-const handleSale=(number:number)=>{
-    //直接四舍五入，在一定程度保证准确
-    return  Math.round((number)*100)+'%'
-}
+// const handleSale=(number:number)=>{
+//     //直接四舍五入，在一定程度保证准确
+//     return  Math.round((number)*100)+'%'
+// }
 
 
 watch(peopleMonut, () => {
