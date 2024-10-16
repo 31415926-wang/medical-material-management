@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ElMessage } from 'element-plus'
 import Tip from '@/utils/element/elMessageTip'
-import {get_tokens ,remove_tokens} from './tokens.ts'
+import { get_tokens, remove_tokens } from './tokens.ts'
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -15,7 +15,7 @@ service.interceptors.request.use((config) => {
     if (get_tokens()) {
         config.headers.Authorization = get_tokens();
         // config.headers.Authorization ='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI3Mzc2NTIsInVzZXJuYW1lIjoiYWRtaW4ifQ.XLr-2sizaEPRai9e2-ez0yMy9f1z0cPnVCgPZ-pyJZs';
-    } 
+    }
     return config;
 })
 
@@ -33,8 +33,8 @@ service.interceptors.response.use((response) => {
             message: response?.data?.data?.errorMsg || 'error'
         })
         // 401（未授权）或者403（禁止访问），具体的状态码可能会根据后端的实现而有所不同
-        if (response.data.data.errorCode == 50001 || response.data.data.errorCode == 50002) {   
-            remove_tokens();    
+        if (response.data.data.errorCode == 50001 || response.data.data.errorCode == 50002) {
+            remove_tokens();
             console.log("断点1")
             // location.reload();   //页面重载
         }
@@ -45,7 +45,7 @@ service.interceptors.response.use((response) => {
 }, (error) => {
     let msg = '';
     // console.log("请求失败",error);
-    
+
     if (error.code == "ERR_NETWORK") {
         msg = '网络出现问题'
     } else {

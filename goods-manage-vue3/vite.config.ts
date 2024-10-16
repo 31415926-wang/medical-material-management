@@ -12,8 +12,11 @@ import { viteMockServe } from 'vite-plugin-mock'
 
 //defineConfig接收一个对象
 export default defineConfig(({ command, mode }) => {
-let env = loadEnv(mode, process.cwd());
+  let env = loadEnv(mode, process.cwd());
   return {
+    server: {
+      port: 5173,
+    },
     plugins: [
       vue(),
       viteMockServe({
@@ -26,7 +29,7 @@ let env = loadEnv(mode, process.cwd());
         symbolId: 'icon-[dir]-[name]',
       }),
     ],
-   
+
     resolve: {
       alias: {
         "@": path.resolve("./src") // 相对路径别名配置，使用 @ 代替 src
@@ -34,7 +37,7 @@ let env = loadEnv(mode, process.cwd());
     },
     css: { //使调用全局变量时，能找到该变量。（因为单个文件内是没问题的）
       preprocessorOptions: {
-        scss: {  
+        scss: {
           javascriptEnabled: true,
           additionalData: '@import "@/style/globalVariable.scss";',  //后面的;不要忘记，不然会报错
         },

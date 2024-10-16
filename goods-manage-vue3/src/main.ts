@@ -3,14 +3,14 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from '@/router/index'
 import pinia from '@/store/index'
-import globalComponents  from '@/components/index'
-import directive  from '@/utils/directive'
+import globalComponents from '@/components/index'
+import directive from '@/utils/directive'
 import ElementPlus from 'element-plus';
 import '@/style/globalStyle.scss'
 import 'element-plus/dist/index.css'
 
 //引入乾坤
-import  '@/utils/microApps.ts';
+import '@/utils/microApps.ts';
 
 //@ts-ignore
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
@@ -45,7 +45,7 @@ directive(app);
 
 
 //全局属性、方法的设置，代替vue2的挂载原型
-app.provide('loading',loadingObj)
+app.provide('loading', loadingObj)
 
 
 //挂载到节点

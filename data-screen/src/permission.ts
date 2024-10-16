@@ -4,7 +4,7 @@ import setting from './setting'
 import nprogress from 'nprogress'
 //引入进度条样式 
 import 'nprogress/nprogress.css'
-import {get_tokens ,remove_tokens} from '@/utils/tokens.ts'
+import { get_tokens, remove_tokens } from '@/utils/tokens.ts'
 
 
 
@@ -18,9 +18,9 @@ router.beforeEach((to, from, next) => { //to,from是路由对象,next()才是通
     //先判断有没有token：改
     if (get_tokens()) {
 
-        
+
         if (to.path != '/login') {
-            next(); 
+            next();
         }
         else {
             next({ path: '/' })

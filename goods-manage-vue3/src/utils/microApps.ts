@@ -12,3 +12,4 @@ registerMicroApps([ //注册子应用
 
 start();
 
+ 

@@ -210,14 +210,14 @@ export const asnycRoute :any[] = [
                     icon: 'AddLocation'
                 }
             },
-            {
-                path: 'test',
-                component: () => import('@/page/test/index.vue'),
-                meta: {
-                    title: '测试页面',
-                    icon: 'Refrigerator',
-                },
-            }
+            // {
+            //     path: 'test',
+            //     component: () => import('@/page/test/index.vue'),
+            //     meta: {
+            //         title: '测试页面',
+            //         icon: 'Refrigerator',
+            //     },
+            // }
         ]
     },
   
