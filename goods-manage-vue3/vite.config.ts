@@ -10,10 +10,13 @@ import { viteMockServe } from 'vite-plugin-mock'
 //   plugins: [vue()],
 // })
 
+
 //defineConfig接收一个对象
 export default defineConfig(({ command, mode }) => {
-  let env = loadEnv(mode, process.cwd());
+  let env = loadEnv(mode, process.cwd());  //加载环境变量，在配置文件不能使用import.meta.env.xx
+
   return {
+    baseL: mode === 'production' ? env.VITE_APP_PUBLIC : '',
     server: {
       port: 5173,
     },

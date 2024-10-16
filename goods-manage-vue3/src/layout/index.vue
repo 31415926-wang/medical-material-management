@@ -3,12 +3,12 @@
         <div class="layout_left_side" :class="{ fold: layoutSettingStore.fold }">
             <logo></logo>
             <el-scrollbar class="el_scrollbar">
-                <el-menu :collapse="layoutSettingStore.fold" :default-active="$route.fullPath" background-color="#001529"
-                    text-color="rgba(255, 255, 255, 0.75)" active-text-color="#fff" >
+                <el-menu :collapse="layoutSettingStore.fold" :default-active="$route.fullPath"
+                    background-color="#001529" text-color="rgba(255, 255, 255, 0.75)" active-text-color="#fff">
                     <Menu :menuList="newMenuList" basePath=""></Menu>
                 </el-menu>
             </el-scrollbar>
- 
+
         </div>
 
         <div class="layout_right_side" :class="{ fold: layoutSettingStore.fold }">
@@ -33,10 +33,9 @@ import footerLogo from './footerLogo/index.vue'
 import useUserStore from "@/store/modules/user";
 import useLayoutSettingStore from '@/store/modules/layoutSetting'
 import tabbar from './tabbar/index.vue'
-import { useRoute,useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import windowSizeChange from '@/hook/common/resize'
-import {watch,ref ,toRaw} from 'vue'
-import { constantRoute ,asnycRoute } from '@/router/routes'
+import { watch, ref, toRaw } from 'vue'
 // @ts-ignore
 import cloneDeep from 'lodash/cloneDeep'
 
@@ -55,11 +54,11 @@ const handleSizeChange = () => {
     }
     if (layoutSettingStore.fold && clientWidth >= 1200) {
         layoutSettingStore.changeFold();
-    } 
+    }
 }
 let resize = windowSizeChange(handleSizeChange);
 
- 
+
 
 
 
@@ -77,21 +76,24 @@ const filterMenu = (arr: any) => {
     })
 }
 
-let newMenuList=ref<any>();
+let newMenuList = ref<any>();
 
-const handleMenu=()=>{
+const handleMenu = () => {
     newMenuList.value = filterMenu(cloneDeep(userStore.menuRoutes));
     //在第二个路由插入大屏
-    newMenuList.value.splice(1,0,{
-            path: '/screen',
-            component: () => import('@/page/screen/index.vue'),
-            meta: {
-                title: '数据大屏',
-                icon: 'DataAnalysis',
-            }
+    newMenuList.value.splice(1, 0, {
+        path: '/screen',
+        // component: () => import('@/page/screen/index.vue'),
+        component: null,
+        meta: {
+            title: '数据大屏',
+            icon: 'DataAnalysis',
+        }
     }
-)
+    )
 }
+
+handleMenu();
 
 // const handleRouter=()=>{
 //     console.log("仓库路由",userStore.menuRoutes[0].component);
@@ -109,7 +111,6 @@ const handleMenu=()=>{
 // },{immediate:true})
 
 
-handleMenu();
 
 
 //点击菜单存入仓库
@@ -139,17 +140,16 @@ handleMenu();
 </script>
 
 <style scoped lang='scss'>
-
-
 @media screen and (min-width: 1281px) {
     .layout_left_side {
-         width: $base_menu_width;
-    }   
+        width: $base_menu_width;
+    }
 }
+
 @media screen and (max-width: 1280px) {
     .layout_left_side {
-         width: 226px;
-    }   
+        width: 226px;
+    }
 }
 
 
@@ -161,7 +161,7 @@ handleMenu();
     .layout_left_side {
         overflow-x: hidden;
         height: 100%;
-      
+
         background-color: var(--custom-menu-bg-color);
         padding: 5px 0px;
         transition: all 0.6s;
@@ -183,8 +183,8 @@ handleMenu();
             }
 
             //有子菜单的标题背景
-            ::v-deep .el-sub-menu .el-sub-menu__title{
-                    background-color: var(--custom-menu-bg-color) !important;
+            ::v-deep .el-sub-menu .el-sub-menu__title {
+                background-color: var(--custom-menu-bg-color) !important;
             }
 
         }
@@ -197,7 +197,7 @@ handleMenu();
             ::v-deep .logoTitle {
                 display: none;
                 transition: all 1s;
-                
+
             }
         }
 
@@ -212,8 +212,8 @@ handleMenu();
         height: 100%;
         width: calc(100% - $base_menu_width);
 
-        &.fold{
-            width:  calc(100% - $base_menu_min_width);
+        &.fold {
+            width: calc(100% - $base_menu_min_width);
         }
 
         .layout_tabbar {
