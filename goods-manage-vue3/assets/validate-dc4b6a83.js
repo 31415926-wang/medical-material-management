@@ -1,0 +1,1 @@
+function t(r){let e=parseInt(String(r));return/^1[3-9]\d{9}$/.test(String(e))}function i(r){return/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(r)}const s=(r,e,n)=>{t(e)?n():n(new Error("请输入正确的手机号码"))},a=(r,e,n)=>{i(e)?n():n(new Error("请输入正确的邮箱格式"))};export{s as a,a as r};
