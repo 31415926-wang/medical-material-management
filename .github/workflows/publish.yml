@@ -35,7 +35,11 @@ jobs:
       run: pnpm --version  # 确保 pnpm 安装成功
 
     - name: Install dependencies
-      run: pnpm install
+      run: npm install
+      # 作用: 这一步骤安装 package.json 中列出的所有依赖。对于大多数 Node.js 项目，这一步是必需的，因为没有安装依赖的项目无法正常构建或运行。
+   
+    - name: Install dependencies
+      run: pnpm run install
       # 作用: 这一步骤安装 package.json 中列出的所有依赖。对于大多数 Node.js 项目，这一步是必需的，因为没有安装依赖的项目无法正常构建或运行。
 
     - name: Build
