@@ -10,7 +10,7 @@
     "start": "npm-run-all --parallel start:project-main start:project-sub",
     "start:project-main": "cd goods-manage-vue3 && npm run serve",
     "start:project-sub": "cd data-screen && npm run serve",
-    "install": "npm-run-all --parallel install:project-main install:project-sub",
+    "installAll": "npm-run-all --parallel install:project-main install:project-sub",
     "install:project-main": "cd goods-manage-vue3 && npm install",
     "install:project-sub": "cd data-screen && npm install",
     "build": "npm-run-all --parallel build:project-main build:project-sub",
