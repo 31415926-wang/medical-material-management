@@ -4,7 +4,7 @@ import setting from './setting'
 import nprogress from 'nprogress'
 //引入进度条样式 
 import 'nprogress/nprogress.css'
-import { get_tokens } from '@/utils/tokens.ts'
+import { get_tokens } from '@/utils/tokens'
 
 
 

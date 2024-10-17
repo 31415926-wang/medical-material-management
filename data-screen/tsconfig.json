@@ -1,32 +1,29 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
     "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
+      "ESNext",
+      "DOM"
     ],
     "skipLibCheck": true,
-    "baseUrl": "./",
-    "paths": {
+    "noEmit": true,
+    "baseUrl": "./", // 解析非相对模块的基地址，默认是当前目 录
+    "paths": { //路径映射，相对于baseUrl
       "@/*": [
         "src/*"
       ]
     },
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve",
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false, // 禁用未使用参数的检查
-    "noFallthroughCasesInSwitch": true
+    "types": [
+      "vite/client"
+    ] //解决类型“ImportMeta”上不存在属性“env”
   },
   "include": [
     "src/**/*.ts",

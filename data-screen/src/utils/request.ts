@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ElMessage } from 'element-plus'
 import Tip from '@/utils/element/elMessageTip'
-import { get_tokens, remove_tokens } from './tokens.ts'
+import { get_tokens, remove_tokens } from './tokens'
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_APP_BASE_API,
