@@ -59,7 +59,7 @@ let highlightAreaColor = {
     color: 'rgb(236, 220, 126)'
 }
 
-console.log("断点", convertData(scatters));
+// console.log("断点", convertData(scatters));
 
 onMounted(() => {
     let mycharts = echarts.init(countryMap.value);

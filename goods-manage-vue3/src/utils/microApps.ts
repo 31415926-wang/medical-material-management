@@ -10,5 +10,7 @@ registerMicroApps([ //注册子应用
     }
 ])
 
+// console.log("微前端调试", window);
+
 start();
 

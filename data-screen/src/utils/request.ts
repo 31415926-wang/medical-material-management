@@ -35,7 +35,7 @@ service.interceptors.response.use((response) => {
         // 401（未授权）或者403（禁止访问），具体的状态码可能会根据后端的实现而有所不同
         if (response.data.data.errorCode == 50001 || response.data.data.errorCode == 50002) {
             remove_tokens();
-            console.log("断点1")
+            // console.log("断点1")
             // location.reload();   //页面重载
         }
         return Promise.reject(new Error('error'))

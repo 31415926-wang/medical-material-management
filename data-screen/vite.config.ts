@@ -26,7 +26,7 @@ export default defineConfig(({ command, mode }) => {
     //   origin: '//localhost:5173'
     // },
 
-    // 微前端vite插件，生产环境需要指定运行域名作为base
+    // 生产环境需要指定运行域名作为base
     // base: import.meta.env.VITE_SON_WEB_BASE_API,
 
     resolve: {

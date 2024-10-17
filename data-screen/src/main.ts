@@ -11,6 +11,9 @@ import { renderWithQiankun, qiankunWindow } from 'vite-plugin-qiankun/dist/helpe
 // app.use(router);
 // app.mount('#app');
 
+console.log("子应用初始化");
+
+
 var app: any;
 
 // 使用乾坤渲染
@@ -21,7 +24,7 @@ renderWithQiankun({
     render(props)
   },
   bootstrap() {
-    //   console.log('bootstrap')
+      console.log('bootstrap')
   },
   update() {
     //   console.log('update')
