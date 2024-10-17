@@ -3,8 +3,9 @@ import { createRouter, createWebHashHistory, createWebHistory } from "vue-router
 
 
 const router = createRouter({
-    // history: createWebHashHistory(),
-    history: createWebHistory(),
+    history: createWebHashHistory(),
+    // 临时
+    // history: createWebHistory(), 
     routes: [
         {
             path: '/screen',

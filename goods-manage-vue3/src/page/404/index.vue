@@ -29,7 +29,7 @@
 
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <div class="bullshit">
-            <div class="bullshit-oops">{{ state.oops }}</div>
+            <div class="bullshit-oops">--{{ state.oops }}--</div>
             <div class="bullshit-headline">{{ state.headline }}</div>
             <div class="bullshit-info">{{ state.info }}</div>
             <a class="bullshit-return-home" @click="router.replace({ path: '/' })">

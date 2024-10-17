@@ -81,16 +81,17 @@ let newMenuList = ref<any>();
 const handleMenu = () => {
     newMenuList.value = filterMenu(cloneDeep(userStore.menuRoutes));
     //在第二个路由插入大屏
-    newMenuList.value.splice(1, 0, {
-        path: '/screen',
-        // component: () => import('@/page/screen/index.vue'),
-        component: null,
-        meta: {
-            title: '数据大屏',
-            icon: 'DataAnalysis',
-        }
-    }
-    )
+    // 临时
+    // newMenuList.value.splice(1, 0, {
+    //     path: '/screen',
+    //     // component: () => import('@/page/screen/index.vue'),
+    //     component: null,
+    //     meta: {
+    //         title: '数据大屏',
+    //         icon: 'DataAnalysis',
+    //     }
+    // }
+    // )
 }
 
 handleMenu();

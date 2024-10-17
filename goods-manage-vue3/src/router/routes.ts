@@ -10,30 +10,14 @@ export const constantRoute = [
             hidden: true  //不是所有路由都需要渲染成菜单
         }
     },
-    {
-        path: '/404',
-        component: () => import('@/page/404/index.vue'),
-        meta: {
-            title: '404',
-            hidden: true  //不是所有路由都需要渲染成菜单
-        }
-    },
-    
-    //其它路径重定向到404，使用了微前端，得改写法
-    // {
-    //     path: '/:catchAll(.*)',
-    //     redirect: '/404',
-    //     meta: {
-    //         hidden: true
-    //     }
-    // },
+
     {
         path: '/',
         component: Layout,
         redirect: '/home',//当只访问一级路由路径时，默认选个二级路由
         meta: {
             title: 'Layout',
-        }, 
+        },
         children: [
             {
                 path: 'home',
@@ -46,21 +30,41 @@ export const constantRoute = [
             }
         ]
     },
+    // 临时
+    {
+        path: '/screen',
+        component: () => import('@/page/screen/index.vue'),
+        meta: {
+            title: '数据大屏',
+            icon: 'DataAnalysis',
+        }
+    },
 
+    //其它路径重定向到404，使用了微前端，得改写法
     // {
-    //     path: '/screen',
-    //     component: () => import('@/page/screen/index.vue'),
+    //     path: '/:catchAll(.*)',
+    //     redirect: '/404',
     //     meta: {
-    //         title: '数据大屏',
-    //         icon: 'DataAnalysis',
+    //         hidden: true
     //     }
-    // }
+    // },
+
+    // 似乎会自动匹配不合法的路径
+    {
+        path: '/404',
+        component: () => import('@/page/404/index.vue'),
+        meta: {
+            title: '404',
+            hidden: true  //不是所有路由都需要渲染成菜单
+        }
+    },
+
 ]
 
 
-export const asnycRoute :any[] = [
-     //系统管理
-     {
+export const asnycRoute: any[] = [
+    //系统管理
+    {
         path: '/authority',
         component: Layout,
         meta: {
@@ -144,12 +148,12 @@ export const asnycRoute :any[] = [
                     icon: 'Refrigerator'
                 }
             },
-           
+
         ]
     },
 
     {
-        path: '/inventory', 
+        path: '/inventory',
         component: Layout,
         meta: {
             title: '库存管理',
@@ -170,7 +174,7 @@ export const asnycRoute :any[] = [
                 meta: {
                     title: '添加入库',
                     icon: 'DocumentAdd',
-                    hidden:true
+                    hidden: true
                 }
             },
             {
@@ -187,7 +191,7 @@ export const asnycRoute :any[] = [
                 meta: {
                     title: '发放物资',
                     icon: 'Postcard',
-                    hidden:true
+                    hidden: true
 
                 }
             },
@@ -200,7 +204,7 @@ export const asnycRoute :any[] = [
         meta: {
             title: '健康中心',
             icon: 'Notebook'
-        }, 
+        },
         children: [
             {
                 path: 'record',
@@ -220,6 +224,6 @@ export const asnycRoute :any[] = [
             // }
         ]
     },
-  
+
 ]
 

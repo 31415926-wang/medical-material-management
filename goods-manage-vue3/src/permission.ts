@@ -10,18 +10,18 @@ import useUserStore from "./store/modules/user";
 
 nprogress.configure({ showSpinner: false })// 去掉圈圈
 
-const whitePaths = ['/login'];
+const whitePaths = ['/login', '/404'];
 
 
 router.beforeEach(async (to, from, next) => { //to,from是路由对象,next是通过，vue3可以不用,next写了的话，就必需用它才能通过
     // console.log("路由断点a");
-  /*   
-        重新匹配404页面的规则：
-        不属于路由表，也不属于微应用的路径，重定向到404.路由表不再统配404，404只作为一个页面
-        自己的路由meta都有属性 
-    */
-    if (Object.keys(to.meta).length==0 && to.fullPath!='/screen') {
-        next({path:'404'})
+    /*   
+          重新匹配404页面的规则：
+          不属于路由表，也不属于微应用的路径，重定向到404.路由表不再统配404，404只作为一个页面
+          自己的路由meta都有属性 
+      */
+    if (Object.keys(to.meta).length == 0 && to.fullPath != '/screen') {
+        next({ path: '404' })
     }
 
     let userStore = useUserStore();
@@ -31,18 +31,18 @@ router.beforeEach(async (to, from, next) => { //to,from是路由对象,next是�
 
         //有token了，判断有没有用户信息，没有则发请求获取（F5刷新则清空，在此一般不使用持久化存储用户信息）
         //同时解决在404页面刷新还弹出欢迎回来的弹窗
-        if (Object.keys(userStore.userInfo).length ==0 && to.path != '/404') {
+        if (Object.keys(userStore.userInfo).length == 0 && to.path != '/404') {
             await userStore.getUserInfo();
-          }
+        }
 
         if (to.path != '/login') {
-            next(); 
+            next();
         }
         else {
             next({ path: '/' })
         }
-     
-      
+
+
     }
     else {
         //没有token，如果是去不用token的页面，直接通过

@@ -17,8 +17,8 @@ registerMicroApps([
         entry: import.meta.env.VITE_SON_WEB_BASE_API,
         // entry: 'https://31415926-wang.github.io/medical-material-management/data-screen/',
         container: '#microAppsContainer',
-        // activeRule: '#/screen',  //路由使用哈希模式需要添加#
-        activeRule: '/screen',  //路由使用哈希模式需要添加#
+        // activeRule: '#/screen',  //路由使用哈希模式需要添加 #
+        activeRule: '/screen',  
     }
 ],
 
