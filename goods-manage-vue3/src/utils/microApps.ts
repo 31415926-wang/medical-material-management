@@ -24,15 +24,15 @@ registerMicroApps([
 
     {
         afterMount: (app) => {
-            console.log(`子应用 "${app.name}" 加载完毕!`);
+            // console.log(`子应用 "${app.name}" 加载完毕!`);
             return Promise.resolve();
         },
         beforeMount: (app) => {
-            console.log(`子应用 "${app.name}" 即将挂载...`);
+            // console.log(`子应用 "${app.name}" 即将挂载...`);
             return Promise.resolve();
         },
         afterUnmount: (app) => {
-            console.log(`子应用 "${app.name}" 卸载完毕!`);
+            // console.log(`子应用 "${app.name}" 卸载完毕!`);
             return Promise.resolve();
         }
     }

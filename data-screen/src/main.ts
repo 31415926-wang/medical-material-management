@@ -11,7 +11,7 @@ import { renderWithQiankun, qiankunWindow } from 'vite-plugin-qiankun/dist/helpe
 // app.use(router);
 // app.mount('#app');
 
-console.log("子应用初始化");
+// console.log("子应用初始化");
 
 
 var app: any;
