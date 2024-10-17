@@ -24,7 +24,7 @@ renderWithQiankun({
     render(props)
   },
   bootstrap() {
-      console.log('bootstrap')
+    console.log('bootstrap')
   },
   update() {
     //   console.log('update')
