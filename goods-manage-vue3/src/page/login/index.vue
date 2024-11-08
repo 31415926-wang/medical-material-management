@@ -6,7 +6,7 @@
         <div class="login_out_box flex-center-x-y">
           <div class="login_from">
             <div class="title">Hello</div>
-            <div class="title_desc">欢迎来到疫情物资管理系统</div>
+            <div class="title_desc">欢迎来到防疫物资调度系统</div>
 
             <el-form
               :model="formInfo"
